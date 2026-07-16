@@ -5,5 +5,5 @@
 - Preserved and checksummed source inputs.
 - Implemented robust analytics, evidence-linked diagnosis, and revised strategy.
 - Added eleven-agent workflow, persistent memory, retries, checkpoints, trace, and spend log.
-- Generated five static creatives and two NVENC H.264 videos.
+- Generated five static creatives and two NVENC H.264 videos; Day 2 uses one audited HF/Wan promotional-credit source clip.
 - Added offline dashboard, reports, demo workflow, tests, validator, and final packaging.

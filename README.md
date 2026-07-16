@@ -38,11 +38,11 @@ $env:PYTHONPATH='src'; .\.venv\Scripts\python.exe app\server.py --port 8501
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
 
-Credentials may be stored only in the ignored `.env` file. Gemini and Hugging Face credentials are detected without logging their values, but they are not sent to chargeable media endpoints while the project is in free-only mode. `FAL_KEY` is deliberately ignored.
+Credentials may be stored only in the ignored `.env` file. One user-confirmed Hugging Face promotional-credit call supplied the realistic Day 2 source clip at INR 0 cash cost (USD 0.025 credit value). Gemini image generation was not called because its image tier was not free. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 
-Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. All generation is local and the source CSV/DOCX remain immutable.
+Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Static assets and final compositing are local; Day 2 uses the audited HF promotional-credit source clip. The source CSV/DOCX remain immutable.
 
 ## Important interpretation
 

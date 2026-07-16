@@ -3,7 +3,11 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from insta_strategy_lab.providers import GenerationPolicy, GenerationPolicyError
+from insta_strategy_lab.providers import (
+    GenerationPolicy,
+    GenerationPolicyError,
+    HuggingFaceVideoClient,
+)
 
 
 class GenerationPolicyTests(unittest.TestCase):
@@ -18,6 +22,10 @@ class GenerationPolicyTests(unittest.TestCase):
                 "allow_paid_generation": False,
                 "maximum_paid_generation_inr": 0,
                 "disabled_providers": ["fal"],
+                "promotional_credit": {
+                    "confirmed_by_user": True,
+                    "maximum_test_list_cost_usd": 0.025,
+                },
             }
         }), encoding="utf-8")
         (root / ".env").write_text(
@@ -49,6 +57,28 @@ class GenerationPolicyTests(unittest.TestCase):
 
     def test_local_zero_cost_generation_is_allowed(self):
         GenerationPolicy(self.make_root()).assert_media_call_allowed("local", 0)
+
+    def test_confirmed_hf_credit_call_is_bounded(self):
+        policy = GenerationPolicy(self.make_root())
+        policy.assert_promotional_credit_call_allowed("huggingface", 0.025, 0)
+        with self.assertRaises(GenerationPolicyError):
+            policy.assert_promotional_credit_call_allowed("huggingface", 0.026, 0)
+        with self.assertRaises(GenerationPolicyError):
+            policy.assert_promotional_credit_call_allowed("huggingface", 0.025, 1)
+
+    def test_fal_credential_cannot_be_retrieved(self):
+        policy = GenerationPolicy(self.make_root())
+        with self.assertRaises(GenerationPolicyError):
+            policy.credential("FAL_KEY")
+
+    def test_existing_hf_reservation_blocks_a_repeat_before_network_access(self):
+        root = self.make_root()
+        (root / "logs").mkdir()
+        (root / "logs/hf_promotional_credit_test.json").write_text(
+            json.dumps({"status": "reserved"}), encoding="utf-8"
+        )
+        with self.assertRaises(GenerationPolicyError):
+            HuggingFaceVideoClient(root).generate_test("prompt", root / "tmp/test.mp4")
 
 
 if __name__ == "__main__":

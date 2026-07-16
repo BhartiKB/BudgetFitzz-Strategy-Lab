@@ -36,7 +36,7 @@ class LocalProvider:
             "deterministic-template",
             "budgetfitzz-editorial-v1",
             "cpu",
-            "Free-only policy selected validated local templates; no paid external media endpoint was called",
+            "Validated local templates plus one audited Hugging Face promotional-credit source; cash cost INR 0",
             policy_summary,
         )
 

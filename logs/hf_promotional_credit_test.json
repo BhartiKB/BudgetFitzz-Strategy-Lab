@@ -1,0 +1,18 @@
+{
+  "status": "succeeded",
+  "timestamp": "2026-07-16T22:12:44.345865+00:00",
+  "provider": "huggingface",
+  "routing_provider": "replicate",
+  "model": "Wan-AI/Wan2.2-TI2V-5B",
+  "operation": "promotional-credit text-to-video test",
+  "estimated_list_cost_usd": 0.025,
+  "cash_cost_inr": 0,
+  "paid_or_free": "free promotional credit",
+  "fal_key_used": false,
+  "output": "C:\\Users\\bhart\\Documents\\Task2\\tmp\\hf_free_credit\\day02_wan_test.mp4",
+  "integrated_source": "assets/source_media/day02_hf_wan.mp4",
+  "prompt_sha256": "4db992cac98f0a9f42bc4fd7f644a3ff536e0efa7304b8d508d2dfaccc5b18cb",
+  "finished_at": "2026-07-16T22:12:59.622748+00:00",
+  "output_bytes": 1737360,
+  "sha256": "12d59dbd3ea97f3494bbdc19d918bdda6316664da17db6799ff2b46ea464a697"
+}

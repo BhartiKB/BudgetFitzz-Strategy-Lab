@@ -4,5 +4,6 @@
   "cap_inr": 100,
   "within_cap": true,
   "entries": 7,
+  "promotional_credit_list_value_usd": 0.025,
   "subscription_treatment": "Development subscriptions are separate from direct revised-content generation expenses."
 }

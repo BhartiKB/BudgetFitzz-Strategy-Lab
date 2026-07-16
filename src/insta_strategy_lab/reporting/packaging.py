@@ -46,6 +46,7 @@ def assemble_submission(root: Path) -> Path:
         "prompts/prompt_catalogue.md": "prompt_catalogue.md",
         "logs/spend_log.csv": "spend_log.csv",
         "logs/spend_summary.json": "spend_summary.json",
+        "logs/hf_promotional_credit_test.json": "logs/hf_promotional_credit_test.json",
         "logs/execution_trace.jsonl": "logs/execution_trace.jsonl",
         "logs/agent_decisions.jsonl": "logs/agent_decisions.jsonl",
         "logs/hardware_report.json": "hardware_report.json",
@@ -67,6 +68,7 @@ def assemble_submission(root: Path) -> Path:
     copy_tree(root / "assets/posts", final_dir / "posts")
     copy_tree(root / "assets/videos", final_dir / "videos")
     copy_tree(root / "assets/video_frames", final_dir / "video_frames")
+    copy_tree(root / "assets/source_media", final_dir / "source_media")
     copy_tree(root / "app", final_dir / "app")
     for source_dir in ["src", "app", "config", "scripts", "tests", "docs", "prompts"]:
         copy_tree(root / source_dir, final_dir / "source" / source_dir)

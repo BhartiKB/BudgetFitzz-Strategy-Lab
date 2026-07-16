@@ -57,6 +57,50 @@ def encode_video(ffmpeg: Path, scenes: list[Path], output: Path, encoder: str) -
     return completed.returncode == 0, completed.stderr[-4000:], elapsed
 
 
+def encode_ai_assisted_video(
+    ffmpeg: Path,
+    hook_scene: Path,
+    source_video: Path,
+    cta_scene: Path,
+    output: Path,
+    encoder: str,
+) -> tuple[bool, str, float]:
+    """Combine branded local cards with a user-approved promotional-credit clip."""
+    command = [
+        str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning",
+        "-i", str(hook_scene), "-i", str(source_video), "-i", str(cta_scene),
+    ]
+    filters = [
+        "[0:v]scale=1080:1920,zoompan="
+        "z='min(zoom+0.00045,1.04)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+        "d=75:s=1080x1920:fps=30,fade=t=out:st=2.3:d=0.2,setpts=PTS-STARTPTS,setsar=1[v0]",
+        "[1:v]scale=1080:1920:force_original_aspect_ratio=increase,"
+        "crop=1080:1920,fps=30,fade=t=in:st=0:d=0.18,fade=t=out:st=4.82:d=0.2,"
+        "setpts=PTS-STARTPTS,setsar=1[v1]",
+        "[2:v]scale=1080:1920,zoompan="
+        "z='min(zoom+0.00035,1.03)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+        "d=75:s=1080x1920:fps=30,fade=t=in:st=0:d=0.18,setpts=PTS-STARTPTS,setsar=1[v2]",
+        "[v0][v1][v2]concat=n=3:v=1:a=0,format=yuv420p[outv]",
+    ]
+    command.extend(["-filter_complex", ";".join(filters), "-map", "[outv]"])
+    if encoder == "h264_nvenc":
+        command.extend([
+            "-c:v", encoder, "-preset", "p4", "-tune", "hq", "-rc", "vbr",
+            "-cq", "20", "-b:v", "5M", "-maxrate", "9M",
+        ])
+    else:
+        command.extend(["-c:v", "libx264", "-preset", "medium", "-crf", "19"])
+    command.extend([
+        "-r", "30", "-movflags", "+faststart",
+        "-metadata", "comment=HF promotional-credit source; locally composited; cash cost INR 0",
+        str(output),
+    ])
+    started = time.perf_counter()
+    completed = subprocess.run(command, capture_output=True, text=True)
+    elapsed = time.perf_counter() - started
+    return completed.returncode == 0, completed.stderr[-4000:], elapsed
+
+
 def extract_frame(ffmpeg: Path, video: Path, output: Path) -> None:
     subprocess.run(
         [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-ss", "6.2", "-i", str(video), "-frames:v", "1", str(output)],
@@ -71,10 +115,22 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
     results: dict[str, Any] = {"ffmpeg": str(ffmpeg), "selected_encoder": "h264_nvenc", "videos": {}}
     for filename, scenes in scene_map.items():
         output = output_dir / filename
-        ok, error, elapsed = encode_video(ffmpeg, scenes, output, "h264_nvenc")
+        hf_source = root / "assets/source_media/day02_hf_wan.mp4"
+        uses_hf_source = filename == "day02_one_shirt_three_ways.mp4" and hf_source.exists()
+        if uses_hf_source:
+            ok, error, elapsed = encode_ai_assisted_video(
+                ffmpeg, scenes[0], hf_source, scenes[-1], output, "h264_nvenc"
+            )
+        else:
+            ok, error, elapsed = encode_video(ffmpeg, scenes, output, "h264_nvenc")
         encoder = "h264_nvenc"
         if not ok:
-            ok, fallback_error, elapsed = encode_video(ffmpeg, scenes, output, "libx264")
+            if uses_hf_source:
+                ok, fallback_error, elapsed = encode_ai_assisted_video(
+                    ffmpeg, scenes[0], hf_source, scenes[-1], output, "libx264"
+                )
+            else:
+                ok, fallback_error, elapsed = encode_video(ffmpeg, scenes, output, "libx264")
             error = f"NVENC failed: {error}\nFallback: {fallback_error}"
             encoder = "libx264"
             results["selected_encoder"] = "libx264"
@@ -88,5 +144,9 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
             "probe": probe_video(ffprobe, output),
             "preview_frame": str(frame_path.relative_to(root)).replace("\\", "/"),
             "scenes": [str(path.relative_to(root)).replace("\\", "/") for path in scenes],
+            "source_video": (
+                str(hf_source.relative_to(root)).replace("\\", "/") if uses_hf_source else None
+            ),
+            "cash_cost_inr": 0,
         }
     return results

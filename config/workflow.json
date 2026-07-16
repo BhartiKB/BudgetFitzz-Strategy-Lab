@@ -9,7 +9,15 @@
     "maximum_paid_generation_inr": 0,
     "disabled_providers": ["fal"],
     "media_provider": "local",
-    "use_external_free_credits_for_media": false
+    "use_external_free_credits_for_media": true,
+    "promotional_credit": {
+      "provider": "huggingface",
+      "confirmed_by_user": true,
+      "confirmed_on": "2026-07-17",
+      "maximum_test_list_cost_usd": 0.025,
+      "maximum_cash_cost_inr": 0,
+      "maximum_successful_calls": 1
+    }
   },
   "steps": [
     "data_audit", "metrics", "performance_analysis", "failure_diagnosis",

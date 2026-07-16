@@ -122,7 +122,7 @@
       "check": "Two valid 1080x1920 H.264 videos",
       "passed": true,
       "required": true,
-      "evidence": "day02_one_shirt_three_ways.mp4:h264,1080x1920,12.00s; day05_fit_mistakes.mp4:h264,1080x1920,12.00s"
+      "evidence": "day02_one_shirt_three_ways.mp4:h264,1080x1920,10.07s; day05_fit_mistakes.mp4:h264,1080x1920,12.00s"
     },
     {
       "check": "Assets match plan",
