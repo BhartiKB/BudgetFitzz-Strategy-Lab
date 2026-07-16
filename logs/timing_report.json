@@ -1,15 +1,15 @@
 {
-  "run_id": "budgetfitzz-20260716T221956Z",
+  "run_id": "budgetfitzz-20260716T225356Z",
   "agent_timings_sec": {
-    "DataAuditAgent": 0.025,
-    "MetricsAgent": 0.036,
-    "PerformanceAnalystAgent": 1.281,
-    "FailureDiagnosisAgent": 0.005,
-    "StrategyAgent": 0.005,
-    "ContentPlannerAgent": 0.005,
+    "DataAuditAgent": 0.024,
+    "MetricsAgent": 0.037,
+    "PerformanceAnalystAgent": 1.511,
+    "FailureDiagnosisAgent": 0.004,
+    "StrategyAgent": 0.004,
+    "ContentPlannerAgent": 0.006,
     "CreativeDirectorAgent": 0.005,
-    "AssetGenerationAgent": 6.211,
-    "QualityAssuranceAgent": 0.417,
-    "PackagingAgent": 5.173
+    "AssetGenerationAgent": 5.97,
+    "QualityAssuranceAgent": 0.469,
+    "PackagingAgent": 7.4
   }
 }

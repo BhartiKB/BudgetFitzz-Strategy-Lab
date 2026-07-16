@@ -110,28 +110,91 @@ class GenerationPolicy:
                 f"estimated list cost USD {estimated_list_cost_usd:.4f} exceeds the confirmed test ceiling"
             )
 
+    def assert_promotional_image_batch_allowed(
+        self,
+        provider: str,
+        routing_provider: str,
+        output_count: int,
+        list_cost_per_output_usd: float,
+        estimated_cash_cost_inr: float,
+    ) -> None:
+        """Bound the user-confirmed five-post HF credit batch and exclude FAL routing."""
+        batch = self.settings.get("promotional_credit", {}).get("image_batch", {})
+        normalized = provider.strip().lower()
+        route = routing_provider.strip().lower()
+        if normalized != "huggingface":
+            raise GenerationPolicyError("post-image credit is authorized only through Hugging Face")
+        if route in self.disabled_providers or route.startswith("fal"):
+            raise GenerationPolicyError("FAL routing is disabled by project policy")
+        if route != str(batch.get("routing_provider", "")).lower():
+            raise GenerationPolicyError("post images must use the confirmed Replicate route")
+        if not batch.get("confirmed_by_user"):
+            raise GenerationPolicyError("the Hugging Face post-image batch is not user-confirmed")
+        if estimated_cash_cost_inr != 0:
+            raise GenerationPolicyError("post-image generation must have an estimated cash cost of INR 0")
+        maximum_outputs = int(batch.get("maximum_outputs", 0))
+        if output_count <= 0 or output_count > maximum_outputs:
+            raise GenerationPolicyError(
+                f"post-image output count {output_count} exceeds the confirmed maximum {maximum_outputs}"
+            )
+        confirmed_unit_cost = float(batch.get("list_cost_per_output_usd", 0))
+        if list_cost_per_output_usd != confirmed_unit_cost:
+            raise GenerationPolicyError("post-image unit cost differs from the confirmed provider price")
+        estimated_total = output_count * list_cost_per_output_usd
+        maximum_total = float(batch.get("maximum_batch_list_cost_usd", 0))
+        if estimated_total > maximum_total:
+            raise GenerationPolicyError(
+                f"post-image batch list cost USD {estimated_total:.4f} exceeds the confirmed ceiling"
+            )
+
     def public_summary(self) -> dict[str, Any]:
         """Return audit-safe policy state; never return credential values."""
-        credit_ledger = self.root / "logs/hf_promotional_credit_test.json"
-        credit_succeeded = False
-        if credit_ledger.exists():
+        video_ledger = self.root / "logs/hf_promotional_credit_test.json"
+        image_ledger = self.root / "logs/hf_promotional_image_batch.json"
+
+        def succeeded(path: Path) -> bool:
+            if not path.exists():
+                return False
             try:
-                credit_succeeded = json.loads(credit_ledger.read_text(encoding="utf-8")).get(
-                    "status"
-                ) == "succeeded"
+                return json.loads(path.read_text(encoding="utf-8")).get("status") == "succeeded"
             except (OSError, json.JSONDecodeError):
-                credit_succeeded = False
+                return False
+
+        video_succeeded = succeeded(video_ledger)
+        completed_image_files: set[str] = set()
+        if image_ledger.exists():
+            try:
+                image_audit = json.loads(image_ledger.read_text(encoding="utf-8"))
+                entries = list(image_audit.get("outputs", []))
+                entries.extend(image_audit.get("credit_restored_resume", {}).get("outputs", []))
+                completed_image_files = {
+                    str(entry.get("filename"))
+                    for entry in entries
+                    if entry.get("status") == "succeeded" and entry.get("filename")
+                }
+            except (OSError, json.JSONDecodeError):
+                completed_image_files = set()
+        image_count = len(completed_image_files)
+        images_succeeded = image_count == 5
+        external_succeeded = video_succeeded or image_count > 0
         return {
             "mode": self.mode,
             "allow_paid_generation": self.allow_paid_generation,
             "maximum_paid_generation_inr": self.maximum_paid_inr,
             "disabled_providers": sorted(self.disabled_providers),
-            "media_provider": "local + Hugging Face promotional source" if credit_succeeded else "local",
+            "media_provider": "local + Hugging Face promotional sources" if external_succeeded else "local",
             "gemini_configured": self.credentials.gemini_configured,
             "huggingface_configured": self.credentials.huggingface_configured,
             "fal_ignored": self.credentials.fal_ignored,
-            "external_media_calls_executed": credit_succeeded,
+            "external_media_calls_executed": external_succeeded,
             "external_media_cash_cost_inr": 0,
+            "hf_promotional_video_succeeded": video_succeeded,
+            "hf_promotional_post_images_succeeded": images_succeeded,
+            "hf_promotional_post_images_completed": image_count,
+            "hf_promotional_post_images_planned": 5,
+            "hf_promotional_post_images_status": (
+                "complete" if images_succeeded else "partial" if image_count else "not_started"
+            ),
             "promotional_credit_test_enabled": bool(
                 self.settings.get("promotional_credit", {}).get("confirmed_by_user")
             ),

@@ -2,7 +2,7 @@
   "provider": "deterministic-template",
   "model": "budgetfitzz-editorial-v1",
   "device": "cpu",
-  "reason": "Validated local templates plus one audited Hugging Face promotional-credit source; cash cost INR 0",
+  "reason": "Validated local compositing with one HF video source and four HF post-photo sources; cash cost INR 0",
   "generation_policy": {
     "mode": "free_only",
     "allow_paid_generation": false,
@@ -10,12 +10,17 @@
     "disabled_providers": [
       "fal"
     ],
-    "media_provider": "local + Hugging Face promotional source",
+    "media_provider": "local + Hugging Face promotional sources",
     "gemini_configured": true,
     "huggingface_configured": true,
     "fal_ignored": true,
     "external_media_calls_executed": true,
     "external_media_cash_cost_inr": 0,
+    "hf_promotional_video_succeeded": true,
+    "hf_promotional_post_images_succeeded": false,
+    "hf_promotional_post_images_completed": 4,
+    "hf_promotional_post_images_planned": 5,
+    "hf_promotional_post_images_status": "partial",
     "promotional_credit_test_enabled": true
   }
 }

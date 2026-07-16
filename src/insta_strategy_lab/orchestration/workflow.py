@@ -239,7 +239,7 @@ class Workflow:
             video_results = generate_videos(self.root, scenes, self.root / "assets/videos", self.root / "assets/video_frames")
             hardware = hardware_report(self.root, video_results); write_json(self.root / "logs/hardware_report.json", hardware)
             self.context.update({"video_results": video_results, "hardware": hardware}); return {"posts": [str(x) for x in posts], "videos": video_results}
-        self.stage(AssetGenerationAgent("AssetGenerationAgent", "Rendered five original post creatives and two captioned motion-graphics videos with NVENC-first encoding.", asset_action), "analysis/seven_day_plan.json", "assets/posts + assets/videos", ["E03","E05","E09"])
+        self.stage(AssetGenerationAgent("AssetGenerationAgent", "Composited four audited HF photographs into the agent-authored post system, retained the Day 7 deterministic fallback, and rendered two captioned H.264 videos with NVENC-first encoding.", asset_action), "analysis/seven_day_plan.json", "assets/posts + assets/videos", ["E03","E05","E09"])
         self.auto_checkpoint("asset_approval", ["E03","E05","E09"])
 
         hardware = self.context["hardware"]

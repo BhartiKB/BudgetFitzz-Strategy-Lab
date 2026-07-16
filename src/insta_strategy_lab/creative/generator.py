@@ -19,6 +19,14 @@ LIME = "#B7F34A"
 CORAL = "#FF7A45"
 BLUE = "#4285F4"
 MUTED = "#627067"
+ROOT = Path(__file__).resolve().parents[3]
+PHOTO_SOURCES = {
+    "day01_capsule_formula.png": ROOT / "assets/source_media/posts/day01_capsule_formula_hf.jpg",
+    "day03_colour_vote.png": ROOT / "assets/source_media/posts/day03_colour_vote_hf.jpg",
+    "day04_budget_priority.png": ROOT / "assets/source_media/posts/day04_budget_priority_hf.jpg",
+    "day06_sneaker_scorecard.png": ROOT / "assets/source_media/posts/day06_sneaker_scorecard_hf.jpg",
+    "day07_wardrobe_audit.png": ROOT / "assets/source_media/posts/day07_wardrobe_audit_hf.jpg",
+}
 
 
 def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
@@ -56,8 +64,14 @@ def wordmark(draw: ImageDraw.ImageDraw, light: bool = False, day: int | None = N
     color = "#FFFFFF" if light else INK
     draw.text((72, 56), "budgetfitzz", font=font(30, True), fill=color)
     if day is not None:
-        draw.rounded_rectangle((895, 50, 1008, 96), radius=22, fill=LIME)
-        draw.text((921, 57), f"DAY {day}", font=font(19, True), fill=INK)
+        badge = (895, 50, 1008, 96)
+        label = f"DAY {day}"
+        selected_font = font(18, True)
+        bounds = draw.textbbox((0, 0), label, font=selected_font)
+        x = badge[0] + ((badge[2] - badge[0]) - (bounds[2] - bounds[0])) // 2
+        y = badge[1] + ((badge[3] - badge[1]) - (bounds[3] - bounds[1])) // 2 - bounds[1]
+        draw.rounded_rectangle(badge, radius=22, fill=LIME)
+        draw.text((x, y), label, font=selected_font, fill=INK)
 
 
 def shirt(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], color: str, outline: str = INK, open_front: bool = False) -> None:
@@ -111,6 +125,38 @@ def cta(draw: ImageDraw.ImageDraw, text: str, dark: bool = False) -> None:
     for line in lines[:2]:
         draw.text((112, y), line, font=font(28, True), fill=text_color)
         y += 34
+
+
+def photo_available(filename: str) -> bool:
+    """Return whether the audited HF photographic layer exists for a post."""
+    return PHOTO_SOURCES[filename].is_file()
+
+
+def paste_photo(
+    image: Image.Image,
+    filename: str,
+    box: tuple[int, int, int, int],
+    *,
+    radius: int = 34,
+    focus_y: float = 0.5,
+) -> None:
+    """Cover-crop an HF photograph into a rounded editorial frame."""
+    x0, y0, x1, y1 = box
+    target_w, target_h = x1 - x0, y1 - y0
+    with Image.open(PHOTO_SOURCES[filename]) as opened:
+        source = opened.convert("RGB")
+    scale = max(target_w / source.width, target_h / source.height)
+    resized = source.resize(
+        (math.ceil(source.width * scale), math.ceil(source.height * scale)),
+        Image.Resampling.LANCZOS,
+    )
+    left = max(0, (resized.width - target_w) // 2)
+    available_y = max(0, resized.height - target_h)
+    top = round(available_y * min(1.0, max(0.0, focus_y)))
+    crop = resized.crop((left, top, left + target_w, top + target_h))
+    mask = Image.new("L", (target_w, target_h), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, target_w, target_h), radius=radius, fill=255)
+    image.paste(crop, (x0, y0), mask)
 
 
 def capsule_post(item: PlanItem) -> Image.Image:
@@ -212,12 +258,119 @@ def audit_post(item: PlanItem) -> Image.Image:
     return image
 
 
+def photo_capsule_post(item: PlanItem) -> Image.Image:
+    image, draw = base_post(item.day)
+    y = text_block(draw, (72, 145), "3 PIECES. 7 CLEAN FITS.", 66, 900, INK, True, 6)
+    draw.text((74, y + 10), "Build a system before you buy more.", font=font(29), fill=MUTED)
+    paste_photo(image, item.asset_filename, (72, 310, 1008, 948), focus_y=0.48)
+    draw.rounded_rectangle((72, 970, 1008, 1150), radius=30, fill="#E5EEDC")
+    draw.text((105, 996), "01  TEXTURED OVERSHIRT", font=font(24, True), fill=FOREST)
+    draw.text((105, 1041), "02  SOLID TEE", font=font(24, True), fill=INK)
+    draw.text((515, 1041), "03  DARK TROUSER", font=font(24, True), fill=INK)
+    draw.text((105, 1092), "SWAP THE LAYER  •  CHANGE THE TUCK  •  REPEAT", font=font(25, True), fill=FOREST)
+    cta(draw, item.cta)
+    return image
+
+
+def photo_vote_post(item: PlanItem) -> Image.Image:
+    image, draw = base_post(item.day, dark=True)
+    text_block(draw, (72, 148), "DATE NIGHT:", 58, 900, "#FFFFFF", True)
+    text_block(draw, (72, 214), "A, B OR C?", 84, 900, LIME, True)
+    paste_photo(image, item.asset_filename, (230, 340, 850, 1093), focus_y=0.0)
+    for idx, label in enumerate(("A", "B", "C")):
+        x = 255 + idx * 196
+        draw.ellipse((x, 365, x + 66, 431), fill=LIME)
+        draw.text((x + 22, 373), label, font=font(29, True), fill=INK)
+    labels = ("FOREST + CREAM", "NAVY + STONE", "BURGUNDY + CHARCOAL")
+    for idx, label in enumerate(labels):
+        x = 72 + idx * 312
+        draw.rounded_rectangle((x, 1108, x + 290, 1164), radius=18, fill="#FFFFFF")
+        draw.text((x + 16, 1122), label, font=font(17, True), fill=INK)
+    cta(draw, item.cta, dark=True)
+    return image
+
+
+def photo_budget_post(item: PlanItem) -> Image.Image:
+    image, draw = base_post(item.day)
+    text_block(draw, (72, 145), "₹1,999 TO LOOK SHARPER", 60, 900, INK, True)
+    draw.text((74, 222), "BUY IN THIS ORDER  •  ILLUSTRATIVE BUDGET CAPS", font=font(23, True), fill=CORAL)
+    paste_photo(image, item.asset_filename, (72, 292, 1008, 812), focus_y=0.48)
+    rows = (
+        ("01", "DARK STRAIGHT TROUSER", "₹899 cap"),
+        ("02", "HEAVY SOLID TEE", "₹599 cap"),
+        ("03", "TEXTURED OVERSHIRT", "₹501 cap"),
+    )
+    for idx, (number, name, price) in enumerate(rows):
+        y = 837 + idx * 103
+        draw.rounded_rectangle((72, y, 1008, y + 84), radius=24, fill="#FFFFFF", outline="#D8D8CF", width=2)
+        draw.rounded_rectangle((92, y + 13, 152, y + 71), radius=18, fill=LIME if idx == 0 else "#E9EEE4")
+        draw.text((108, y + 26), number, font=font(21, True), fill=INK)
+        draw.text((178, y + 25), name, font=font(25, True), fill=INK)
+        draw.rounded_rectangle((812, y + 14, 984, y + 70), radius=20, fill=FOREST if idx != 1 else "#E7E2D4")
+        draw.text((850, y + 28), price, font=font(20, True), fill="#FFFFFF" if idx != 1 else INK)
+    cta(draw, item.cta)
+    return image
+
+
+def photo_sneaker_post(item: PlanItem) -> Image.Image:
+    image, draw = base_post(item.day, dark=True)
+    text_block(draw, (72, 148), "RANK BY USE.", 72, 900, "#FFFFFF", True)
+    text_block(draw, (72, 225), "NOT HYPE.", 72, 900, LIME, True)
+    paste_photo(image, item.asset_filename, (72, 330, 1008, 920), focus_y=0.48)
+    cards = (
+        ("NEUTRAL COURT", "VERSATILITY", "9/10"),
+        ("RETRO RUNNER", "WALKING", "9/10"),
+        ("CHUNKY", "STATEMENT", "8/10"),
+    )
+    for idx, (name, job, score) in enumerate(cards):
+        x = 88 + idx * 304
+        draw.rounded_rectangle((x, 605, x + 288, 805), radius=24, fill="#FFFFFF")
+        draw.text((x + 18, 643), name, font=font(21, True), fill=INK)
+        draw.text((x + 18, 681), f"{job}  •  {score}", font=font(18, True), fill=FOREST)
+    draw.rounded_rectangle((72, 952, 1008, 1127), radius=28, fill="#243129")
+    draw.text((105, 976), "ONE PAIR FOR THE JOB YOU ACTUALLY DO.", font=font(28, True), fill="#FFFFFF")
+    draw.text((105, 1026), "Score versatility, walking comfort and statement value.", font=font(24), fill="#D5DDD7")
+    cta(draw, item.cta, dark=True)
+    return image
+
+
+def photo_audit_post(item: PlanItem) -> Image.Image:
+    image, draw = base_post(item.day)
+    text_block(draw, (72, 145), "PASS THE 5-POINT", 60, 900, INK, True)
+    text_block(draw, (72, 212), "WARDROBE AUDIT", 70, 900, FOREST, True)
+    paste_photo(image, item.asset_filename, (72, 335, 484, 1084), focus_y=0.42)
+    questions = (
+        "Creates 3 outfits",
+        "Fits my body now",
+        "Solves a real gap",
+        "Worn 2× a month",
+        "Wanted without sale",
+    )
+    for idx, question in enumerate(questions):
+        y = 350 + idx * 132
+        draw.rounded_rectangle((516, y, 1008, y + 106), radius=24, fill="#FFFFFF", outline="#D8D8CF", width=2)
+        draw.rounded_rectangle((540, y + 25, 594, y + 79), radius=12, outline=FOREST, width=4)
+        draw.text((620, y + 32), question, font=font(24, idx in (0, 2)), fill=INK)
+    draw.rounded_rectangle((516, 1024, 1008, 1109), radius=24, fill=LIME)
+    draw.text((548, 1048), "4 YES = CONSIDER  •  ELSE WAIT 48H", font=font(21, True), fill=INK)
+    cta(draw, item.cta)
+    return image
+
+
 POST_BUILDERS: dict[str, Callable[[PlanItem], Image.Image]] = {
     "day01_capsule_formula.png": capsule_post,
     "day03_colour_vote.png": vote_post,
     "day04_budget_priority.png": budget_post,
     "day06_sneaker_scorecard.png": sneaker_post,
     "day07_wardrobe_audit.png": audit_post,
+}
+
+PHOTO_POST_BUILDERS: dict[str, Callable[[PlanItem], Image.Image]] = {
+    "day01_capsule_formula.png": photo_capsule_post,
+    "day03_colour_vote.png": photo_vote_post,
+    "day04_budget_priority.png": photo_budget_post,
+    "day06_sneaker_scorecard.png": photo_sneaker_post,
+    "day07_wardrobe_audit.png": photo_audit_post,
 }
 
 ALT_TEXT = {
@@ -228,6 +381,14 @@ ALT_TEXT = {
     "day07_wardrobe_audit.png": "Five-item wardrobe purchase checklist asking about outfit combinations, fit, gaps, wear frequency and discount influence.",
 }
 
+PHOTO_ALT_TEXT = {
+    "day01_capsule_formula.png": "Photorealistic flat lay of a textured overshirt, solid tee and dark trouser, presented as a three-piece system for seven outfits.",
+    "day03_colour_vote.png": "Three adult Indian men in complete forest-and-cream, navy-and-stone, and burgundy-and-charcoal date-night outfits labeled A, B and C.",
+    "day04_budget_priority.png": "Photorealistic flat lay of a dark trouser, solid tee and textured overshirt with an illustrative ₹1,999 purchase-priority breakdown.",
+    "day06_sneaker_scorecard.png": "Three unbranded sneaker concepts ranked by versatility, walking comfort and statement value.",
+    "day07_wardrobe_audit.png": "A shopper evaluates an overshirt beside a five-item wardrobe purchase checklist.",
+}
+
 
 def generate_posts(plan: list[PlanItem], output_dir: Path) -> list[Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -236,16 +397,27 @@ def generate_posts(plan: list[PlanItem], output_dir: Path) -> list[Path]:
     for item in plan:
         if item.format != "post":
             continue
-        builder = POST_BUILDERS[item.asset_filename]
+        builder = (
+            PHOTO_POST_BUILDERS[item.asset_filename]
+            if photo_available(item.asset_filename)
+            else POST_BUILDERS[item.asset_filename]
+        )
         image = builder(item)
         path = output_dir / item.asset_filename
+        uses_hf_photo = photo_available(item.asset_filename)
+        description = PHOTO_ALT_TEXT[item.asset_filename] if uses_hf_photo else ALT_TEXT[item.asset_filename]
         info = PngImagePlugin.PngInfo()
         info.add_text("Title", item.hook)
-        info.add_text("Description", ALT_TEXT[item.asset_filename])
-        info.add_text("Creator", "BudgetFitzz procedural local pipeline")
+        info.add_text("Description", description)
+        info.add_text(
+            "Creator",
+            "BudgetFitzz deterministic layout with audited Hugging Face photographic layer"
+            if uses_hf_photo
+            else "BudgetFitzz procedural local pipeline",
+        )
         image.save(path, "PNG", pnginfo=info, optimize=True)
         outputs.append(path)
-        alt_payload[item.asset_filename] = ALT_TEXT[item.asset_filename]
+        alt_payload[item.asset_filename] = description
     (output_dir / "alt_text.json").write_text(json.dumps(alt_payload, indent=2, ensure_ascii=False), encoding="utf-8")
     return outputs
 

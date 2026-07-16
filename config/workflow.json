@@ -16,7 +16,22 @@
       "confirmed_on": "2026-07-17",
       "maximum_test_list_cost_usd": 0.025,
       "maximum_cash_cost_inr": 0,
-      "maximum_successful_calls": 1
+      "maximum_successful_calls": 1,
+      "image_batch": {
+        "provider": "huggingface",
+        "routing_provider": "replicate",
+        "model": "black-forest-labs/FLUX.1-schnell",
+        "confirmed_by_user": true,
+        "confirmed_on": "2026-07-17",
+        "maximum_outputs": 5,
+        "list_cost_per_output_usd": 0.003,
+        "maximum_batch_list_cost_usd": 0.015,
+        "maximum_cash_cost_inr": 0,
+        "credit_restored_confirmed_by_user": true,
+        "credit_restored_confirmed_on": "2026-07-17",
+        "maximum_resume_outputs": 4,
+        "maximum_resume_list_cost_usd": 0.012
+      }
     }
   },
   "steps": [

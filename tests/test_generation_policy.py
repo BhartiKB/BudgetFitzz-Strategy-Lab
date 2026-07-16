@@ -6,6 +6,7 @@ from pathlib import Path
 from insta_strategy_lab.providers import (
     GenerationPolicy,
     GenerationPolicyError,
+    HuggingFaceImageClient,
     HuggingFaceVideoClient,
 )
 
@@ -25,6 +26,13 @@ class GenerationPolicyTests(unittest.TestCase):
                 "promotional_credit": {
                     "confirmed_by_user": True,
                     "maximum_test_list_cost_usd": 0.025,
+                    "image_batch": {
+                        "routing_provider": "replicate",
+                        "confirmed_by_user": True,
+                        "maximum_outputs": 5,
+                        "list_cost_per_output_usd": 0.003,
+                        "maximum_batch_list_cost_usd": 0.015,
+                    },
                 },
             }
         }), encoding="utf-8")
@@ -79,6 +87,48 @@ class GenerationPolicyTests(unittest.TestCase):
         )
         with self.assertRaises(GenerationPolicyError):
             HuggingFaceVideoClient(root).generate_test("prompt", root / "tmp/test.mp4")
+
+    def test_confirmed_hf_image_batch_is_bounded_and_never_routes_to_fal(self):
+        policy = GenerationPolicy(self.make_root())
+        policy.assert_promotional_image_batch_allowed("huggingface", "replicate", 5, 0.003, 0)
+        with self.assertRaises(GenerationPolicyError):
+            policy.assert_promotional_image_batch_allowed("huggingface", "fal-ai", 5, 0.003, 0)
+        with self.assertRaises(GenerationPolicyError):
+            policy.assert_promotional_image_batch_allowed("huggingface", "replicate", 6, 0.003, 0)
+
+    def test_existing_hf_image_ledger_blocks_the_entire_batch(self):
+        root = self.make_root()
+        (root / "logs").mkdir()
+        (root / "logs/hf_promotional_image_batch.json").write_text(
+            json.dumps({"status": "reserved"}), encoding="utf-8"
+        )
+        with self.assertRaises(GenerationPolicyError):
+            HuggingFaceImageClient(root).generate_batch({}, root / "assets/source_media/posts")
+
+    def test_partial_hf_image_batch_is_reported_without_claiming_completion(self):
+        root = self.make_root()
+        (root / "logs").mkdir()
+        (root / "logs/hf_promotional_image_batch.json").write_text(
+            json.dumps({
+                "status": "resume_rejected_no_credit",
+                "outputs": [
+                    {"filename": "day01.jpg", "status": "succeeded"},
+                    {"filename": "day03.jpg", "status": "succeeded"},
+                ],
+                "credit_restored_resume": {
+                    "outputs": [
+                        {"filename": "day03.jpg", "status": "succeeded"},
+                        {"filename": "day04.jpg", "status": "succeeded"},
+                        {"filename": "day06.jpg", "status": "succeeded"},
+                    ]
+                },
+            }),
+            encoding="utf-8",
+        )
+        summary = GenerationPolicy(root).public_summary()
+        self.assertEqual(summary["hf_promotional_post_images_completed"], 4)
+        self.assertEqual(summary["hf_promotional_post_images_status"], "partial")
+        self.assertFalse(summary["hf_promotional_post_images_succeeded"])
 
 
 if __name__ == "__main__":

@@ -11,4 +11,4 @@
 | Error recovery | Bounded retries, NVENC-to-libx264 fallback, persisted errors |
 | Documentation | README plus task, architecture, data, metrics, GPU, limitations, user/developer guides |
 | Observability | SQLite, application log, JSONL decision trace, timing/retry/hardware/spend reports |
-| Creativity/justification | Original procedural fashion graphics tied to baseline evidence |
+| Creativity/justification | Context-matched HF photo layers inside original, evidence-linked editorial layouts |

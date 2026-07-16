@@ -80,11 +80,11 @@ $env:PYTHONPATH='src'; .\\.venv\\Scripts\\python.exe app\\server.py --port 8501
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
 
-Credentials may be stored only in the ignored `.env` file. One user-confirmed Hugging Face promotional-credit call supplied the realistic Day 2 source clip at INR 0 cash cost (USD 0.025 credit value). Gemini image generation was not called because its image tier was not free. `FAL_KEY` is deliberately ignored.
+Credentials may be stored only in the ignored `.env` file. User-confirmed Hugging Face promotional credit supplied the realistic Day 2 source clip and four of five planned post photographs at INR 0 cash cost. The fifth post-photo request was rejected with HTTP 402 and the deterministic Day 7 fallback remains active. Gemini image generation was not called. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 
-Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Static assets and final compositing are local; Day 2 uses the audited HF promotional-credit source clip. The source CSV/DOCX remain immutable.
+Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Day 2 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
 ## Important interpretation
 
@@ -142,7 +142,7 @@ Run ID: `{run_id}`
 
 The state machine in `orchestration/workflow.py` invokes eleven named agent roles: DataAudit, Metrics, PerformanceAnalyst, FailureDiagnosis, Strategy, ContentPlanner, CreativeDirector, AssetGeneration, QualityAssurance, Packaging, and Orchestrator. Pydantic models validate plan, evidence, spend, and trace boundaries. SQLite stores runs, agent state, checkpoints, spend, and trace summaries; JSONL retains append-only audit entries.
 
-Reasoning agents consume evidence objects. Deterministic analytics calculate metrics and robust summaries. Procedural Pillow renderers create the static graphics and branded video cards. Day 2 combines one audited HF/Wan promotional-credit source with those cards. FFmpeg creates/probes H.264 files with NVENC-first fallback. ReportLab creates the PDF. The standard-library HTTP server hosts the offline dashboard.
+Reasoning agents consume evidence objects. Deterministic analytics calculate metrics and robust summaries. Pillow renderers composite audited HF photographs with agent-authored headlines, guidance, prices, and calls to action; Day 7 falls back to the procedural checklist until its source photo is available. Day 2 combines an audited HF/Wan promotional-credit source with branded cards. FFmpeg creates/probes H.264 files with NVENC-first fallback. ReportLab creates the PDF. The standard-library HTTP server hosts the offline dashboard.
 
 Retries are bounded at two. Stages are idempotent and persistent. Four explicit checkpoints are auto-approved only because `auto_approve_demo=true`; every approval and reason is logged.
 """, encoding="utf-8")
@@ -197,7 +197,7 @@ Generated outputs are deterministic for seed 4050. Never change raw inputs; reru
 - PyTorch CUDA: {hardware['pytorch_cuda_available']} (PyTorch is optional and not installed in the executed environment)
 - Local language provider: {provider['provider']} / {provider['model']}
 
-The project did not download or invoke a paid model. Structured content used a deterministic validated fallback. Video scenes were rendered locally and encoded through NVENC when available, with libx264 as a documented recovery path.
+The project made only user-confirmed Hugging Face promotional-credit media calls and incurred INR 0 cash cost. Structured content remained deterministic and agent-authored. Final post compositing and video cards were rendered locally; video was encoded through NVENC when available, with libx264 as a documented recovery path.
 """, encoding="utf-8")
 
     (root / "docs/limitations.md").write_text("""# Limitations
@@ -225,27 +225,27 @@ The project did not download or invoke a paid model. Structured content used a d
 | Error recovery | Bounded retries, NVENC-to-libx264 fallback, persisted errors |
 | Documentation | README plus task, architecture, data, metrics, GPU, limitations, user/developer guides |
 | Observability | SQLite, application log, JSONL decision trace, timing/retry/hardware/spend reports |
-| Creativity/justification | Original procedural fashion graphics tied to baseline evidence |
+| Creativity/justification | Context-matched HF photo layers inside original, evidence-linked editorial layouts |
 """, encoding="utf-8")
 
     prompts = """# Prompt catalogue
 
-All prompts are local design specifications. No dataset content was sent to an external service.
+Prompts preserve the agent-authored plan context. Only visual fashion descriptions were sent to Hugging Face; dataset rows, metrics, captions, prices, and credentials were not included in prompts. All text and final compositing remain local and deterministic.
 
 ## PROMPT-POST-01 / capsule-grid
-Create a clean 1080x1350 editorial capsule wardrobe card using original garment geometry. Show exactly three pieces, a strong numbered hook, a complete on-frame takeaway, BudgetFitzz wordmark, and a save CTA. Do not use product logos or photography.
+Generate an unbranded photorealistic three-piece flat lay. Composite it locally into a clean 1080x1350 capsule wardrobe card with the original hook, takeaway, BudgetFitzz wordmark, and save CTA.
 
 ## PROMPT-POST-02 / abc-vote
-Create three original illustrated date-night colourways labelled A/B/C. Keep the vote answerable within two seconds and show the occasion prompt in the CTA.
+Generate exactly three full-body adult Indian male models in forest-and-cream, navy-and-stone, and burgundy-and-charcoal outfits. Add the A/B/C labels and occasion CTA only during local compositing.
 
 ## PROMPT-POST-03 / priority-receipt
-Create a receipt-inspired value-first buying priority. Label all price amounts as illustrative planning caps, not live prices.
+Generate an unbranded trouser, tee, and overshirt flat lay. Composite it into a receipt-inspired value-first buying priority with all amounts labelled as illustrative planning caps, not live prices.
 
 ## PROMPT-POST-04 / use-case-scorecard
-Create original no-logo sneaker silhouettes ranked by practical use case, with clear trade-offs and one qualified comment CTA.
+Generate three distinct unbranded sneaker concepts. Add practical-use rankings, trade-offs, synthetic-mark coverage, and the qualified comment CTA during local compositing.
 
 ## PROMPT-POST-05 / checklist-audit
-Create a five-question wardrobe audit with large safe checkboxes and a four-yes decision rule.
+Generate a shopper evaluating an overshirt beside a wardrobe. Until promotional credit permits that final call, retain the original five-question checklist with large safe checkboxes and a four-yes decision rule.
 
 ## PROMPT-VIDEO-01 / three-scene-swap
 Create a 12-second vertical motion graphic with hook visible from frame one, three meaningful outfit states, short captions, progress indicators, and a 3-second save end card.
@@ -264,7 +264,7 @@ Validate content against `PlanItem`. If required fields are absent, reissue the 
 - Preserved and checksummed source inputs.
 - Implemented robust analytics, evidence-linked diagnosis, and revised strategy.
 - Added eleven-agent workflow, persistent memory, retries, checkpoints, trace, and spend log.
-- Generated five static creatives and two NVENC H.264 videos; Day 2 uses one audited HF/Wan promotional-credit source clip.
+- Composited four audited HF photographs into the static system, retained the Day 7 deterministic fallback, and generated two NVENC H.264 videos; Day 2 uses an audited HF/Wan source clip.
 - Added offline dashboard, reports, demo workflow, tests, validator, and final packaging.
 """, encoding="utf-8")
 

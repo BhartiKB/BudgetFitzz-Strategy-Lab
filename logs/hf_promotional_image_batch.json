@@ -1,0 +1,137 @@
+{
+  "status": "resume_rejected_no_credit",
+  "timestamp": "2026-07-16T22:36:15.758068+00:00",
+  "provider": "huggingface",
+  "routing_provider": "replicate",
+  "model": "black-forest-labs/FLUX.1-schnell",
+  "operation": "five-post promotional-credit text-to-image batch",
+  "planned_outputs": 5,
+  "completed_outputs": 2,
+  "list_cost_per_output_usd": 0.003,
+  "estimated_batch_list_cost_usd": 0.015,
+  "cash_cost_inr": 0,
+  "paid_or_free": "free promotional credit",
+  "fal_key_used": false,
+  "fal_routing_used": false,
+  "outputs": [
+    {
+      "filename": "day01_capsule_formula_hf.jpg",
+      "status": "succeeded",
+      "prompt_sha256": "2c6a27c0e4c53e7d46bdb9f1b640201c014a26a2d999c3b794e31ce23cfe9baf",
+      "started_at": "2026-07-16T22:36:15.759067+00:00",
+      "finished_at": "2026-07-16T22:36:18.353970+00:00",
+      "output": "assets/source_media/posts/day01_capsule_formula_hf.jpg",
+      "output_bytes": 244986,
+      "sha256": "cd5548ddde1276f757cb1192026e75c904fb150e58c51f875dadf3fcb96c926a",
+      "dimensions": [
+        896,
+        1088
+      ],
+      "visual_qa_status": "approved_with_local_crop",
+      "visual_qa_note": "Photorealistic and context-aligned; small generated collar label will be covered by the editorial layout."
+    },
+    {
+      "filename": "day03_colour_vote_hf.jpg",
+      "status": "succeeded",
+      "prompt_sha256": "9526e7f63718ec68cf0d84e08b6903a12752a1e23de02f74e4a7b696968085f6",
+      "started_at": "2026-07-16T22:36:18.355183+00:00",
+      "finished_at": "2026-07-16T22:36:20.944482+00:00",
+      "output": "assets/source_media/posts/day03_colour_vote_hf.jpg",
+      "output_bytes": 276531,
+      "sha256": "d8f83def67cdbb7775eb93d3c9d11858044f74c5159d62cc632baaafdb1902ee",
+      "dimensions": [
+        896,
+        1088
+      ],
+      "visual_qa_status": "rejected",
+      "visual_qa_note": "Photorealistic but does not preserve exactly three complete outfit columns; requires one replacement generation."
+    },
+    {
+      "filename": "day04_budget_priority_hf.jpg",
+      "status": "rejected_no_credit",
+      "prompt_sha256": "693ec1e3360501700eac97b191dcb57c12830da0b228158452ea82b42f7f926c",
+      "started_at": "2026-07-16T22:36:20.945483+00:00",
+      "finished_at": "2026-07-16T22:36:21.172042+00:00",
+      "failure_type": "HfHubHTTPError",
+      "http_status": 402
+    }
+  ],
+  "finished_at": "2026-07-16T22:36:21.172042+00:00",
+  "estimated_consumed_list_cost_usd": 0.015,
+  "remaining_outputs_not_attempted": 2,
+  "final_source_images_completed": 4,
+  "final_source_images_remaining": 1,
+  "credit_restored_resume": {
+    "status": "rejected_no_credit",
+    "confirmed_by_user": true,
+    "started_at": "2026-07-16T22:45:21.827927+00:00",
+    "planned_outputs": 4,
+    "completed_outputs": 3,
+    "estimated_list_cost_usd": 0.012,
+    "cash_cost_inr": 0,
+    "fal_key_used": false,
+    "fal_routing_used": false,
+    "outputs": [
+      {
+        "filename": "day03_colour_vote_hf.jpg",
+        "status": "succeeded",
+        "prompt_sha256": "fc4ab2b6372d84110f1d965ba60797e6c2f10b661a7a7977c83327b0480acc0e",
+        "started_at": "2026-07-16T22:45:21.828920+00:00",
+        "finished_at": "2026-07-16T22:45:24.248485+00:00",
+        "output": "assets/source_media/posts/day03_colour_vote_hf.jpg",
+        "output_bytes": 227290,
+        "sha256": "bab0239117fc1a0dfae0360d38b1ca28aba2070297b871caac22aca4f2d11a62",
+        "dimensions": [
+          896,
+          1088
+        ],
+        "visual_qa_status": "approved",
+        "visual_qa_note": "Exactly three full-body outfit options with the requested palettes; suitable for the A/B/C editorial overlay."
+      },
+      {
+        "filename": "day04_budget_priority_hf.jpg",
+        "status": "succeeded",
+        "prompt_sha256": "693ec1e3360501700eac97b191dcb57c12830da0b228158452ea82b42f7f926c",
+        "started_at": "2026-07-16T22:45:24.249484+00:00",
+        "finished_at": "2026-07-16T22:45:26.010592+00:00",
+        "output": "assets/source_media/posts/day04_budget_priority_hf.jpg",
+        "output_bytes": 376609,
+        "sha256": "87e2dc3f76b996fc20c31eb9655987ba0a8142056636d1b3823fa06ca323ee87",
+        "dimensions": [
+          896,
+          1088
+        ],
+        "visual_qa_status": "approved_with_local_crop",
+        "visual_qa_note": "Photorealistic three-piece flat lay; generated collar text is excluded or obscured by the deterministic layout."
+      },
+      {
+        "filename": "day06_sneaker_scorecard_hf.jpg",
+        "status": "succeeded",
+        "prompt_sha256": "9241b015e6682a4927a91b3555cd9d9464489878d601b351c552fca229996cfe",
+        "started_at": "2026-07-16T22:45:26.011591+00:00",
+        "finished_at": "2026-07-16T22:45:27.846064+00:00",
+        "output": "assets/source_media/posts/day06_sneaker_scorecard_hf.jpg",
+        "output_bytes": 181009,
+        "sha256": "8fda82faa28b10fdfc47a6baf115a7497465ea8a194228f5c33df9f9d8a66d61",
+        "dimensions": [
+          896,
+          1088
+        ],
+        "visual_qa_status": "approved_with_local_overlay",
+        "visual_qa_note": "Exactly three distinct sneaker types; the deterministic score cards cover the synthetic central shoe mark."
+      },
+      {
+        "filename": "day07_wardrobe_audit_hf.jpg",
+        "status": "rejected_no_credit",
+        "prompt_sha256": "c20b5d2e85ac78719bd135d3105a8a03bf3490c6ec841c9d5a0e4c31d26a859c",
+        "started_at": "2026-07-16T22:45:27.847062+00:00",
+        "finished_at": "2026-07-16T22:45:28.066188+00:00",
+        "failure_type": "HfHubHTTPError",
+        "http_status": 402
+      }
+    ],
+    "finished_at": "2026-07-16T22:45:28.066188+00:00",
+    "estimated_consumed_list_cost_usd": 0.009,
+    "remaining_outputs": 1
+  }
+}
