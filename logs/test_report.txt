@@ -13,6 +13,7 @@ test_partial_hf_image_batch_is_reported_without_claiming_completion (test_genera
 test_unknown_cost_and_paid_calls_are_blocked (test_generation_policy.GenerationPolicyTests.test_unknown_cost_and_paid_calls_are_blocked) ... ok
 test_contract_formulas_and_zero_guard (test_metrics.MetricTests.test_contract_formulas_and_zero_guard) ... ok
 test_exact_format_contract (test_plan_schema.PlanTests.test_exact_format_contract) ... ok
+test_day_five_caption_lists_all_photographic_fit_checks (test_video_and_package.VideoPackageTests.test_day_five_caption_lists_all_photographic_fit_checks) ... ok
 test_day_two_caption_describes_the_photographic_video (test_video_and_package.VideoPackageTests.test_day_two_caption_describes_the_photographic_video) ... ok
 test_package_is_valid_zip_when_present (test_video_and_package.VideoPackageTests.test_package_is_valid_zip_when_present) ... ok
 test_video_validity (test_video_and_package.VideoPackageTests.test_video_validity) ... ok
@@ -24,6 +25,6 @@ test_persistent_state_when_present (test_workflow_and_app.WorkflowAppTests.test_
 test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
 
 ----------------------------------------------------------------------
-Ran 24 tests in 0.794s
+Ran 25 tests in 0.807s
 
 OK

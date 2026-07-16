@@ -2,7 +2,7 @@
   "provider": "deterministic-template",
   "model": "budgetfitzz-editorial-v1",
   "device": "cpu",
-  "reason": "Validated local compositing with one HF video source and four HF post-photo sources; cash cost INR 0",
+  "reason": "Validated local compositing with two HF video sources and four HF post-photo sources; cash cost INR 0",
   "generation_policy": {
     "mode": "free_only",
     "allow_paid_generation": false,
@@ -17,6 +17,7 @@
     "external_media_calls_executed": true,
     "external_media_cash_cost_inr": 0,
     "hf_promotional_video_succeeded": true,
+    "hf_promotional_video_completed": 2,
     "hf_promotional_post_images_succeeded": false,
     "hf_promotional_post_images_completed": 4,
     "hf_promotional_post_images_planned": 5,

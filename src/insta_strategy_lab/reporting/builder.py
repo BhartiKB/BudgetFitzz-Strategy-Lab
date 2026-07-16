@@ -80,11 +80,11 @@ $env:PYTHONPATH='src'; .\\.venv\\Scripts\\python.exe app\\server.py --port 8501
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
 
-Credentials may be stored only in the ignored `.env` file. User-confirmed Hugging Face promotional credit supplied the realistic Day 2 source clip and four of five planned post photographs at INR 0 cash cost. The fifth post-photo request was rejected with HTTP 402 and the deterministic Day 7 fallback remains active. Gemini image generation was not called. `FAL_KEY` is deliberately ignored.
+Credentials may be stored only in the ignored `.env` file. User-confirmed Hugging Face promotional credit supplied the realistic Day 2 and Day 5 source clips plus four of five planned post photographs at INR 0 cash cost. The fifth post-photo request was rejected with HTTP 402 and the deterministic Day 7 fallback remains active. Gemini image generation was not called. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 
-Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Day 2 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
+Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Days 2 and 5 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
 ## Important interpretation
 
@@ -142,7 +142,7 @@ Run ID: `{run_id}`
 
 The state machine in `orchestration/workflow.py` invokes eleven named agent roles: DataAudit, Metrics, PerformanceAnalyst, FailureDiagnosis, Strategy, ContentPlanner, CreativeDirector, AssetGeneration, QualityAssurance, Packaging, and Orchestrator. Pydantic models validate plan, evidence, spend, and trace boundaries. SQLite stores runs, agent state, checkpoints, spend, and trace summaries; JSONL retains append-only audit entries.
 
-Reasoning agents consume evidence objects. Deterministic analytics calculate metrics and robust summaries. Pillow renderers composite audited HF photographs with agent-authored headlines, guidance, prices, and calls to action; Day 7 falls back to the procedural checklist until its source photo is available. Day 2 uses only the audited HF/Wan photographic footage with local caption overlays. FFmpeg creates/probes H.264 files with NVENC-first fallback. ReportLab creates the PDF. The standard-library HTTP server hosts the offline dashboard.
+Reasoning agents consume evidence objects. Deterministic analytics calculate metrics and robust summaries. Pillow renderers composite audited HF photographs with agent-authored headlines, guidance, prices, and calls to action; Day 7 falls back to the procedural checklist until its source photo is available. Days 2 and 5 use only audited HF/Wan photographic footage with local caption overlays. FFmpeg creates/probes H.264 files with NVENC-first fallback. ReportLab creates the PDF. The standard-library HTTP server hosts the offline dashboard.
 
 Retries are bounded at two. Stages are idempotent and persistent. Four explicit checkpoints are auto-approved only because `auto_approve_demo=true`; every approval and reason is logged.
 """, encoding="utf-8")
@@ -264,7 +264,7 @@ Validate content against `PlanItem`. If required fields are absent, reissue the 
 - Preserved and checksummed source inputs.
 - Implemented robust analytics, evidence-linked diagnosis, and revised strategy.
 - Added eleven-agent workflow, persistent memory, retries, checkpoints, trace, and spend log.
-- Composited four audited HF photographs into the static system, retained the Day 7 deterministic fallback, and generated two NVENC H.264 videos; Day 2 uses an audited HF/Wan source clip.
+- Composited four audited HF photographs into the static system, retained the Day 7 deterministic fallback, and generated two NVENC H.264 videos; Days 2 and 5 use audited HF/Wan source clips.
 - Added offline dashboard, reports, demo workflow, tests, validator, and final packaging.
 """, encoding="utf-8")
 

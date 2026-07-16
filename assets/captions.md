@@ -24,9 +24,9 @@ If your upgrade budget is ₹1,999, do not split it across five weak pieces. Pri
 
 **CTA:** Comment LINK for a shortlist built around the ₹1,999 cap.
 
-## Day 5: Stop blaming the shirt. Fix these 3 fit mistakes.
+## Day 5: Your shirt may be fine. Check these 3 fit points.
 
-Most outfits look off for three fixable reasons. One: the shoulder seam falls too far down your arm. Two: the trouser stacks heavily over the shoe. Three: the top and bottom are both oversized, so the shape disappears. Fix one variable at a time before buying another trend. Screenshot the checklist, test it in the mirror, and share it with the friend who keeps blaming his wardrobe. Follow @budgetfitzz for practical fit guidance.
+Your shirt may be fine. Check these three fit points before buying anything new. One: the shoulder seam should end at your shoulder, not down your arm. Two: aim for one clean trouser break over the shoe instead of heavy stacking. Three: do not pair an oversized top with an equally baggy bottom—the shape disappears. Fix one variable at a time, screenshot the checklist, and test it in the mirror. Follow @budgetfitzz for practical fit guidance.
 
 **CTA:** Screenshot the three checks and fix one today.
 

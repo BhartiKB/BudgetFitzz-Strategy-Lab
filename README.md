@@ -38,11 +38,11 @@ $env:PYTHONPATH='src'; .\.venv\Scripts\python.exe app\server.py --port 8501
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
 
-Credentials may be stored only in the ignored `.env` file. User-confirmed Hugging Face promotional credit supplied the realistic Day 2 source clip and four of five planned post photographs at INR 0 cash cost. The fifth post-photo request was rejected with HTTP 402 and the deterministic Day 7 fallback remains active. Gemini image generation was not called. `FAL_KEY` is deliberately ignored.
+Credentials may be stored only in the ignored `.env` file. User-confirmed Hugging Face promotional credit supplied the realistic Day 2 and Day 5 source clips plus four of five planned post photographs at INR 0 cash cost. The fifth post-photo request was rejected with HTTP 402 and the deterministic Day 7 fallback remains active. Gemini image generation was not called. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 
-Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Day 2 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
+Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Days 2 and 5 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
 ## Important interpretation
 

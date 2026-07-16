@@ -36,7 +36,7 @@ class LocalProvider:
             "deterministic-template",
             "budgetfitzz-editorial-v1",
             "cpu",
-            "Validated local compositing with one HF video source and four HF post-photo sources; cash cost INR 0",
+            "Validated local compositing with two HF video sources and four HF post-photo sources; cash cost INR 0",
             policy_summary,
         )
 

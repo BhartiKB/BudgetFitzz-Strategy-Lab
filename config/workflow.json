@@ -16,7 +16,7 @@
       "confirmed_on": "2026-07-17",
       "maximum_test_list_cost_usd": 0.025,
       "maximum_cash_cost_inr": 0,
-      "maximum_successful_calls": 1,
+      "maximum_successful_calls": 2,
       "image_batch": {
         "provider": "huggingface",
         "routing_provider": "replicate",

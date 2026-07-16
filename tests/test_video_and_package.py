@@ -36,6 +36,16 @@ class VideoPackageTests(unittest.TestCase):
         self.assertIn("dark trouser", caption)
         self.assertIn("photographic", day_two["visual_direction"].lower())
 
+    def test_day_five_caption_lists_all_photographic_fit_checks(self):
+        plan = json.loads((ROOT / "analysis/seven_day_plan.json").read_text(encoding="utf-8"))
+        day_five = next(item for item in plan if item["day"] == 5)
+        caption = day_five["full_proposed_caption"].lower()
+        self.assertIn("shoulder seam", caption)
+        self.assertIn("trouser break", caption)
+        self.assertIn("oversized top", caption)
+        self.assertIn("photographic", day_five["visual_direction"].lower())
+        self.assertTrue((ROOT / "assets/source_media/day05_hf_wan.mp4").exists())
+
     def test_package_is_valid_zip_when_present(self):
         path = ROOT / "submission/insta_strategy_lab_task2_submission.zip"
         if not path.exists():

@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from insta_strategy_lab.creative import generate_day02_realistic_overlays
+from insta_strategy_lab.creative import generate_day02_realistic_overlays, generate_day05_realistic_overlays
 
 
 def ffmpeg_paths(root: Path) -> tuple[Path, Path]:
@@ -103,16 +103,16 @@ def encode_ai_assisted_video(
     return completed.returncode == 0, completed.stderr[-4000:], elapsed
 
 
-def encode_realistic_hf_video(
+def encode_photographic_hf_video(
     ffmpeg: Path,
     source_video: Path,
     overlays: list[Path],
     output: Path,
     encoder: str,
 ) -> tuple[bool, str, float]:
-    """Build a fully photographic Day 2 sequence from the approved HF clip."""
-    duration = 10 / 3
-    starts = (0.0, 1.35, 2.7)
+    """Build a fully photographic sequence from an approved HF clip."""
+    duration = 10 / len(overlays)
+    starts = tuple(round(index * 1.15, 2) for index in range(len(overlays)))
     command = [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning"]
     for overlay in overlays:
         command.extend(["-stream_loop", "-1", "-i", str(source_video)])
@@ -164,11 +164,19 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
     results: dict[str, Any] = {"ffmpeg": str(ffmpeg), "selected_encoder": "h264_nvenc", "videos": {}}
     for filename, scenes in scene_map.items():
         output = output_dir / filename
-        hf_source = root / "assets/source_media/day02_hf_wan.mp4"
-        uses_hf_source = filename == "day02_one_shirt_three_ways.mp4" and hf_source.exists()
+        hf_sources = {
+            "day02_one_shirt_three_ways.mp4": root / "assets/source_media/day02_hf_wan.mp4",
+            "day05_fit_mistakes.mp4": root / "assets/source_media/day05_hf_wan.mp4",
+        }
+        hf_source = hf_sources.get(filename)
+        uses_hf_source = hf_source is not None and hf_source.exists()
         if uses_hf_source:
-            overlays = generate_day02_realistic_overlays(frame_dir)
-            ok, error, elapsed = encode_realistic_hf_video(
+            overlays = (
+                generate_day02_realistic_overlays(frame_dir)
+                if filename == "day02_one_shirt_three_ways.mp4"
+                else generate_day05_realistic_overlays(frame_dir)
+            )
+            ok, error, elapsed = encode_photographic_hf_video(
                 ffmpeg, hf_source, overlays, output, "h264_nvenc"
             )
         else:
@@ -176,7 +184,7 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
         encoder = "h264_nvenc"
         if not ok:
             if uses_hf_source:
-                ok, fallback_error, elapsed = encode_realistic_hf_video(
+                ok, fallback_error, elapsed = encode_photographic_hf_video(
                     ffmpeg, hf_source, overlays, output, "libx264"
                 )
             else:

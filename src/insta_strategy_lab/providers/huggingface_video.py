@@ -23,12 +23,34 @@ class HuggingFaceVideoClient:
         self.policy = GenerationPolicy(root)
 
     def generate_test(self, prompt: str, output: Path) -> dict[str, Any]:
-        ledger = self.root / "logs/hf_promotional_credit_test.json"
+        return self._generate(
+            prompt,
+            output,
+            self.root / "logs/hf_promotional_credit_test.json",
+            "promotional-credit text-to-video test",
+        )
+
+    def generate_day_five(self, prompt: str, output: Path) -> dict[str, Any]:
+        return self._generate(
+            prompt,
+            output,
+            self.root / "logs/hf_promotional_credit_day05.json",
+            "promotional-credit text-to-video source for Day 5",
+        )
+
+    def _generate(self, prompt: str, output: Path, ledger: Path, operation: str) -> dict[str, Any]:
         if ledger.exists():
             raise GenerationPolicyError(
-                "the one-shot Hugging Face credit test is already reserved or completed; "
+                "the Hugging Face promotional-credit request is already reserved or completed; "
                 "delete nothing and inspect the existing ledger"
             )
+        existing_ledgers = [
+            self.root / "logs/hf_promotional_credit_test.json",
+            self.root / "logs/hf_promotional_credit_day05.json",
+        ]
+        maximum_calls = int(self.policy.settings.get("promotional_credit", {}).get("maximum_successful_calls", 1))
+        if sum(path.exists() for path in existing_ledgers) >= maximum_calls:
+            raise GenerationPolicyError("the confirmed Hugging Face promotional-credit video limit is already reserved")
         self.policy.assert_promotional_credit_call_allowed(
             "huggingface",
             estimated_list_cost_usd=self.LIST_COST_USD,
@@ -54,7 +76,7 @@ class HuggingFaceVideoClient:
             "provider": "huggingface",
             "routing_provider": self.ROUTING_PROVIDER,
             "model": self.MODEL,
-            "operation": "promotional-credit text-to-video test",
+            "operation": operation,
             "estimated_list_cost_usd": self.LIST_COST_USD,
             "cash_cost_inr": 0,
             "paid_or_free": "free promotional credit",

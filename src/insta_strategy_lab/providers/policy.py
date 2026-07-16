@@ -149,7 +149,10 @@ class GenerationPolicy:
 
     def public_summary(self) -> dict[str, Any]:
         """Return audit-safe policy state; never return credential values."""
-        video_ledger = self.root / "logs/hf_promotional_credit_test.json"
+        video_ledgers = [
+            self.root / "logs/hf_promotional_credit_test.json",
+            self.root / "logs/hf_promotional_credit_day05.json",
+        ]
         image_ledger = self.root / "logs/hf_promotional_image_batch.json"
 
         def succeeded(path: Path) -> bool:
@@ -160,7 +163,7 @@ class GenerationPolicy:
             except (OSError, json.JSONDecodeError):
                 return False
 
-        video_succeeded = succeeded(video_ledger)
+        successful_video_calls = sum(succeeded(path) for path in video_ledgers)
         completed_image_files: set[str] = set()
         if image_ledger.exists():
             try:
@@ -176,7 +179,7 @@ class GenerationPolicy:
                 completed_image_files = set()
         image_count = len(completed_image_files)
         images_succeeded = image_count == 5
-        external_succeeded = video_succeeded or image_count > 0
+        external_succeeded = successful_video_calls > 0 or image_count > 0
         return {
             "mode": self.mode,
             "allow_paid_generation": self.allow_paid_generation,
@@ -188,7 +191,8 @@ class GenerationPolicy:
             "fal_ignored": self.credentials.fal_ignored,
             "external_media_calls_executed": external_succeeded,
             "external_media_cash_cost_inr": 0,
-            "hf_promotional_video_succeeded": video_succeeded,
+            "hf_promotional_video_succeeded": successful_video_calls > 0,
+            "hf_promotional_video_completed": successful_video_calls,
             "hf_promotional_post_images_succeeded": images_succeeded,
             "hf_promotional_post_images_completed": image_count,
             "hf_promotional_post_images_planned": 5,

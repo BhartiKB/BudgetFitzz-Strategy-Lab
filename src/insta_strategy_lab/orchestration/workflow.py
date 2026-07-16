@@ -122,27 +122,34 @@ class Workflow:
         path.parent.mkdir(parents=True, exist_ok=True)
         rows = []
         for item in plan:
-            hf_day_two = (
-                item.asset_filename == "day02_one_shirt_three_ways.mp4"
-                and (self.root / "assets/source_media/day02_hf_wan.mp4").exists()
-                and (self.root / "logs/hf_promotional_credit_test.json").exists()
-            )
+            hf_video_sources = {
+                "day02_one_shirt_three_ways.mp4": (
+                    "assets/source_media/day02_hf_wan.mp4",
+                    "logs/hf_promotional_credit_test.json",
+                ),
+                "day05_fit_mistakes.mp4": (
+                    "assets/source_media/day05_hf_wan.mp4",
+                    "logs/hf_promotional_credit_day05.json",
+                ),
+            }
+            hf_source = hf_video_sources.get(item.asset_filename)
+            uses_hf_video = bool(hf_source) and all((self.root / path).exists() for path in hf_source)
             tool = "Pillow procedural renderer" if item.format == "post" else "Pillow scenes + FFmpeg NVENC"
-            if hf_day_two:
+            if uses_hf_video:
                 tool = "Wan 2.2 HF photographic source + Pillow overlays + FFmpeg NVENC"
             entry = SpendEntry(
                 timestamp=datetime.now(UTC), run_id=self.run_id, asset=item.asset_filename,
-                provider="huggingface + local" if hf_day_two else provider["provider"],
+                provider="huggingface + local" if uses_hf_video else provider["provider"],
                 model_or_tool=tool,
-                operation="promotional-credit source + local compositing" if hf_day_two else "local asset generation",
+                operation="promotional-credit source + local compositing" if uses_hf_video else "local asset generation",
                 quantity=1, unit_cost_inr=0, total_cost_inr=0, paid_or_free="free",
                 evidence_or_receipt_reference=(
-                    "logs/hf_promotional_credit_test.json; included credit confirmed by user"
-                    if hf_day_two else "Local execution trace; no paid call or receipt"
+                    f"{hf_source[1]}; included credit confirmed by user"
+                    if uses_hf_video else "Local execution trace; no paid call or receipt"
                 ),
                 notes=(
                     "Currency INR; cash cost INR 0; promotional-credit list value USD 0.025; FAL not used."
-                    if hf_day_two else
+                    if uses_hf_video else
                     "Currency INR; direct revised-content generation cost INR 0. Development subscriptions, if any, are outside the direct-generation cap."
                 ),
             )
@@ -155,9 +162,9 @@ class Workflow:
         write_json(self.root / "logs/spend_summary.json", {
             "currency": "INR", "paid_generation_total_inr": 0,
             "cap_inr": 100, "within_cap": True, "entries": len(rows),
-            "promotional_credit_list_value_usd": 0.025 if any(
+            "promotional_credit_list_value_usd": round(0.025 * sum(
                 row["provider"] == "huggingface + local" for row in rows
-            ) else 0,
+            ), 3),
             "subscription_treatment": "Development subscriptions are separate from direct revised-content generation expenses.",
         })
 

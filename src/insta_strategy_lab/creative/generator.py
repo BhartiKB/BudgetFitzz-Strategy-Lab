@@ -493,6 +493,37 @@ def generate_day02_realistic_overlays(output_dir: Path) -> list[Path]:
     return paths
 
 
+def generate_day05_realistic_overlays(output_dir: Path) -> list[Path]:
+    """Create typography-only fit-check overlays for photographic Day 5 footage."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    definitions = [
+        ("FIT, NOT A NEW SHIRT.", "CHECK 3 POINTS BEFORE BUYING", "FIT CHECK", "YOUR SHIRT MAY BE FINE. START WITH THE SHAPE."),
+        ("SHOULDER SEAM FIRST.", "THE SEAM SHOULD END AT YOUR SHOULDER", "01 / SHOULDERS", "TOO LOW MAKES THE WHOLE TOP LOOK COLLAPSED."),
+        ("CLEAN THE TROUSER BREAK.", "ONE CLEAN LINE OVER THE SHOE", "02 / TROUSER BREAK", "HEAVY STACKING SHORTENS THE SILHOUETTE."),
+        ("BALANCE THE PROPORTION.", "DON'T STACK OVERSIZED ON OVERSIZED", "03 / PROPORTION", "FIX ONE VARIABLE. SCREENSHOT THE THREE CHECKS."),
+    ]
+    paths: list[Path] = []
+    for index, (title, subtitle, step, takeaway) in enumerate(definitions, start=1):
+        image = Image.new("RGBA", (1080, 1920), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, 1080, 355), fill=(23, 33, 27, 205))
+        draw.rectangle((0, 1385, 1080, 1920), fill=(23, 33, 27, 220))
+        wordmark(draw, light=True, day=5)
+        draw.text((72, 165), title, font=font(42, True), fill="#FFFFFF")
+        draw.text((72, 225), subtitle, font=font(24, True), fill=LIME)
+        draw.rounded_rectangle((72, 1460, 410, 1518), radius=22, fill=LIME)
+        draw.text((98, 1474), step, font=font(22, True), fill=INK)
+        text_block(draw, (72, 1560), takeaway, 40, 900, "#FFFFFF", True, 12)
+        draw.text((72, 1812), "@budgetfitzz  •  practical fit guidance", font=font(22, True), fill="#D8E8DF")
+        for progress in range(4):
+            fill = LIME if progress < index else "#5D8274"
+            draw.rounded_rectangle((72 + progress * 116, 1865, 164 + progress * 116, 1879), radius=7, fill=fill)
+        path = output_dir / f"day05_realistic_overlay_{index}.png"
+        image.save(path, "PNG", optimize=True)
+        paths.append(path)
+    return paths
+
+
 def generate_video_scenes(plan: list[PlanItem], output_dir: Path) -> dict[str, list[Path]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     scenes: dict[str, list[Path]] = {}
@@ -504,10 +535,10 @@ def generate_video_scenes(plan: list[PlanItem], output_dir: Path) -> dict[str, l
             ("03 / EVENING", "OPEN IT BACK UP", "Keep the palette quiet.", LIME, ""),
         ],
         "day05_fit_mistakes.mp4": [
-            ("STOP BLAMING THE SHIRT", "FIT CHECK", "Fix these three mistakes first.", LIME, "fit"),
-            ("01 / SHOULDER", "SEAM AT THE EDGE", "Too low makes the whole top collapse.", FOREST, "fit"),
-            ("02 / TROUSER BREAK", "ONE CLEAN LINE", "Heavy stacking shortens the silhouette.", BLUE, "fit"),
-            ("SCREENSHOT THE CHECKS", "FIX ONE TODAY", "@budgetfitzz  •  practical fit guidance", LIME, "check"),
+            ("FIT, NOT A NEW SHIRT", "FIT CHECK", "Photographic HF footage with local editorial overlays.", LIME, ""),
+            ("01 / SHOULDERS", "SEAM AT THE EDGE", "Too low makes the whole top collapse.", FOREST, ""),
+            ("02 / TROUSER BREAK", "ONE CLEAN LINE", "Heavy stacking shortens the silhouette.", BLUE, ""),
+            ("03 / PROPORTION", "BALANCE THE SHAPE", "Do not stack oversized on oversized.", LIME, ""),
         ],
     }
     for item in plan:
