@@ -51,6 +51,7 @@ Production-quality offline platform for Intern Task 2: Performance Analysis and 
 - Revised cycle: exactly 5 static posts and 2 short videos
 - Paid revised-content generation spend: INR 0
 - Local provider: {provider['provider']} / {provider['model']}
+- Media policy: free-only; fal disabled; paid or unknown-cost image/video calls fail closed
 - Selected encoder: {hardware['selected_video_encoder']}
 
 The dataset is described truthfully as a user-provided local evaluation dataset with unspecified original provenance. Assumed business context is explicitly labelled.
@@ -78,6 +79,8 @@ $env:PYTHONPATH='src'; .\\.venv\\Scripts\\python.exe app\\server.py --port 8501
 ```
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
+
+Credentials may be stored only in the ignored `.env` file. Gemini and Hugging Face credentials are detected without logging their values, but they are not sent to chargeable media endpoints while the project is in free-only mode. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 

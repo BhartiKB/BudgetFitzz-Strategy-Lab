@@ -9,6 +9,7 @@ Production-quality offline platform for Intern Task 2: Performance Analysis and 
 - Revised cycle: exactly 5 static posts and 2 short videos
 - Paid revised-content generation spend: INR 0
 - Local provider: deterministic-template / budgetfitzz-editorial-v1
+- Media policy: free-only; fal disabled; paid or unknown-cost image/video calls fail closed
 - Selected encoder: h264_nvenc
 
 The dataset is described truthfully as a user-provided local evaluation dataset with unspecified original provenance. Assumed business context is explicitly labelled.
@@ -20,14 +21,6 @@ The dataset is described truthfully as a user-provided local evaluation dataset 
 ```
 
 Then open `http://127.0.0.1:8501`.
-
-From the extracted submission ZIP, launch the packaged app directly with:
-
-```powershell
-.\launch_platform.ps1
-```
-
-The packaged launcher uses only Python's standard library; finished assets and reports are already included.
 
 Equivalent Python command:
 
@@ -44,6 +37,8 @@ $env:PYTHONPATH='src'; .\.venv\Scripts\python.exe app\server.py --port 8501
 ```
 
 The pipeline is idempotent. Workflow state is stored in `logs/workflow.db`; concise decision traces are appended to `logs/execution_trace.jsonl`. Use `--resume` with `scripts/run_pipeline.py` to skip completed stages in the active run where their outputs remain valid.
+
+Credentials may be stored only in the ignored `.env` file. Gemini and Hugging Face credentials are detected without logging their values, but they are not sent to chargeable media endpoints while the project is in free-only mode. `FAL_KEY` is deliberately ignored.
 
 ## Architecture
 

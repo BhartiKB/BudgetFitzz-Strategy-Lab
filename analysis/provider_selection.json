@@ -2,5 +2,18 @@
   "provider": "deterministic-template",
   "model": "budgetfitzz-editorial-v1",
   "device": "cpu",
-  "reason": "No local Ollama or compatible cached instruct model was present; used validated offline templates"
+  "reason": "Free-only policy selected validated local templates; no paid external media endpoint was called",
+  "generation_policy": {
+    "mode": "free_only",
+    "allow_paid_generation": false,
+    "maximum_paid_generation_inr": 0.0,
+    "disabled_providers": [
+      "fal"
+    ],
+    "media_provider": "local",
+    "gemini_configured": true,
+    "huggingface_configured": true,
+    "fal_ignored": true,
+    "external_media_calls_executed": false
+  }
 }

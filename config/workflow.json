@@ -3,6 +3,14 @@
   "max_retries": 2,
   "retry_delay_seconds": 0.25,
   "auto_approve_demo": true,
+  "generation_policy": {
+    "mode": "free_only",
+    "allow_paid_generation": false,
+    "maximum_paid_generation_inr": 0,
+    "disabled_providers": ["fal"],
+    "media_provider": "local",
+    "use_external_free_credits_for_media": false
+  },
   "steps": [
     "data_audit", "metrics", "performance_analysis", "failure_diagnosis",
     "strategy", "content_plan", "creative_direction", "asset_generation",
@@ -13,4 +21,3 @@
     "asset_approval", "final_export_approval"
   ]
 }
-

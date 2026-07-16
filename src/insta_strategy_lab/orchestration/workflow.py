@@ -22,7 +22,7 @@ from insta_strategy_lab.agents.content_strategy import build_failure_diagnosis, 
 from insta_strategy_lab.analytics.charts import generate_charts
 from insta_strategy_lab.analytics.core import METRIC_CONTRACT, analyze_dataset, apply_metric_contract, audit_dataset
 from insta_strategy_lab.creative import generate_posts, generate_video_scenes
-from insta_strategy_lab.providers import LocalProvider
+from insta_strategy_lab.providers import GenerationPolicy, LocalProvider
 from insta_strategy_lab.reporting.builder import build_app_data, build_documentation, build_final_reports
 from insta_strategy_lab.reporting.packaging import assemble_submission, create_zip, write_manifest
 from insta_strategy_lab.schemas import PlanItem, SpendEntry
@@ -206,13 +206,15 @@ class Workflow:
             plan = build_plan(); self.write_plan(plan); self.context["plan"] = plan; return plan
         plan = self.stage(ContentPlannerAgent("ContentPlannerAgent", "Created and programmatically validated seven consecutive items: exactly five posts and two videos.", plan_action), "analysis/revised_strategy.json", "analysis/seven_day_plan.json", ["E01","E02","E03","E05","E06","E07","E09"])
 
-        provider = asdict(LocalProvider().select()); self.context["provider"] = provider
+        media_policy = GenerationPolicy(self.root)
+        provider = asdict(LocalProvider(self.root).select()); self.context["provider"] = provider
         def creative_action():
             if not (self.root / "config/brand_tokens.yaml").exists(): raise FileNotFoundError("brand tokens missing")
             write_json(self.root / "analysis/provider_selection.json", provider); return provider
         self.stage(CreativeDirectorAgent("CreativeDirectorAgent", "Locked the visual system, prompts, original-asset rules, and zero-cost local provider.", creative_action), "analysis/seven_day_plan.json", "config/brand_tokens.yaml", ["E03","E06","E07"])
 
         def asset_action():
+            media_policy.assert_media_call_allowed("local", estimated_cost_inr=0)
             posts = generate_posts(plan, self.root / "assets/posts")
             scenes = generate_video_scenes(plan, self.root / "assets/video_frames")
             video_results = generate_videos(self.root, scenes, self.root / "assets/videos", self.root / "assets/video_frames")
