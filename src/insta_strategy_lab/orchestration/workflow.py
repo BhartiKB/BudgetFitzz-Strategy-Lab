@@ -6,6 +6,7 @@ import csv
 import json
 import shutil
 import time
+from collections import Counter
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,7 +21,14 @@ from insta_strategy_lab.agents import (
 )
 from insta_strategy_lab.agents.content_strategy import build_failure_diagnosis, build_plan, build_strategy
 from insta_strategy_lab.analytics.charts import generate_charts
-from insta_strategy_lab.analytics.core import METRIC_CONTRACT, analyze_dataset, apply_metric_contract, audit_dataset
+from insta_strategy_lab.analytics.core import (
+    METRIC_CONTRACT,
+    analyze_dataset,
+    apply_metric_contract,
+    audit_dataset,
+    classify_cta,
+    classify_hook,
+)
 from insta_strategy_lab.creative import generate_posts, generate_video_scenes
 from insta_strategy_lab.providers import GenerationPolicy, LocalProvider
 from insta_strategy_lab.reporting.builder import build_app_data, build_documentation, build_final_reports
@@ -153,22 +161,64 @@ class Workflow:
             "subscription_treatment": "Development subscriptions are separate from direct revised-content generation expenses.",
         })
 
-    def before_after(self, results: dict[str, Any]) -> list[dict[str, str]]:
+    def before_after(
+        self,
+        results: dict[str, Any],
+        plan: list[PlanItem],
+        targets: dict[str, Any],
+    ) -> list[dict[str, str]]:
+        """Compare observed CSV values with calculated pilot-design values.
+
+        The pilot has not been published, so the after column is never presented
+        as observed performance. Structural values come from the validated plan;
+        performance values are explicitly marked targets/hypotheses.
+        """
         facts = results["verified_facts"]
+        audit = results["audit"]
+        historical_total = int(audit["rows"])
+        plan_total = len(plan)
+        historical_pillars = Counter(audit["pillar_counts"])
+        historical_formats = Counter(audit["format_counts"])
+        plan_pillars = Counter(item.content_pillar for item in plan)
+        plan_formats = Counter(item.format for item in plan)
+        plan_hook_styles = Counter(classify_hook(item.hook) for item in plan)
+        plan_cta_styles = Counter(classify_cta(item.cta) for item in plan)
+        hook_rows = results["summaries"]["hook_style"]
+        dominant_hook = max(hook_rows, key=lambda row: row["n"])
+
+        def share(count: int, total: int) -> str:
+            return f"{count}/{total} ({count / total * 100:.1f}%)"
+
+        def mix(values: Counter[str], total: int) -> str:
+            return "; ".join(
+                f"{name} {share(int(count), total)}"
+                for name, count in values.most_common()
+            )
+
+        target_by_name = {
+            item["metric"]: item["target_range"] for item in targets["targets"]
+        }
+        explicit_historical_ctas = historical_total - int(facts["missing_cta_count"])
+        explicit_plan_ctas = sum(bool(item.cta.strip()) for item in plan)
+        unique_historical_hours = sum(
+            1 for row in results["summaries"]["post_hour"] if int(row["n"]) > 0
+        )
+        unique_plan_windows = len({item.recommended_publication_time for item in plan})
+        common = {
+            "before_kind": "observed",
+            "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+        }
         return [
-            {"dimension":"Content-pillar mix","before":f"Promotion {facts['promotion_share_pct']:.1f}%","after":"3 education / 2 value-first commercial / 2 community"},
-            {"dimension":"Format mix","before":f"Posts {facts['post_share_pct']:.1f}% (137/150)","after":"5 posts / 2 videos in the pilot"},
-            {"dimension":"Topic diversity","before":f"Top two topics {facts['top_two_topic_share_pct']:.1f}%","after":"Wardrobe systems, fit, votes, audit, sneakers, and two commercial anchors"},
-            {"dimension":"Hook diversity","before":"Mostly emotional/aspirational repetitions","after":"Specific formulas, tension, bounded questions, and use-case decisions"},
-            {"dimension":"CTA diversity","before":f"{facts['missing_cta_count']} missing plus repetitive link requests","after":"7/7 explicit CTAs across save, vote, screenshot, audit, and qualified link intent"},
-            {"dimension":"Promotional concentration","before":f"{facts['promotion_share_pct']:.1f}% promotion","after":"Commercial content capped at 2/7 and must teach first"},
-            {"dimension":"Educational value","before":"13/150 education items","after":"3/7 education items with on-frame takeaways"},
-            {"dimension":"Community interaction","before":"2/150 items (anecdotal)","after":"2 bounded interaction items designed as tests"},
-            {"dimension":"Save/share potential","before":f"Education median save {facts['education_median_save_rate_pct']:.3f}%","after":"Education post target save rate 0.50-0.75%"},
-            {"dimension":"Video retention design","before":f"Median proxy {facts['video_median_retention_proxy_pct']:.1f}%","after":"First-second hooks, 3-second scenes, target 60-70%"},
-            {"dimension":"Timing","before":"Uneven observational timing cells","after":"Two pre-registered test windows; compare within format/pillar"},
-            {"dimension":"Visual quality","before":"Text-heavy, inconsistent source content","after":"Cohesive original editorial system with mobile-safe hierarchy"},
-            {"dimension":"Expected performance","before":"Observed historical metrics","after":"Reasoned target ranges only; no claim of achieved lift"},
+            {**common, "dimension": "Content-pillar mix", "before": mix(historical_pillars, historical_total), "after": mix(plan_pillars, plan_total), "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
+            {**common, "dimension": "Format mix", "before": mix(historical_formats, historical_total), "after": mix(plan_formats, plan_total), "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
+            {**common, "dimension": "Topic diversity", "before": f"{len(audit['topic_counts'])} unique topics; top two {share(sum(sorted(audit['topic_counts'].values(), reverse=True)[:2]), historical_total)}", "after": f"{len({item.topic for item in plan})} unique topics across {plan_total} items", "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
+            {**common, "dimension": "Hook-style diversity", "before": f"Dominant: {dominant_hook['hook_style']} {share(int(dominant_hook['n']), historical_total)}", "after": f"{len(plan_hook_styles)} styles: " + "; ".join(f"{name} {count}" for name, count in plan_hook_styles.most_common()), "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json → same classifier"},
+            {**common, "dimension": "CTA coverage", "before": f"Explicit CTA {share(explicit_historical_ctas, historical_total)}; missing {facts['missing_cta_count']}", "after": f"Explicit CTA {share(explicit_plan_ctas, plan_total)} across {len(plan_cta_styles)} CTA styles", "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json → same classifier"},
+            {**common, "dimension": "Education share", "before": share(int(historical_pillars.get('Education', 0)), historical_total), "after": share(int(plan_pillars.get('Education', 0)), plan_total), "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
+            {**common, "dimension": "Community share", "before": share(int(historical_pillars.get('Community', 0)), historical_total), "after": share(int(plan_pillars.get('Community', 0)), plan_total), "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
+            {**common, "dimension": "Education save rate", "before": f"Median {facts['education_median_save_rate_pct']:.3f}% (n={int(historical_pillars.get('Education', 0))})", "after": target_by_name["Education post save rate"], "after_kind": "target / not measured", "after_source": "analysis/target_metrics.json"},
+            {**common, "dimension": "Video retention proxy", "before": f"Median {facts['video_median_retention_proxy_pct']:.1f}% (n={facts['video_count']})", "after": target_by_name["Video retention proxy"], "after_kind": "target / not measured", "after_source": "analysis/target_metrics.json"},
+            {**common, "dimension": "Publishing windows", "before": f"{unique_historical_hours} observed posting hours", "after": f"{unique_plan_windows} pre-registered date/time windows", "after_kind": "planned design", "after_source": "analysis/seven_day_plan.json"},
         ]
 
     def target_metrics(self, results: dict[str, Any]) -> dict[str, Any]:
@@ -243,8 +293,8 @@ class Workflow:
         self.auto_checkpoint("asset_approval", ["E03","E05","E09"])
 
         hardware = self.context["hardware"]
-        before_after = self.before_after(results); self.context["before_after"] = before_after; write_json(self.root / "analysis/before_after.json", before_after)
         targets = self.target_metrics(results); self.context["targets"] = targets; write_json(self.root / "analysis/target_metrics.json", targets)
+        before_after = self.before_after(results, plan, targets); self.context["before_after"] = before_after; write_json(self.root / "analysis/before_after.json", before_after)
         self.write_spend(plan, provider)
         build_documentation(self.root, results, diagnosis, strategy, plan, hardware, provider, self.run_id)
 

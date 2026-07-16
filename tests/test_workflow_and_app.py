@@ -47,6 +47,24 @@ class WorkflowAppTests(unittest.TestCase):
             if process.stderr:
                 process.stderr.close()
 
+    def test_dashboard_metrics_are_pipeline_values_with_lineage(self):
+        dashboard = json.loads((ROOT / "app/data/dashboard.json").read_text(encoding="utf-8"))
+        self.assertEqual(dashboard["overview_kpis"][0]["value"], str(dashboard["audit"]["rows"]))
+        self.assertEqual(
+            dashboard["overview_kpis"][3]["value"],
+            f"{dashboard['facts']['extreme_video_er_pct']:.2f}%",
+        )
+        self.assertEqual(dashboard["data_lineage"]["observed_rows"], dashboard["audit"]["rows"])
+        self.assertFalse(dashboard["data_lineage"]["after_results_available"])
+        self.assertTrue(all(item["source"] for item in dashboard["observed_metrics"]))
+        self.assertTrue(all(item["before_kind"] == "observed" for item in dashboard["before_after"]))
+        self.assertTrue(all(item["after_kind"] != "observed" for item in dashboard["before_after"]))
+
+    def test_browser_code_does_not_embed_copied_kpi_values(self):
+        script = (ROOT / "app/app.js").read_text(encoding="utf-8")
+        self.assertNotIn("['150','historical items'", script)
+        self.assertIn("data.overview_kpis", script)
+
 
 if __name__ == "__main__":
     unittest.main()

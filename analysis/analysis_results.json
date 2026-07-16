@@ -3104,6 +3104,8 @@
     "video_median_er_pct": 6.4466019417475735,
     "video_mean_er_pct": 11.130046676079754,
     "video_mean_er_without_extreme_pct": 6.556121167604917,
+    "extreme_video_er_pct": 66.01715277777778,
+    "extreme_video_id": 82,
     "education_median_save_rate_pct": 0.521842048633527,
     "promotion_median_save_rate_pct": 0.2323394652260138,
     "video_median_retention_proxy_pct": 55.229091500754826

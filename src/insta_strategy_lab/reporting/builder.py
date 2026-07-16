@@ -282,10 +282,51 @@ def build_app_data(
     trace = []
     if trace_path.exists():
         trace = [json.loads(line) for line in trace_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    facts = results["verified_facts"]
+    education_save_ratio = (
+        facts["education_median_save_rate_pct"]
+        / facts["promotion_median_save_rate_pct"]
+        if facts["promotion_median_save_rate_pct"]
+        else None
+    )
+    overview_kpis = [
+        {"value": str(facts["record_count"]), "label": "historical items", "detail": f"{facts['post_count']} posts • {facts['video_count']} videos", "source": "CSV row and format counts", "sample_size": facts["record_count"]},
+        {"value": f"{facts['promotion_share_pct']:.1f}%", "label": "promotional mix", "detail": f"{results['audit']['pillar_counts']['Promotion']} of {facts['record_count']} observed items", "source": "pillar == Promotion", "sample_size": facts["record_count"]},
+        {"value": f"{education_save_ratio:.2f}×" if education_save_ratio is not None else "NA", "label": "education/promotion median save ratio", "detail": f"{facts['education_median_save_rate_pct']:.3f}% vs {facts['promotion_median_save_rate_pct']:.3f}%", "source": "derived save_rate medians", "sample_size": facts["record_count"]},
+        {"value": f"{facts['extreme_video_er_pct']:.2f}%", "label": "extreme video engagement rate", "detail": f"Observed ID {facts['extreme_video_id']}; outlier preserved", "source": "derived engagement_rate_by_reach", "sample_size": facts["video_count"]},
+    ]
+    observed_metrics = [
+        {"metric": "Post median engagement rate", "display": f"{facts['post_median_er_pct']:.3f}%", "value": facts["post_median_er_pct"], "n": facts["post_count"], "source": "analysis/tables/format_summary.csv"},
+        {"metric": "Video median engagement rate", "display": f"{facts['video_median_er_pct']:.3f}%", "value": facts["video_median_er_pct"], "n": facts["video_count"], "source": "analysis/tables/format_summary.csv"},
+        {"metric": "Video arithmetic mean engagement rate", "display": f"{facts['video_mean_er_pct']:.3f}%", "value": facts["video_mean_er_pct"], "n": facts["video_count"], "source": "data/processed/budgetfitzz_derived.csv"},
+        {"metric": "Video mean without extreme ID", "display": f"{facts['video_mean_er_without_extreme_pct']:.3f}%", "value": facts["video_mean_er_without_extreme_pct"], "n": facts["video_count"] - 1, "source": "data/processed/budgetfitzz_derived.csv"},
+        {"metric": "Education median save rate", "display": f"{facts['education_median_save_rate_pct']:.3f}%", "value": facts["education_median_save_rate_pct"], "n": results["audit"]["pillar_counts"].get("Education", 0), "source": "derived save_rate grouped by pillar"},
+        {"metric": "Promotion median save rate", "display": f"{facts['promotion_median_save_rate_pct']:.3f}%", "value": facts["promotion_median_save_rate_pct"], "n": results["audit"]["pillar_counts"].get("Promotion", 0), "source": "derived save_rate grouped by pillar"},
+        {"metric": "Video median retention proxy", "display": f"{facts['video_median_retention_proxy_pct']:.1f}%", "value": facts["video_median_retention_proxy_pct"], "n": facts["video_count"], "source": "watch_time_sec / video_views / duration"},
+        {"metric": "Videos where plays exceed reach", "display": f"{facts['video_views_exceed_reach_count']} / {facts['video_count']}", "value": facts["video_views_exceed_reach_count"], "n": facts["video_count"], "source": "raw video_views > raw reach"},
+    ]
     payload = {
         "run": {"run_id": run_id, "status": "complete", "provider": provider["provider"]},
         "audit": results["audit"], "facts": results["verified_facts"],
         "metric_contract": json.loads((root / "data/processed/metric_contract.json").read_text(encoding="utf-8")),
+        "overview_kpis": overview_kpis,
+        "observed_metrics": observed_metrics,
+        "summaries": {
+            "format": results["summaries"]["format"],
+            "pillar": results["summaries"]["pillar"],
+            "time_of_day": results["summaries"]["time_of_day"],
+        },
+        "evidence": results["evidence"],
+        "data_lineage": {
+            "raw_source": "data/raw/budgetfitzz_dataset_fixed.csv",
+            "raw_sha256": sha256(root / "data/raw/budgetfitzz_dataset_fixed.csv"),
+            "derived_source": "data/processed/budgetfitzz_derived.csv",
+            "analysis_source": "analysis/analysis_results.json",
+            "calculation_run_id": run_id,
+            "observed_rows": facts["record_count"],
+            "after_results_available": False,
+            "after_note": "The seven-day pilot has not been published; after values are validated plan counts or explicitly labelled targets, never claimed results.",
+        },
         "diagnosis": diagnosis, "strategy": strategy,
         "plan": [item.model_dump() for item in plan], "validation": validation,
         "before_after": before_after, "trace": trace,

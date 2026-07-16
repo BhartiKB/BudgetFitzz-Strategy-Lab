@@ -1,9 +1,9 @@
 {
-  "run_id": "budgetfitzz-20260716T225356Z",
+  "run_id": "budgetfitzz-20260716T231011Z",
   "retry_counts": {
     "DataAuditAgent": 0,
     "MetricsAgent": 0,
-    "PerformanceAnalystAgent": 1,
+    "PerformanceAnalystAgent": 0,
     "FailureDiagnosisAgent": 0,
     "StrategyAgent": 0,
     "ContentPlannerAgent": 0,
@@ -12,5 +12,5 @@
     "QualityAssuranceAgent": 0,
     "PackagingAgent": 0
   },
-  "total_retries": 1
+  "total_retries": 0
 }

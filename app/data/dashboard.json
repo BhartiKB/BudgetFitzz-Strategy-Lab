@@ -1,6 +1,6 @@
 {
   "run": {
-    "run_id": "budgetfitzz-20260716T225356Z",
+    "run_id": "budgetfitzz-20260716T231011Z",
     "status": "complete",
     "provider": "deterministic-template"
   },
@@ -69,6 +69,8 @@
     "video_median_er_pct": 6.4466019417475735,
     "video_mean_er_pct": 11.130046676079754,
     "video_mean_er_without_extreme_pct": 6.556121167604917,
+    "extreme_video_er_pct": 66.01715277777778,
+    "extreme_video_id": 82,
     "education_median_save_rate_pct": 0.521842048633527,
     "promotion_median_save_rate_pct": 0.2323394652260138,
     "video_median_retention_proxy_pct": 55.229091500754826
@@ -97,6 +99,344 @@
       "performance_bands": "Within-format quartiles: weak <= Q1; strong >= Q3; otherwise typical.",
       "sample_size_language": "n<3 anecdotal; n=3-4 directional; n>=5 cautious; no observational group is called causal."
     }
+  },
+  "overview_kpis": [
+    {
+      "value": "150",
+      "label": "historical items",
+      "detail": "137 posts • 13 videos",
+      "source": "CSV row and format counts",
+      "sample_size": 150
+    },
+    {
+      "value": "90.0%",
+      "label": "promotional mix",
+      "detail": "135 of 150 observed items",
+      "source": "pillar == Promotion",
+      "sample_size": 150
+    },
+    {
+      "value": "2.25×",
+      "label": "education/promotion median save ratio",
+      "detail": "0.522% vs 0.232%",
+      "source": "derived save_rate medians",
+      "sample_size": 150
+    },
+    {
+      "value": "66.02%",
+      "label": "extreme video engagement rate",
+      "detail": "Observed ID 82; outlier preserved",
+      "source": "derived engagement_rate_by_reach",
+      "sample_size": 13
+    }
+  ],
+  "observed_metrics": [
+    {
+      "metric": "Post median engagement rate",
+      "display": "6.297%",
+      "value": 6.296836493486898,
+      "n": 137,
+      "source": "analysis/tables/format_summary.csv"
+    },
+    {
+      "metric": "Video median engagement rate",
+      "display": "6.447%",
+      "value": 6.4466019417475735,
+      "n": 13,
+      "source": "analysis/tables/format_summary.csv"
+    },
+    {
+      "metric": "Video arithmetic mean engagement rate",
+      "display": "11.130%",
+      "value": 11.130046676079754,
+      "n": 13,
+      "source": "data/processed/budgetfitzz_derived.csv"
+    },
+    {
+      "metric": "Video mean without extreme ID",
+      "display": "6.556%",
+      "value": 6.556121167604917,
+      "n": 12,
+      "source": "data/processed/budgetfitzz_derived.csv"
+    },
+    {
+      "metric": "Education median save rate",
+      "display": "0.522%",
+      "value": 0.521842048633527,
+      "n": 13,
+      "source": "derived save_rate grouped by pillar"
+    },
+    {
+      "metric": "Promotion median save rate",
+      "display": "0.232%",
+      "value": 0.2323394652260138,
+      "n": 135,
+      "source": "derived save_rate grouped by pillar"
+    },
+    {
+      "metric": "Video median retention proxy",
+      "display": "55.2%",
+      "value": 55.229091500754826,
+      "n": 13,
+      "source": "watch_time_sec / video_views / duration"
+    },
+    {
+      "metric": "Videos where plays exceed reach",
+      "display": "11 / 13",
+      "value": 11,
+      "n": 13,
+      "source": "raw video_views > raw reach"
+    }
+  ],
+  "summaries": {
+    "format": [
+      {
+        "format": "post",
+        "n": 137,
+        "valid_n": 137,
+        "median": 6.296836493486898,
+        "q1": 5.362792386287019,
+        "q3": 6.403366634414744,
+        "mean": 5.923400880244204,
+        "trimmed_mean": 5.9887742309294225,
+        "winsorized_mean": 5.880938952081464,
+        "bootstrap_median_ci_low": 6.235296279958829,
+        "bootstrap_median_ci_high": 6.342403570613446,
+        "sample_note": "cautious"
+      },
+      {
+        "format": "video",
+        "n": 13,
+        "valid_n": 13,
+        "median": 6.4466019417475735,
+        "q1": 5.3169965277777775,
+        "q3": 8.515361392292666,
+        "mean": 11.130046676079754,
+        "trimmed_mean": 6.77164294147788,
+        "winsorized_mean": 8.518449540891469,
+        "bootstrap_median_ci_low": 5.3169965277777775,
+        "bootstrap_median_ci_high": 8.515361392292666,
+        "sample_note": "cautious"
+      }
+    ],
+    "pillar": [
+      {
+        "pillar": "Promotion",
+        "n": 135,
+        "valid_n": 135,
+        "median": 6.2894736842105265,
+        "q1": 5.353285377983134,
+        "q3": 6.402439596049647,
+        "mean": 5.907199835902419,
+        "trimmed_mean": 5.976996427654847,
+        "winsorized_mean": 5.867039092227851,
+        "bootstrap_median_ci_low": 6.2385736423310645,
+        "bootstrap_median_ci_high": 6.342403570613446,
+        "sample_note": "cautious"
+      },
+      {
+        "pillar": "Education",
+        "n": 13,
+        "valid_n": 13,
+        "median": 6.491914893617021,
+        "q1": 5.759629868732516,
+        "q3": 8.71934604904632,
+        "mean": 11.237992507842575,
+        "trimmed_mean": 6.860826805636264,
+        "winsorized_mean": 8.646825239081034,
+        "bootstrap_median_ci_low": 5.759629868732516,
+        "bootstrap_median_ci_high": 8.71934604904632,
+        "sample_note": "cautious"
+      },
+      {
+        "pillar": "Community",
+        "n": 2,
+        "valid_n": 2,
+        "median": 6.315323466856423,
+        "q1": 5.250352560929363,
+        "q3": 7.380294372783483,
+        "mean": 6.315323466856423,
+        "trimmed_mean": 6.315323466856423,
+        "winsorized_mean": 6.315323466856423,
+        "bootstrap_median_ci_low": 4.185381655002303,
+        "bootstrap_median_ci_high": 8.445265278710544,
+        "sample_note": "anecdotal"
+      }
+    ],
+    "time_of_day": [
+      {
+        "time_of_day": "Late night",
+        "n": 50,
+        "valid_n": 50,
+        "median": 6.315482142533174,
+        "q1": 5.359324575406467,
+        "q3": 6.410104194119934,
+        "mean": 5.9108089477523285,
+        "trimmed_mean": 5.996880264854496,
+        "winsorized_mean": 5.88657406475163,
+        "bootstrap_median_ci_low": 5.84921007025673,
+        "bootstrap_median_ci_high": 6.388297872340426,
+        "sample_note": "cautious"
+      },
+      {
+        "time_of_day": "Afternoon",
+        "n": 49,
+        "valid_n": 49,
+        "median": 6.2385736423310645,
+        "q1": 5.356408689371632,
+        "q3": 6.441048034934497,
+        "mean": 7.1865290242885855,
+        "trimmed_mean": 5.91647973628174,
+        "winsorized_mean": 6.009551660067591,
+        "bootstrap_median_ci_low": 5.405573930488532,
+        "bootstrap_median_ci_high": 6.327420546932743,
+        "sample_note": "cautious"
+      },
+      {
+        "time_of_day": "Morning",
+        "n": 43,
+        "valid_n": 43,
+        "median": 6.325785817996311,
+        "q1": 5.426635931853776,
+        "q3": 6.403166241584512,
+        "mean": 5.9171998716361305,
+        "trimmed_mean": 6.04258875513606,
+        "winsorized_mean": 5.91818299902728,
+        "bootstrap_median_ci_low": 5.759629868732516,
+        "bootstrap_median_ci_high": 6.392081120231772,
+        "sample_note": "cautious"
+      },
+      {
+        "time_of_day": "Evening",
+        "n": 7,
+        "valid_n": 7,
+        "median": 6.3850478245810365,
+        "q1": 5.269412343118011,
+        "q3": 8.480313335501606,
+        "mean": 6.827745500160288,
+        "trimmed_mean": 6.827745500160288,
+        "winsorized_mean": 6.820351367222393,
+        "bootstrap_median_ci_low": 5.221828158458244,
+        "bootstrap_median_ci_high": 8.515361392292666,
+        "sample_note": "cautious"
+      },
+      {
+        "time_of_day": "Night",
+        "n": 1,
+        "valid_n": 1,
+        "median": 6.282344823260044,
+        "q1": 6.282344823260044,
+        "q3": 6.282344823260044,
+        "mean": 6.282344823260044,
+        "trimmed_mean": 6.282344823260044,
+        "winsorized_mean": 6.282344823260044,
+        "bootstrap_median_ci_low": 6.282344823260044,
+        "bootstrap_median_ci_high": 6.282344823260044,
+        "sample_note": "anecdotal"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "evidence_id": "E01",
+      "finding": "The baseline is overwhelmingly promotional.",
+      "metric": "promotion_share_pct",
+      "value": 90.0,
+      "comparison": "135 of 150 items",
+      "sample_size": 150,
+      "confidence": "robust",
+      "source": "data/processed/budgetfitzz_derived.csv"
+    },
+    {
+      "evidence_id": "E02",
+      "finding": "Static posts dominate the tested format mix.",
+      "metric": "post_share_pct",
+      "value": 91.3,
+      "comparison": "137 posts vs 13 videos",
+      "sample_size": 150,
+      "confidence": "robust",
+      "source": "data/processed/budgetfitzz_derived.csv"
+    },
+    {
+      "evidence_id": "E03",
+      "finding": "Education is associated with materially stronger save behavior than promotion.",
+      "metric": "median_save_rate_pct",
+      "value": 0.522,
+      "comparison": "Education 0.522% vs Promotion 0.232% (2.2x directional lift)",
+      "sample_size": 13,
+      "confidence": "cautious",
+      "source": "analysis/tables/pillar_summary.csv"
+    },
+    {
+      "evidence_id": "E04",
+      "finding": "Video median engagement is only slightly above post median engagement.",
+      "metric": "median_engagement_rate_pct",
+      "value": 6.447,
+      "comparison": "Video 6.447% (n=13) vs post 6.297% (n=137)",
+      "sample_size": 13,
+      "confidence": "cautious",
+      "source": "analysis/tables/format_summary.csv"
+    },
+    {
+      "evidence_id": "E05",
+      "finding": "A single video makes the video mean misleading.",
+      "metric": "extreme_video_engagement_rate_pct",
+      "value": 66.017,
+      "comparison": "ID 82; video mean 11.130% vs 6.556% without it",
+      "sample_size": 13,
+      "confidence": "cautious",
+      "source": "analysis/tables/outliers.csv"
+    },
+    {
+      "evidence_id": "E06",
+      "finding": "Topic selection is highly concentrated.",
+      "metric": "top_two_topic_share_pct",
+      "value": 66.7,
+      "comparison": "Outfit Ideas + Budget Finds",
+      "sample_size": 150,
+      "confidence": "robust",
+      "source": "analysis/tables/topic_summary.csv"
+    },
+    {
+      "evidence_id": "E07",
+      "finding": "CTA hygiene and brand consistency need repair.",
+      "metric": "missing_cta_count",
+      "value": 14,
+      "comparison": "14 missing CTAs; 2 rows reference @aristostyling",
+      "sample_size": 150,
+      "confidence": "robust",
+      "source": "analysis/dataset_audit.json"
+    },
+    {
+      "evidence_id": "E08",
+      "finding": "Video views are plays rather than unique users.",
+      "metric": "views_exceed_reach_count",
+      "value": 11,
+      "comparison": "11 of 13 videos have views above reach",
+      "sample_size": 13,
+      "confidence": "cautious",
+      "source": "data/processed/budgetfitzz_derived.csv"
+    },
+    {
+      "evidence_id": "E09",
+      "finding": "Existing videos leave room for stronger retention design.",
+      "metric": "median_retention_proxy_pct",
+      "value": 55.2,
+      "comparison": "Median across 13 videos; proxy based on aggregate watch time / plays / duration",
+      "sample_size": 13,
+      "confidence": "cautious",
+      "source": "data/processed/budgetfitzz_derived.csv"
+    }
+  ],
+  "data_lineage": {
+    "raw_source": "data/raw/budgetfitzz_dataset_fixed.csv",
+    "raw_sha256": "ad796f7f0566bf34d46ff6f5ec4a3fad79dae3203adb31f9120ed12a6b905c30",
+    "derived_source": "data/processed/budgetfitzz_derived.csv",
+    "analysis_source": "analysis/analysis_results.json",
+    "calculation_run_id": "budgetfitzz-20260716T231011Z",
+    "observed_rows": 150,
+    "after_results_available": false,
+    "after_note": "The seven-day pilot has not been published; after values are validated plan counts or explicitly labelled targets, never claimed results."
   },
   "diagnosis": {
     "selected_diagnosis": "The failed baseline is best explained by content-system imbalance: 90% promotional and 91.3% static output concentrated in two topics, reinforced by repetitive or missing CTAs. The issue is not that every promotion underperformed; rather, the mix left too little room for the educational, saveable, community, and retention-led formats that can build repeat demand.",
@@ -581,69 +921,94 @@
   },
   "before_after": [
     {
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
       "dimension": "Content-pillar mix",
-      "before": "Promotion 90.0%",
-      "after": "3 education / 2 value-first commercial / 2 community"
+      "before": "Promotion 135/150 (90.0%); Education 13/150 (8.7%); Community 2/150 (1.3%)",
+      "after": "Education 3/7 (42.9%); Community 2/7 (28.6%); Value-first commercial 2/7 (28.6%)",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     },
     {
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
       "dimension": "Format mix",
-      "before": "Posts 91.3% (137/150)",
-      "after": "5 posts / 2 videos in the pilot"
+      "before": "post 137/150 (91.3%); video 13/150 (8.7%)",
+      "after": "post 5/7 (71.4%); video 2/7 (28.6%)",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     },
     {
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
       "dimension": "Topic diversity",
-      "before": "Top two topics 66.7%",
-      "after": "Wardrobe systems, fit, votes, audit, sneakers, and two commercial anchors"
+      "before": "5 unique topics; top two 100/150 (66.7%)",
+      "after": "7 unique topics across 7 items",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     },
     {
-      "dimension": "Hook diversity",
-      "before": "Mostly emotional/aspirational repetitions",
-      "after": "Specific formulas, tension, bounded questions, and use-case decisions"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Hook-style diversity",
+      "before": "Dominant: Emotional / social 71/150 (47.3%)",
+      "after": "2 styles: List / specificity 5; Question 2",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json → same classifier"
     },
     {
-      "dimension": "CTA diversity",
-      "before": "14 missing plus repetitive link requests",
-      "after": "7/7 explicit CTAs across save, vote, screenshot, audit, and qualified link intent"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "CTA coverage",
+      "before": "Explicit CTA 136/150 (90.7%); missing 14",
+      "after": "Explicit CTA 7/7 (100.0%) across 4 CTA styles",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json → same classifier"
     },
     {
-      "dimension": "Promotional concentration",
-      "before": "90.0% promotion",
-      "after": "Commercial content capped at 2/7 and must teach first"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Education share",
+      "before": "13/150 (8.7%)",
+      "after": "3/7 (42.9%)",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     },
     {
-      "dimension": "Educational value",
-      "before": "13/150 education items",
-      "after": "3/7 education items with on-frame takeaways"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Community share",
+      "before": "2/150 (1.3%)",
+      "after": "2/7 (28.6%)",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     },
     {
-      "dimension": "Community interaction",
-      "before": "2/150 items (anecdotal)",
-      "after": "2 bounded interaction items designed as tests"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Education save rate",
+      "before": "Median 0.522% (n=13)",
+      "after": "0.50-0.75%",
+      "after_kind": "target / not measured",
+      "after_source": "analysis/target_metrics.json"
     },
     {
-      "dimension": "Save/share potential",
-      "before": "Education median save 0.522%",
-      "after": "Education post target save rate 0.50-0.75%"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Video retention proxy",
+      "before": "Median 55.2% (n=13)",
+      "after": "60-70%",
+      "after_kind": "target / not measured",
+      "after_source": "analysis/target_metrics.json"
     },
     {
-      "dimension": "Video retention design",
-      "before": "Median proxy 55.2%",
-      "after": "First-second hooks, 3-second scenes, target 60-70%"
-    },
-    {
-      "dimension": "Timing",
-      "before": "Uneven observational timing cells",
-      "after": "Two pre-registered test windows; compare within format/pillar"
-    },
-    {
-      "dimension": "Visual quality",
-      "before": "Text-heavy, inconsistent source content",
-      "after": "Cohesive original editorial system with mobile-safe hierarchy"
-    },
-    {
-      "dimension": "Expected performance",
-      "before": "Observed historical metrics",
-      "after": "Reasoned target ranges only; no claim of achieved lift"
+      "before_kind": "observed",
+      "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
+      "dimension": "Publishing windows",
+      "before": "19 observed posting hours",
+      "after": "7 pre-registered date/time windows",
+      "after_kind": "planned design",
+      "after_source": "analysis/seven_day_plan.json"
     }
   ],
   "trace": [
@@ -6045,6 +6410,501 @@
       "retry_number": 0,
       "provider_or_tool": "python-local",
       "timestamp": "2026-07-16T22:54:03.880082+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T225356Z",
+      "agent": "QualityAssuranceAgent",
+      "action": "execute",
+      "input_reference": "analysis + assets + logs",
+      "output_reference": "logs/validation_report.json",
+      "decision_summary": "Validated analysis, plan counts, assets, codecs, spend, architecture, memory, trace, and app source.",
+      "evidence_ids": [],
+      "duration_sec": 0.469,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T22:54:04.357902+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T225356Z",
+      "agent": "PackagingAgent",
+      "action": "execute",
+      "input_reference": "validated project",
+      "output_reference": "submission/final + submission ZIP",
+      "decision_summary": "Assembled reports, sources, assets, prompts, logs, manifest, checksums, and the submission ZIP.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T22:54:04.364905+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T225356Z",
+      "agent": "PackagingAgent",
+      "action": "execute",
+      "input_reference": "validated project",
+      "output_reference": "submission/final + submission ZIP",
+      "decision_summary": "Assembled reports, sources, assets, prompts, logs, manifest, checksums, and the submission ZIP.",
+      "evidence_ids": [],
+      "duration_sec": 7.4,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T22:54:11.774902+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T225356Z",
+      "agent": "OrchestratorAgent",
+      "action": "checkpoint",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "Auto-approved for the deterministic submission run after required evidence and validation artifacts were generated.",
+      "evidence_ids": [
+        "validation:preflight-pass"
+      ],
+      "duration_sec": 0,
+      "status": "approved",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T22:54:11.782908+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T225356Z",
+      "agent": "OrchestratorAgent",
+      "action": "orchestrate",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "All configured stages completed and the preflight package was generated.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T22:54:11.796923+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "OrchestratorAgent",
+      "action": "orchestrate",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "Started persistent state-machine workflow.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T23:10:11.297000+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "DataAuditAgent",
+      "action": "execute",
+      "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
+      "output_reference": "analysis/dataset_audit.json",
+      "decision_summary": "Validated schema, dates, missing values, duplicates, ranges, handles, and anomalies.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:11.303000+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "DataAuditAgent",
+      "action": "execute",
+      "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
+      "output_reference": "analysis/dataset_audit.json",
+      "decision_summary": "Validated schema, dates, missing values, duplicates, ranges, handles, and anomalies.",
+      "evidence_ids": [],
+      "duration_sec": 0.037,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:11.356622+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "MetricsAgent",
+      "action": "execute",
+      "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
+      "output_reference": "data/processed/budgetfitzz_derived.csv",
+      "decision_summary": "Applied the machine-readable metric contract without modifying raw columns.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:11.366613+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "MetricsAgent",
+      "action": "execute",
+      "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
+      "output_reference": "data/processed/budgetfitzz_derived.csv",
+      "decision_summary": "Applied the machine-readable metric contract without modifying raw columns.",
+      "evidence_ids": [],
+      "duration_sec": 0.054,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:11.434706+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "PerformanceAnalystAgent",
+      "action": "execute",
+      "input_reference": "data/processed/budgetfitzz_derived.csv",
+      "output_reference": "analysis/analysis_results.json",
+      "decision_summary": "Produced robust comparisons, charts, evidence objects, caveats, and uncertainty labels.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:11.444713+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "PerformanceAnalystAgent",
+      "action": "execute",
+      "input_reference": "data/processed/budgetfitzz_derived.csv",
+      "output_reference": "analysis/analysis_results.json",
+      "decision_summary": "Produced robust comparisons, charts, evidence objects, caveats, and uncertainty labels.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09"
+      ],
+      "duration_sec": 1.348,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.808900+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "FailureDiagnosisAgent",
+      "action": "execute",
+      "input_reference": "analysis/evidence.json",
+      "output_reference": "analysis/failure_diagnosis.json",
+      "decision_summary": "Tested the proposed failure hypothesis, retained counterevidence, and selected the best-supported qualified diagnosis.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.816902+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "FailureDiagnosisAgent",
+      "action": "execute",
+      "input_reference": "analysis/evidence.json",
+      "output_reference": "analysis/failure_diagnosis.json",
+      "decision_summary": "Tested the proposed failure hypothesis, retained counterevidence, and selected the best-supported qualified diagnosis.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0.006,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.835900+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "OrchestratorAgent",
+      "action": "checkpoint",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "Auto-approved for the deterministic submission run after required evidence and validation artifacts were generated.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "approved",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T23:10:12.849898+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "StrategyAgent",
+      "action": "execute",
+      "input_reference": "analysis/failure_diagnosis.json",
+      "output_reference": "analysis/revised_strategy.json",
+      "decision_summary": "Converted each major finding into a behavioral strategy change, target, and limitation.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.856900+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "StrategyAgent",
+      "action": "execute",
+      "input_reference": "analysis/failure_diagnosis.json",
+      "output_reference": "analysis/revised_strategy.json",
+      "decision_summary": "Converted each major finding into a behavioral strategy change, target, and limitation.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0.005,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.872899+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "OrchestratorAgent",
+      "action": "checkpoint",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "Auto-approved for the deterministic submission run after required evidence and validation artifacts were generated.",
+      "evidence_ids": [
+        "E01",
+        "E03",
+        "E02,E04,E05",
+        "E06",
+        "E07"
+      ],
+      "duration_sec": 0,
+      "status": "approved",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T23:10:12.883169+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "ContentPlannerAgent",
+      "action": "execute",
+      "input_reference": "analysis/revised_strategy.json",
+      "output_reference": "analysis/seven_day_plan.json",
+      "decision_summary": "Created and programmatically validated seven consecutive items: exactly five posts and two videos.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.889171+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "ContentPlannerAgent",
+      "action": "execute",
+      "input_reference": "analysis/revised_strategy.json",
+      "output_reference": "analysis/seven_day_plan.json",
+      "decision_summary": "Created and programmatically validated seven consecutive items: exactly five posts and two videos.",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06",
+        "E07",
+        "E09"
+      ],
+      "duration_sec": 0.007,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.905731+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "CreativeDirectorAgent",
+      "action": "execute",
+      "input_reference": "analysis/seven_day_plan.json",
+      "output_reference": "config/brand_tokens.yaml",
+      "decision_summary": "Locked the visual system, prompts, original-asset rules, and zero-cost local provider.",
+      "evidence_ids": [
+        "E03",
+        "E06",
+        "E07"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.922730+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "CreativeDirectorAgent",
+      "action": "execute",
+      "input_reference": "analysis/seven_day_plan.json",
+      "output_reference": "config/brand_tokens.yaml",
+      "decision_summary": "Locked the visual system, prompts, original-asset rules, and zero-cost local provider.",
+      "evidence_ids": [
+        "E03",
+        "E06",
+        "E07"
+      ],
+      "duration_sec": 0.004,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.934730+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "AssetGenerationAgent",
+      "action": "execute",
+      "input_reference": "analysis/seven_day_plan.json",
+      "output_reference": "assets/posts + assets/videos",
+      "decision_summary": "Composited four audited HF photographs into the agent-authored post system, retained the Day 7 deterministic fallback, and rendered two captioned H.264 videos with NVENC-first encoding.",
+      "evidence_ids": [
+        "E03",
+        "E05",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:12.938742+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "AssetGenerationAgent",
+      "action": "execute",
+      "input_reference": "analysis/seven_day_plan.json",
+      "output_reference": "assets/posts + assets/videos",
+      "decision_summary": "Composited four audited HF photographs into the agent-authored post system, retained the Day 7 deterministic fallback, and rendered two captioned H.264 videos with NVENC-first encoding.",
+      "evidence_ids": [
+        "E03",
+        "E05",
+        "E09"
+      ],
+      "duration_sec": 6.167,
+      "status": "completed",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:19.120905+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "OrchestratorAgent",
+      "action": "checkpoint",
+      "input_reference": "",
+      "output_reference": "",
+      "decision_summary": "Auto-approved for the deterministic submission run after required evidence and validation artifacts were generated.",
+      "evidence_ids": [
+        "E03",
+        "E05",
+        "E09"
+      ],
+      "duration_sec": 0,
+      "status": "approved",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "workflow-state-machine",
+      "timestamp": "2026-07-16T23:10:19.138803+00:00"
+    },
+    {
+      "run_id": "budgetfitzz-20260716T231011Z",
+      "agent": "QualityAssuranceAgent",
+      "action": "execute",
+      "input_reference": "analysis + assets + logs",
+      "output_reference": "logs/validation_report.json",
+      "decision_summary": "Validated analysis, plan counts, assets, codecs, spend, architecture, memory, trace, and app source.",
+      "evidence_ids": [],
+      "duration_sec": 0,
+      "status": "started",
+      "error": null,
+      "retry_number": 0,
+      "provider_or_tool": "python-local",
+      "timestamp": "2026-07-16T23:10:19.217438+00:00"
     }
   ]
 }

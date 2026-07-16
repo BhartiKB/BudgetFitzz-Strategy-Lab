@@ -16,10 +16,12 @@ test_exact_format_contract (test_plan_schema.PlanTests.test_exact_format_contrac
 test_package_is_valid_zip_when_present (test_video_and_package.VideoPackageTests.test_package_is_valid_zip_when_present) ... ok
 test_video_validity (test_video_and_package.VideoPackageTests.test_video_validity) ... ok
 test_application_smoke (test_workflow_and_app.WorkflowAppTests.test_application_smoke) ... ok
+test_browser_code_does_not_embed_copied_kpi_values (test_workflow_and_app.WorkflowAppTests.test_browser_code_does_not_embed_copied_kpi_values) ... ok
+test_dashboard_metrics_are_pipeline_values_with_lineage (test_workflow_and_app.WorkflowAppTests.test_dashboard_metrics_are_pipeline_values_with_lineage) ... ok
 test_persistent_state_when_present (test_workflow_and_app.WorkflowAppTests.test_persistent_state_when_present) ... ok
 test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 0.833s
+Ran 22 tests in 0.954s
 
 OK

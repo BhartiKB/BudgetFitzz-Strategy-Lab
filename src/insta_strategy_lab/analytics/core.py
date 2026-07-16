@@ -288,6 +288,8 @@ def analyze_dataset(raw_csv: Path, processed_dir: Path, analysis_dir: Path) -> d
             "post_median_er_pct": post_median_er, "video_median_er_pct": video_median_er,
             "video_mean_er_pct": float(video["engagement_rate_by_reach"].mean()),
             "video_mean_er_without_extreme_pct": float(video_without_extreme["engagement_rate_by_reach"].mean()),
+            "extreme_video_er_pct": float(extreme["engagement_rate_by_reach"]),
+            "extreme_video_id": int(extreme["id"]),
             "education_median_save_rate_pct": edu_median_save,
             "promotion_median_save_rate_pct": promo_median_save,
             "video_median_retention_proxy_pct": video_median_retention,
