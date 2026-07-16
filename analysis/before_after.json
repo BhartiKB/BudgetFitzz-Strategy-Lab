@@ -1,0 +1,67 @@
+[
+  {
+    "dimension": "Content-pillar mix",
+    "before": "Promotion 90.0%",
+    "after": "3 education / 2 value-first commercial / 2 community"
+  },
+  {
+    "dimension": "Format mix",
+    "before": "Posts 91.3% (137/150)",
+    "after": "5 posts / 2 videos in the pilot"
+  },
+  {
+    "dimension": "Topic diversity",
+    "before": "Top two topics 66.7%",
+    "after": "Wardrobe systems, fit, votes, audit, sneakers, and two commercial anchors"
+  },
+  {
+    "dimension": "Hook diversity",
+    "before": "Mostly emotional/aspirational repetitions",
+    "after": "Specific formulas, tension, bounded questions, and use-case decisions"
+  },
+  {
+    "dimension": "CTA diversity",
+    "before": "14 missing plus repetitive link requests",
+    "after": "7/7 explicit CTAs across save, vote, screenshot, audit, and qualified link intent"
+  },
+  {
+    "dimension": "Promotional concentration",
+    "before": "90.0% promotion",
+    "after": "Commercial content capped at 2/7 and must teach first"
+  },
+  {
+    "dimension": "Educational value",
+    "before": "13/150 education items",
+    "after": "3/7 education items with on-frame takeaways"
+  },
+  {
+    "dimension": "Community interaction",
+    "before": "2/150 items (anecdotal)",
+    "after": "2 bounded interaction items designed as tests"
+  },
+  {
+    "dimension": "Save/share potential",
+    "before": "Education median save 0.522%",
+    "after": "Education post target save rate 0.50-0.75%"
+  },
+  {
+    "dimension": "Video retention design",
+    "before": "Median proxy 55.2%",
+    "after": "First-second hooks, 3-second scenes, target 60-70%"
+  },
+  {
+    "dimension": "Timing",
+    "before": "Uneven observational timing cells",
+    "after": "Two pre-registered test windows; compare within format/pillar"
+  },
+  {
+    "dimension": "Visual quality",
+    "before": "Text-heavy, inconsistent source content",
+    "after": "Cohesive original editorial system with mobile-safe hierarchy"
+  },
+  {
+    "dimension": "Expected performance",
+    "before": "Observed historical metrics",
+    "after": "Reasoned target ranges only; no claim of achieved lift"
+  }
+]

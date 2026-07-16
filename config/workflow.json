@@ -1,0 +1,16 @@
+{
+  "seed": 4050,
+  "max_retries": 2,
+  "retry_delay_seconds": 0.25,
+  "auto_approve_demo": true,
+  "steps": [
+    "data_audit", "metrics", "performance_analysis", "failure_diagnosis",
+    "strategy", "content_plan", "creative_direction", "asset_generation",
+    "quality_assurance", "packaging"
+  ],
+  "human_checkpoints": [
+    "failure_diagnosis_approval", "revised_strategy_approval",
+    "asset_approval", "final_export_approval"
+  ]
+}
+

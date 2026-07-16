@@ -1,0 +1,8 @@
+{
+  "currency": "INR",
+  "paid_generation_total_inr": 0,
+  "cap_inr": 100,
+  "within_cap": true,
+  "entries": 7,
+  "subscription_treatment": "Development subscriptions are separate from direct revised-content generation expenses."
+}

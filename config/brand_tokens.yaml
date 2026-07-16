@@ -1,0 +1,33 @@
+brand: BudgetFitzz
+palette:
+  canvas: "#F6F2E9"
+  ink: "#17211B"
+  forest: "#0F6B4F"
+  lime: "#B7F34A"
+  coral: "#FF7A45"
+  blue: "#4285F4"
+  muted: "#627067"
+typography:
+  display: "Segoe UI Semibold"
+  body: "Segoe UI"
+type_scale_px:
+  display: 82
+  title: 64
+  subtitle: 36
+  body: 30
+  micro: 20
+spacing_px: [8, 16, 24, 32, 48, 64, 80]
+border_radius_px: 28
+shadows:
+  card: "0 18 40 rgba(23,33,27,0.14)"
+background_treatments: ["warm editorial canvas", "forest field", "modular grid"]
+accent_treatments: ["lime underline", "coral decision chip", "blue information tag"]
+wordmark_rules: "Lowercase budgetfitzz; ink or white; keep clear space equal to the letter height."
+cta_treatment: "Single action in a full-width high-contrast footer card."
+safe_zones_px:
+  post: 72
+  video: 96
+dimensions_px:
+  post: [1080, 1350]
+  video: [1080, 1920]
+

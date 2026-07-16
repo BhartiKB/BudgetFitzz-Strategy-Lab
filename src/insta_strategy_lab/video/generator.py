@@ -1,0 +1,92 @@
+"""Motion-graphics video generation with NVENC and libx264 fallback."""
+
+from __future__ import annotations
+
+import json
+import subprocess
+import time
+from pathlib import Path
+from typing import Any
+
+
+def ffmpeg_paths(root: Path) -> tuple[Path, Path]:
+    candidates = list((root / "tools" / "ffmpeg").glob("**/bin/ffmpeg.exe"))
+    probes = list((root / "tools" / "ffmpeg").glob("**/bin/ffprobe.exe"))
+    if not candidates or not probes:
+        raise FileNotFoundError("Project-local FFmpeg/ffprobe build is missing")
+    # Prefer FFmpeg 7.1: it targets NVENC API 13.0 and is compatible with the installed 581.86 driver.
+    candidates.sort(key=lambda path: ("n7.1" not in str(path), str(path)))
+    probes.sort(key=lambda path: ("n7.1" not in str(path), str(path)))
+    return candidates[0], probes[0]
+
+
+def probe_video(ffprobe: Path, path: Path) -> dict[str, Any]:
+    command = [
+        str(ffprobe), "-v", "error", "-show_entries",
+        "format=duration,size:stream=codec_name,width,height,avg_frame_rate,pix_fmt",
+        "-of", "json", str(path),
+    ]
+    completed = subprocess.run(command, capture_output=True, text=True, check=True)
+    return json.loads(completed.stdout)
+
+
+def encode_video(ffmpeg: Path, scenes: list[Path], output: Path, encoder: str) -> tuple[bool, str, float]:
+    command = [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning"]
+    for scene in scenes:
+        # A still image is one input frame; zoompan expands it to exactly 90 frames (3 s at 30 fps).
+        command.extend(["-i", str(scene)])
+    filters = []
+    for index in range(len(scenes)):
+        filters.append(
+            f"[{index}:v]scale=1080:1920,zoompan="
+            f"z='min(zoom+0.00045,1.04)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':"
+            f"d=90:s=1080x1920:fps=30,fade=t=in:st=0:d=0.18,fade=t=out:st=2.72:d=0.28,"
+            f"setpts=PTS-STARTPTS[v{index}]"
+        )
+    concat_inputs = "".join(f"[v{i}]" for i in range(len(scenes)))
+    filters.append(f"{concat_inputs}concat=n={len(scenes)}:v=1:a=0,format=yuv420p[outv]")
+    command.extend(["-filter_complex", ";".join(filters), "-map", "[outv]"])
+    if encoder == "h264_nvenc":
+        command.extend(["-c:v", encoder, "-preset", "p4", "-tune", "hq", "-rc", "vbr", "-cq", "20", "-b:v", "5M", "-maxrate", "9M"])
+    else:
+        command.extend(["-c:v", "libx264", "-preset", "medium", "-crf", "19"])
+    command.extend(["-r", "30", "-movflags", "+faststart", "-metadata", "comment=Generated locally at INR 0; no copyrighted music", str(output)])
+    started = time.perf_counter()
+    completed = subprocess.run(command, capture_output=True, text=True)
+    elapsed = time.perf_counter() - started
+    return completed.returncode == 0, completed.stderr[-4000:], elapsed
+
+
+def extract_frame(ffmpeg: Path, video: Path, output: Path) -> None:
+    subprocess.run(
+        [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-ss", "6.2", "-i", str(video), "-frames:v", "1", str(output)],
+        check=True,
+    )
+
+
+def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Path, frame_dir: Path) -> dict[str, Any]:
+    ffmpeg, ffprobe = ffmpeg_paths(root)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    frame_dir.mkdir(parents=True, exist_ok=True)
+    results: dict[str, Any] = {"ffmpeg": str(ffmpeg), "selected_encoder": "h264_nvenc", "videos": {}}
+    for filename, scenes in scene_map.items():
+        output = output_dir / filename
+        ok, error, elapsed = encode_video(ffmpeg, scenes, output, "h264_nvenc")
+        encoder = "h264_nvenc"
+        if not ok:
+            ok, fallback_error, elapsed = encode_video(ffmpeg, scenes, output, "libx264")
+            error = f"NVENC failed: {error}\nFallback: {fallback_error}"
+            encoder = "libx264"
+            results["selected_encoder"] = "libx264"
+        if not ok:
+            raise RuntimeError(f"Video encoding failed for {filename}: {error}")
+        frame_path = frame_dir / f"{Path(filename).stem}_preview.png"
+        extract_frame(ffmpeg, output, frame_path)
+        results["videos"][filename] = {
+            "encoder": encoder,
+            "elapsed_sec": round(elapsed, 3),
+            "probe": probe_video(ffprobe, output),
+            "preview_frame": str(frame_path.relative_to(root)).replace("\\", "/"),
+            "scenes": [str(path.relative_to(root)).replace("\\", "/") for path in scenes],
+        }
+    return results

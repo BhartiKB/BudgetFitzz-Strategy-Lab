@@ -1,0 +1,51 @@
+{
+  "rows": 150,
+  "columns": 18,
+  "date_min": "2026-03-17",
+  "date_max": "2026-07-16",
+  "span_days": 121,
+  "duplicate_rows": 0,
+  "duplicate_ids": 0,
+  "invalid_dates": 0,
+  "missing_by_column": {
+    "id": 0,
+    "date": 0,
+    "format": 0,
+    "topic": 0,
+    "pillar": 0,
+    "hook": 0,
+    "caption": 0,
+    "cta": 14,
+    "post_time": 0,
+    "reach": 0,
+    "impressions": 0,
+    "likes": 0,
+    "comments": 0,
+    "shares": 0,
+    "saves": 0,
+    "video_views": 137,
+    "watch_time_sec": 137,
+    "video_duration_sec": 137
+  },
+  "format_counts": {
+    "post": 137,
+    "video": 13
+  },
+  "pillar_counts": {
+    "Promotion": 135,
+    "Education": 13,
+    "Community": 2
+  },
+  "topic_counts": {
+    "Outfit Ideas": 52,
+    "Budget Finds": 48,
+    "Color Combo Guide": 27,
+    "Summer Outfits": 18,
+    "Sneaker Review": 5
+  },
+  "negative_numeric_values": 0,
+  "zero_reach": 0,
+  "impressions_below_reach": 0,
+  "aristostyling_rows": 2,
+  "provenance": "User-provided local evaluation dataset; original provenance unspecified."
+}

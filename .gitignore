@@ -1,0 +1,26 @@
+# Local API credentials
+.env
+.env.*
+!.env.example
+
+# Python-generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Local virtual environment
+.venv/
+
+# Runtime and scratch data
+tmp/
+output/
+logs/*.db
+logs/*.log
+
+# Downloaded third-party binaries (370+ MB locally)
+tools/ffmpeg/
+
+# Reproducible packaged exports
+submission/final/
+submission/*.zip

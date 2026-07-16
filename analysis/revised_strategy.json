@@ -1,0 +1,101 @@
+{
+  "objective": "Increase qualified saves, shares, profile actions, link-request comments, and repeat audience growth by making BudgetFitzz immediately useful.",
+  "audience_focus": "Delhi NCR men aged about 18-30: college students, early-career professionals, and budget-sensitive style explorers (assumed context).",
+  "value_proposition": "Practical Indian menswear decisions that look considered without overspending.",
+  "content_mix": {
+    "Education": 3,
+    "Value-first commercial": 2,
+    "Community": 2
+  },
+  "format_mix": {
+    "post": 5,
+    "video": 2
+  },
+  "format_rules": [
+    "Posts must deliver a complete takeaway on-frame.",
+    "Videos use a first-second hook, three meaningful scenes, readable captions, and a CTA end card."
+  ],
+  "hook_principles": [
+    "Promise a specific outcome.",
+    "Use numbers or tension only when the body pays it off.",
+    "Lead with the decision the audience needs to make."
+  ],
+  "cta_principles": [
+    "One primary action per item.",
+    "Rotate save, share, vote, audit, and link-request intents.",
+    "Never use a wrong account handle."
+  ],
+  "posting_time_guidance": "Treat historical timing as exploratory because cells are uneven. Start with 19:15-21:00 IST for interaction-led items and 12:30-13:15 IST for quick utility, then measure by comparable pillar/format.",
+  "visual_identity": "Warm off-white editorial canvas, deep forest ink, electric lime utility highlights, coral commercial accents, modular cards, and original garment geometry.",
+  "video_retention_rules": [
+    "Hook visible by frame 1.",
+    "New visual idea every 2.5-4 seconds.",
+    "No caption line over 8 words.",
+    "Final CTA card remains visible for at least 1.5 seconds."
+  ],
+  "community_rules": [
+    "Ask bounded questions people can answer quickly.",
+    "Respond using a reusable comment taxonomy: preference, fit problem, budget intent, and link intent."
+  ],
+  "promotion_limit": "Maximum 2 of 7 items; every commercial item must teach a selection rule before presenting the product shortlist.",
+  "experimentation_plan": "Run this as a seven-day pilot. Pre-register item-level primary KPI, compare only within format/pillar, retain raw outliers, and review median plus quartiles after the cycle.",
+  "measurement_framework": [
+    "Engagement rate by reach",
+    "Save rate",
+    "Share rate",
+    "Comment quality",
+    "Average watch time",
+    "Retention proxy",
+    "Profile actions",
+    "Link-request comments",
+    "Pillar balance",
+    "Publishing consistency"
+  ],
+  "evidence_linked_changes": [
+    {
+      "finding": "Promotion occupies 90.0% of the baseline.",
+      "evidence": "E01",
+      "interpretation": "The brand asks for action more often than it earns attention through utility.",
+      "strategy_change": "Cap promotional/value-first commercial items at 2 of 7; allocate 3 education and 2 community items.",
+      "expected_behavioural_effect": "More saves, shares, repeat visits, and higher-quality comments.",
+      "success_metric": "Pillar mix compliance; education median save rate; qualitative comment coding.",
+      "confidence_or_limitation": "Strong concentration evidence; performance effect remains a forward test."
+    },
+    {
+      "finding": "Education median save rate is 0.522% vs promotion 0.232%.",
+      "evidence": "E03",
+      "interpretation": "Useful explanations appear more saveable, though education has only 13 records.",
+      "strategy_change": "Make the takeaway visible on-frame: formulas, checklists, comparisons, and avoidable mistakes.",
+      "expected_behavioural_effect": "Users can understand and save the value without opening a long caption.",
+      "success_metric": "Save rate target 0.45-0.70% on education posts.",
+      "confidence_or_limitation": "Cautious association; no causal attribution."
+    },
+    {
+      "finding": "Posts are 91.3% of the baseline; video has n=13 and one extreme outlier.",
+      "evidence": "E02,E04,E05",
+      "interpretation": "Video is under-tested and its mean is unreliable, but the format deserves controlled trials.",
+      "strategy_change": "Use exactly two short videos with first-second hooks, 3-scene pacing, captions, and explicit end cards.",
+      "expected_behavioural_effect": "Improved watch-through and more interpretable retention data.",
+      "success_metric": "Retention proxy target 60-70% vs observed median 55.2%.",
+      "confidence_or_limitation": "Directional; views are plays and not unique reach."
+    },
+    {
+      "finding": "Outfit Ideas and Budget Finds account for 66.7% of all records.",
+      "evidence": "E06",
+      "interpretation": "Repeated topic territory limits discovery and audience learning.",
+      "strategy_change": "Add wardrobe systems, fit diagnosis, colour voting, and wardrobe-audit topics while retaining familiar commercial anchors.",
+      "expected_behavioural_effect": "Broader reasons to save, share, and return.",
+      "success_metric": "No topic repeated more than twice in the seven-day cycle.",
+      "confidence_or_limitation": "Concentration is certain; audience response must be tested."
+    },
+    {
+      "finding": "Fourteen CTAs are missing and two rows use @aristostyling.",
+      "evidence": "E07",
+      "interpretation": "CTA and handle inconsistency reduce measurement clarity and brand trust.",
+      "strategy_change": "Use one primary CTA per asset, rotate save/share/vote/link-request intents, and standardize @budgetfitzz.",
+      "expected_behavioural_effect": "Cleaner attribution and less repetitive comment bait.",
+      "success_metric": "100% CTA coverage; 0 wrong-handle occurrences; at least 4 CTA styles across 7 items.",
+      "confidence_or_limitation": "Direct quality-control fix; behavioral lift is a hypothesis."
+    }
+  ]
+}

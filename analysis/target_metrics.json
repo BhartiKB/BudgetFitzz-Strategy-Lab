@@ -1,0 +1,40 @@
+{
+  "status": "forward-looking targets / hypotheses, not observed results",
+  "baseline": {
+    "post_median_engagement_rate_pct": 6.296836493486898,
+    "video_median_engagement_rate_pct": 6.4466019417475735,
+    "video_median_retention_proxy_pct": 55.229091500754826
+  },
+  "targets": [
+    {
+      "metric": "Education post save rate",
+      "target_range": "0.50-0.75%",
+      "rationale": "Near/above observed education median with creative optimized for saves"
+    },
+    {
+      "metric": "Video retention proxy",
+      "target_range": "60-70%",
+      "rationale": "Modest improvement over observed median using shorter scenes and explicit progression"
+    },
+    {
+      "metric": "Video engagement rate by reach",
+      "target_range": "6.5-8.0%",
+      "rationale": "Anchored near robust video/post medians, not the extreme mean"
+    },
+    {
+      "metric": "Qualified community comments",
+      "target_range": "0.8-2.0% of reach",
+      "rationale": "Bounded questions; community baseline is anecdotal"
+    },
+    {
+      "metric": "CTA coverage",
+      "target_range": "100%",
+      "rationale": "Direct quality-control requirement"
+    },
+    {
+      "metric": "Content mix compliance",
+      "target_range": "3 education / 2 value-first / 2 community",
+      "rationale": "Pre-registered portfolio balance"
+    }
+  ]
+}

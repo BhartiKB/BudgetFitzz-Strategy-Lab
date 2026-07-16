@@ -1,0 +1,92 @@
+[
+  {
+    "evidence_id": "E01",
+    "finding": "The baseline is overwhelmingly promotional.",
+    "metric": "promotion_share_pct",
+    "value": 90.0,
+    "comparison": "135 of 150 items",
+    "sample_size": 150,
+    "confidence": "robust",
+    "source": "data/processed/budgetfitzz_derived.csv"
+  },
+  {
+    "evidence_id": "E02",
+    "finding": "Static posts dominate the tested format mix.",
+    "metric": "post_share_pct",
+    "value": 91.3,
+    "comparison": "137 posts vs 13 videos",
+    "sample_size": 150,
+    "confidence": "robust",
+    "source": "data/processed/budgetfitzz_derived.csv"
+  },
+  {
+    "evidence_id": "E03",
+    "finding": "Education is associated with materially stronger save behavior than promotion.",
+    "metric": "median_save_rate_pct",
+    "value": 0.522,
+    "comparison": "Education 0.522% vs Promotion 0.232% (2.2x directional lift)",
+    "sample_size": 13,
+    "confidence": "cautious",
+    "source": "analysis/tables/pillar_summary.csv"
+  },
+  {
+    "evidence_id": "E04",
+    "finding": "Video median engagement is only slightly above post median engagement.",
+    "metric": "median_engagement_rate_pct",
+    "value": 6.447,
+    "comparison": "Video 6.447% (n=13) vs post 6.297% (n=137)",
+    "sample_size": 13,
+    "confidence": "cautious",
+    "source": "analysis/tables/format_summary.csv"
+  },
+  {
+    "evidence_id": "E05",
+    "finding": "A single video makes the video mean misleading.",
+    "metric": "extreme_video_engagement_rate_pct",
+    "value": 66.017,
+    "comparison": "ID 82; video mean 11.130% vs 6.556% without it",
+    "sample_size": 13,
+    "confidence": "cautious",
+    "source": "analysis/tables/outliers.csv"
+  },
+  {
+    "evidence_id": "E06",
+    "finding": "Topic selection is highly concentrated.",
+    "metric": "top_two_topic_share_pct",
+    "value": 66.7,
+    "comparison": "Outfit Ideas + Budget Finds",
+    "sample_size": 150,
+    "confidence": "robust",
+    "source": "analysis/tables/topic_summary.csv"
+  },
+  {
+    "evidence_id": "E07",
+    "finding": "CTA hygiene and brand consistency need repair.",
+    "metric": "missing_cta_count",
+    "value": 14,
+    "comparison": "14 missing CTAs; 2 rows reference @aristostyling",
+    "sample_size": 150,
+    "confidence": "robust",
+    "source": "analysis/dataset_audit.json"
+  },
+  {
+    "evidence_id": "E08",
+    "finding": "Video views are plays rather than unique users.",
+    "metric": "views_exceed_reach_count",
+    "value": 11,
+    "comparison": "11 of 13 videos have views above reach",
+    "sample_size": 13,
+    "confidence": "cautious",
+    "source": "data/processed/budgetfitzz_derived.csv"
+  },
+  {
+    "evidence_id": "E09",
+    "finding": "Existing videos leave room for stronger retention design.",
+    "metric": "median_retention_proxy_pct",
+    "value": 55.2,
+    "comparison": "Median across 13 videos; proxy based on aggregate watch time / plays / duration",
+    "sample_size": 13,
+    "confidence": "cautious",
+    "source": "data/processed/budgetfitzz_derived.csv"
+  }
+]

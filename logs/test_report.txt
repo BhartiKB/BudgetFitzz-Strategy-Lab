@@ -1,0 +1,15 @@
+test_paid_spend_cap (test_assets_and_spend.AssetSpendTests.test_paid_spend_cap) ... ok
+test_post_dimensions_and_mapping (test_assets_and_spend.AssetSpendTests.test_post_dimensions_and_mapping) ... ok
+test_verified_source_contract (test_data_quality.DataQualityTests.test_verified_source_contract) ... ok
+test_contract_formulas_and_zero_guard (test_metrics.MetricTests.test_contract_formulas_and_zero_guard) ... ok
+test_exact_format_contract (test_plan_schema.PlanTests.test_exact_format_contract) ... ok
+test_package_is_valid_zip_when_present (test_video_and_package.VideoPackageTests.test_package_is_valid_zip_when_present) ... ok
+test_video_validity (test_video_and_package.VideoPackageTests.test_video_validity) ... ok
+test_application_smoke (test_workflow_and_app.WorkflowAppTests.test_application_smoke) ... ok
+test_persistent_state_when_present (test_workflow_and_app.WorkflowAppTests.test_persistent_state_when_present) ... ok
+test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.712s
+
+OK

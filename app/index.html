@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BudgetFitzz Strategy Lab</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+  <aside class="rail">
+    <a class="brand" href="#overview">budgetfitzz<span>lab</span></a>
+    <nav id="nav">
+      <a href="#overview">Overview</a><a href="#quality">Data quality</a><a href="#metrics">Metrics</a>
+      <a href="#performance">Performance</a><a href="#diagnosis">Diagnosis</a><a href="#strategy">Strategy</a>
+      <a href="#plan">7-day plan</a><a href="#creatives">Creatives</a><a href="#videos">Videos</a>
+      <a href="#comparison">Before / after</a><a href="#agents">Agent trace</a><a href="#validation">Validation</a>
+    </nav>
+    <div class="rail-footer"><span class="pulse"></span> offline • ₹0 paid spend</div>
+  </aside>
+
+  <main>
+    <section id="overview" class="hero">
+      <div class="eyebrow">PERFORMANCE ANALYSIS • STRATEGY REVISION</div>
+      <h1>From repetitive promotion<br>to <em>useful momentum.</em></h1>
+      <p>Evidence-linked analysis, a measured seven-day pilot, and seven finished local assets for BudgetFitzz.</p>
+      <div class="hero-actions"><a class="button primary" href="/final_report.pdf">Open final report</a><a class="button" href="/submission-package.zip">Submission ZIP</a></div>
+      <div class="status-strip"><span>Run status <b id="run-status">READY</b></span><span>Provider <b id="provider">LOCAL</b></span><span>Paid generation <b>₹0</b></span><span>Validation <b id="validation-status">PASS</b></span></div>
+    </section>
+
+    <section class="section"><div class="section-head"><div><div class="eyebrow">EXECUTIVE OVERVIEW</div><h2>What the baseline actually says</h2></div><span class="badge">Observed metrics</span></div><div class="kpi-grid" id="kpis"></div><div class="note"><b>Provenance:</b> user-provided local evaluation dataset; original provenance unspecified. Business context is an explicit project assumption.</div></section>
+
+    <section id="quality" class="section"><div class="section-head"><div><div class="eyebrow">DATA QUALITY</div><h2>Trust the result by seeing the limits</h2></div><span class="badge neutral">150 records</span></div><div class="two-col"><div class="panel"><h3>Audit flags</h3><div id="audit-list" class="stat-list"></div></div><div class="panel image-panel"><img src="../analysis/charts/missing_values.png" alt="Missing value profile"></div></div></section>
+
+    <section id="metrics" class="section dark"><div class="section-head"><div><div class="eyebrow lime">METRIC CONTRACT</div><h2>Comparable where valid.<br>Cautious everywhere else.</h2></div></div><div id="metric-grid" class="metric-grid"></div><div class="method-note">Static-post video fields stay structurally unavailable. Views are plays, not unique people. Groups n&lt;3 are anecdotal; n=3–4 directional; n≥5 cautious.</div></section>
+
+    <section id="performance" class="section"><div class="section-head"><div><div class="eyebrow">PERFORMANCE</div><h2>Means tell the wrong video story</h2></div><span class="badge">Robust summaries</span></div><div class="chart-grid"><figure><img src="../analysis/charts/format_comparison.png" alt="Format comparison"><figcaption>Median, not just mean.</figcaption></figure><figure><img src="../analysis/charts/pillar_comparison.png" alt="Pillar comparison"><figcaption>Education is directionally more saveable.</figcaption></figure><figure><img src="../analysis/charts/timing_heatmap.png" alt="Timing heatmap"><figcaption>Timing cells remain exploratory.</figcaption></figure><figure><img src="../analysis/charts/video_retention.png" alt="Video retention"><figcaption>Retention proxy across video records.</figcaption></figure></div></section>
+
+    <section id="diagnosis" class="section split-highlight"><div><div class="eyebrow">FAILURE DIAGNOSIS</div><h2>Not “promotion is bad.”<br><em>Imbalance is the failure.</em></h2></div><div class="diagnosis-card"><div class="quote" id="diagnosis-text"></div><div class="caveat" id="diagnosis-caveat"></div></div></section>
+
+    <section id="strategy" class="section"><div class="section-head"><div><div class="eyebrow">REVISED STRATEGY</div><h2>Every change carries an evidence ID</h2></div><span class="badge target">Forward targets</span></div><div class="mix-bar"><span style="--w:42.86%">3 Education</span><span style="--w:28.57%">2 Value-first</span><span style="--w:28.57%">2 Community</span></div><div id="strategy-cards" class="strategy-grid"></div></section>
+
+    <section id="plan" class="section"><div class="section-head"><div><div class="eyebrow">SEVEN-DAY PILOT</div><h2>Exactly 5 posts + 2 videos</h2></div><span class="badge">Validated contract</span></div><div class="plan-scroller"><div id="plan-cards" class="plan-row"></div></div></section>
+
+    <section id="creatives" class="section"><div class="section-head"><div><div class="eyebrow">STATIC CREATIVES</div><h2>Five finished 4:5 assets</h2></div><span class="badge neutral">1080 × 1350 PNG</span></div><div id="creative-gallery" class="creative-grid"></div></section>
+
+    <section id="videos" class="section dark"><div class="section-head"><div><div class="eyebrow lime">SHORT VIDEOS</div><h2>First-second hooks. Real motion. NVENC.</h2></div><span class="badge dark-badge">1080 × 1920 H.264</span></div><div id="video-gallery" class="video-grid"></div></section>
+
+    <section id="comparison" class="section"><div class="section-head"><div><div class="eyebrow">BEFORE / AFTER</div><h2>Observed baseline vs test design</h2></div><span class="badge target">Targets ≠ results</span></div><div id="comparison-grid" class="comparison-grid"></div></section>
+
+    <section id="agents" class="section"><div class="section-head"><div><div class="eyebrow">AGENTIC WORKFLOW</div><h2>State, retries, evidence, repair</h2></div><span class="badge">SQLite + JSONL</span></div><div class="flow"><div>Raw inputs</div><span>→</span><div>Audit + metrics</div><span>→</span><div>Diagnosis</div><span>→</span><div>Strategy + plan</div><span>→</span><div>Assets + QA</div><span>→</span><div>Package</div></div><div id="trace" class="trace"></div></section>
+
+    <section id="validation" class="section validation-section"><div><div class="eyebrow">FINAL VALIDATION</div><h2 id="validation-heading">Production gate passed.</h2><p>Dimensions, codecs, plan counts, spend, traceability, paths, PDF, demo, and package integrity are checked automatically.</p></div><div class="validation-score"><strong id="validation-score">—</strong><span>checks passed</span></div></section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

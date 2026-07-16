@@ -1,0 +1,6 @@
+{
+  "provider": "deterministic-template",
+  "model": "budgetfitzz-editorial-v1",
+  "device": "cpu",
+  "reason": "No local Ollama or compatible cached instruct model was present; used validated offline templates"
+}

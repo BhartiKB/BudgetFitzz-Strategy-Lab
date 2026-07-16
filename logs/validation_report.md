@@ -1,0 +1,44 @@
+# Validation report
+
+Status: **PASS** (40 passed, 0 failed)
+
+- [x] Original CSV preserved — C:\Users\bhart\Documents\Task2\data\raw\budgetfitzz_dataset_fixed.csv
+- [x] Original DOCX preserved — C:\Users\bhart\Documents\Task2\data\raw\Intern Task 2 - Performance Analysis and Strategy Revision.docx
+- [x] Checksums present — docs/source_checksums.sha256
+- [x] At least fourteen historical items — n=150
+- [x] Dataset spans at least two weeks — span_days=121
+- [x] Posts and videos exist in baseline — ['post', 'video']
+- [x] Raw and derived values separated — C:\Users\bhart\Documents\Task2\data\processed\budgetfitzz_derived.csv
+- [x] Metric formulas documented — C:\Users\bhart\Documents\Task2\data\processed\metric_contract.json
+- [x] Analysis reproducible — analysis_results + grouped tables
+- [x] Sample sizes displayed — n column in each group table
+- [x] Outliers handled transparently — analysis/tables/outliers.csv
+- [x] Failure diagnosis supported — C:\Users\bhart\Documents\Task2\analysis\failure_diagnosis.json
+- [x] Strategy changes linked to evidence — C:\Users\bhart\Documents\Task2\analysis\revised_strategy.json
+- [x] Seven-day plan has exactly seven items — items=7
+- [x] Exactly five posts — posts=5
+- [x] Exactly two videos — videos=2
+- [x] Every plan field populated — required_fields=19
+- [x] Five valid 1080x1350 PNG assets — day01_capsule_formula.png:(1080, 1350),variance=3718,alt=True; day03_colour_vote.png:(1080, 1350),variance=7253,alt=True; day04_budget_priority.png:(1080, 1350),variance=3005,alt=True; day06_sneaker_scorecard.png:(1080, 1350),variance=7455,alt=True; day07_wardrobe_audit.png:(1080, 1350),variance=3097,alt=True
+- [x] No duplicate post assets — unique_hashes=5
+- [x] Two valid 1080x1920 H.264 videos — day02_one_shirt_three_ways.mp4:h264,1080x1920,12.00s; day05_fit_mistakes.mp4:h264,1080x1920,12.00s
+- [x] Assets match plan — All asset_filename mappings resolve
+- [x] Captions and CTAs exist — 7/7 items
+- [x] No placeholder text — Structured content scan
+- [x] Before-versus-after comparison exists — analysis/before_after.json
+- [x] Target metrics labelled — C:\Users\bhart\Documents\Task2\analysis\target_metrics.json
+- [x] Spend log parseable with currency — C:\Users\bhart\Documents\Task2\logs\spend_log.csv
+- [x] Paid generation spend <= INR 100 — paid_total_inr=0.00
+- [x] Agent architecture implemented — modular package files
+- [x] Persistent workflow memory — C:\Users\bhart\Documents\Task2\logs\workflow.db
+- [x] Retry handling implemented — workflow.py
+- [x] Configurable workflow and human checkpoints — C:\Users\bhart\Documents\Task2\config\workflow.json
+- [x] Execution trace exists — logs/execution_trace.jsonl
+- [x] GPU report exists — C:\Users\bhart\Documents\Task2\logs\hardware_report.json
+- [x] Application source complete — server.py, index.html, app.js, styles.css
+- [x] Demo video exists — C:\Users\bhart\Documents\Task2\submission\final\platform_walkthrough.mp4
+- [x] Final PDF exists — C:\Users\bhart\Documents\Task2\submission\final\final_report.pdf
+- [x] Final ZIP exists — C:\Users\bhart\Documents\Task2\submission\insta_strategy_lab_task2_submission.zip
+- [x] Manifest references valid files — C:\Users\bhart\Documents\Task2\submission\final\submission_manifest.json
+- [x] No broken internal HTML paths — report=[]; app=[]
+- [x] Extracted package is directly runnable — launcher=True; app=[]

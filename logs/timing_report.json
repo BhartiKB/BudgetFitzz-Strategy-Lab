@@ -1,0 +1,15 @@
+{
+  "run_id": "budgetfitzz-20260716T203411Z",
+  "agent_timings_sec": {
+    "DataAuditAgent": 0.024,
+    "MetricsAgent": 0.036,
+    "PerformanceAnalystAgent": 1.266,
+    "FailureDiagnosisAgent": 0.005,
+    "StrategyAgent": 0.004,
+    "ContentPlannerAgent": 0.006,
+    "CreativeDirectorAgent": 0.006,
+    "AssetGenerationAgent": 4.787,
+    "QualityAssuranceAgent": 0.389,
+    "PackagingAgent": 3.402
+  }
+}
