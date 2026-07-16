@@ -27,6 +27,15 @@ class VideoPackageTests(unittest.TestCase):
             self.assertEqual((data["streams"][0]["width"], data["streams"][0]["height"]), (1080, 1920))
             self.assertTrue(8 <= float(data["format"]["duration"]) <= 15)
 
+    def test_day_two_caption_describes_the_photographic_video(self):
+        plan = json.loads((ROOT / "analysis/seven_day_plan.json").read_text(encoding="utf-8"))
+        day_two = next(item for item in plan if item["day"] == 2)
+        caption = day_two["full_proposed_caption"].lower()
+        self.assertIn("textured overshirt", caption)
+        self.assertIn("cream tee", caption)
+        self.assertIn("dark trouser", caption)
+        self.assertIn("photographic", day_two["visual_direction"].lower())
+
     def test_package_is_valid_zip_when_present(self):
         path = ROOT / "submission/insta_strategy_lab_task2_submission.zip"
         if not path.exists():
@@ -36,4 +45,3 @@ class VideoPackageTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

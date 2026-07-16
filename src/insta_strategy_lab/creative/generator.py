@@ -448,15 +448,60 @@ def video_scene(day: int, title: str, kicker: str, body: str, accent: str, icon:
     return image
 
 
+def generate_day02_realistic_overlays(output_dir: Path) -> list[Path]:
+    """Create typography-only overlays for the photographic Day 2 footage."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    definitions = [
+        (
+            "ONE OVERSHIRT.",
+            "COMMUTE → OFFICE → EVENING",
+            "01 / COMMUTE",
+            "KEEP IT OPEN • CREAM TEE • STRAIGHT DARK TROUSER",
+        ),
+        (
+            "BUTTON IT FOR WORK.",
+            "ONE SMALL MOVE, SHARPER SHAPE",
+            "02 / OFFICE",
+            "CLEAN THE CUFF • LET THE TROUSER DO THE WORK",
+        ),
+        (
+            "OPEN IT BACK UP.",
+            "NO FULL OUTFIT SWAP REQUIRED",
+            "03 / EVENING",
+            "RELAX THE LAYER • KEEP THE PALETTE QUIET • SAVE THE 3 MOVES",
+        ),
+    ]
+    paths: list[Path] = []
+    for index, (title, subtitle, step, takeaway) in enumerate(definitions, start=1):
+        image = Image.new("RGBA", (1080, 1920), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, 1080, 355), fill=(23, 33, 27, 205))
+        draw.rectangle((0, 1385, 1080, 1920), fill=(23, 33, 27, 220))
+        wordmark(draw, light=True, day=2)
+        draw.text((72, 165), title, font=font(44, True), fill="#FFFFFF")
+        draw.text((72, 225), subtitle, font=font(25, True), fill=LIME)
+        draw.rounded_rectangle((72, 1460, 350, 1518), radius=22, fill=LIME)
+        draw.text((98, 1474), step, font=font(22, True), fill=INK)
+        text_block(draw, (72, 1560), takeaway, 40, 900, "#FFFFFF", True, 12)
+        draw.text((72, 1812), "@budgetfitzz  •  budget-first style", font=font(22, True), fill="#D8E8DF")
+        for progress in range(3):
+            fill = LIME if progress < index else "#5D8274"
+            draw.rounded_rectangle((72 + progress * 116, 1865, 164 + progress * 116, 1879), radius=7, fill=fill)
+        path = output_dir / f"day02_realistic_overlay_{index}.png"
+        image.save(path, "PNG", optimize=True)
+        paths.append(path)
+    return paths
+
+
 def generate_video_scenes(plan: list[PlanItem], output_dir: Path) -> dict[str, list[Path]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     scenes: dict[str, list[Path]] = {}
     definitions = {
         "day02_one_shirt_three_ways.mp4": [
-            ("ONE SHIRT.", "FIRST-SECOND HOOK", "Office to date in 10 seconds.", LIME, "shirt"),
-            ("01 / COMMUTE", "TEE + OPEN LAYER", "Easy movement. Clean neutral base.", FOREST, "shirt"),
-            ("02 / OFFICE", "BUTTON + TROUSER", "Quiet palette. Sharper structure.", BLUE, "shirt"),
-            ("SAVE THE 3 SWAPS", "TRY IT TONIGHT", "@budgetfitzz  •  budget-first style", LIME, "check"),
+            ("ONE OVERSHIRT.", "COMMUTE TO EVENING", "Photographic HF footage with local editorial overlays.", LIME, ""),
+            ("01 / COMMUTE", "OPEN LAYER", "Cream tee. Straight dark trouser.", FOREST, ""),
+            ("02 / OFFICE", "BUTTON IT", "Clean cuff. Sharper shape.", BLUE, ""),
+            ("03 / EVENING", "OPEN IT BACK UP", "Keep the palette quiet.", LIME, ""),
         ],
         "day05_fit_mistakes.mp4": [
             ("STOP BLAMING THE SHIRT", "FIT CHECK", "Fix these three mistakes first.", LIME, "fit"),

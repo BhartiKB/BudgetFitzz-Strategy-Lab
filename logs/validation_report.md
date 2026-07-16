@@ -21,7 +21,7 @@ Status: **PASS** (40 passed, 0 failed)
 - [x] Every plan field populated — required_fields=19
 - [x] Five valid 1080x1350 PNG assets — day01_capsule_formula.png:(1080, 1350),variance=6872,alt=True; day03_colour_vote.png:(1080, 1350),variance=3495,alt=True; day04_budget_priority.png:(1080, 1350),variance=9707,alt=True; day06_sneaker_scorecard.png:(1080, 1350),variance=6610,alt=True; day07_wardrobe_audit.png:(1080, 1350),variance=3096,alt=True
 - [x] No duplicate post assets — unique_hashes=5
-- [x] Two valid 1080x1920 H.264 videos — day02_one_shirt_three_ways.mp4:h264,1080x1920,10.07s; day05_fit_mistakes.mp4:h264,1080x1920,12.00s
+- [x] Two valid 1080x1920 H.264 videos — day02_one_shirt_three_ways.mp4:h264,1080x1920,10.00s; day05_fit_mistakes.mp4:h264,1080x1920,12.00s
 - [x] Assets match plan — All asset_filename mappings resolve
 - [x] Captions and CTAs exist — 7/7 items
 - [x] No placeholder text — Structured content scan

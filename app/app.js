@@ -63,14 +63,6 @@ function renderMetrics(data) {
     addText(card, 'code', '', item.source);
     observed.append(card);
   });
-
-  const formulas = document.querySelector('#metric-grid');
-  Object.entries(data.metric_contract.metrics).forEach(([name, formula]) => {
-    const card = el('div', 'metric');
-    addText(card, 'b', '', name.replaceAll('_', ' '));
-    addText(card, 'code', '', formula);
-    formulas.append(card);
-  });
 }
 
 function summaryTable(title, rows, labelKey, source) {

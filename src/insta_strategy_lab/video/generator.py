@@ -8,6 +8,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+from insta_strategy_lab.creative import generate_day02_realistic_overlays
+
 
 def ffmpeg_paths(root: Path) -> tuple[Path, Path]:
     candidates = list((root / "tools" / "ffmpeg").glob("**/bin/ffmpeg.exe"))
@@ -101,6 +103,53 @@ def encode_ai_assisted_video(
     return completed.returncode == 0, completed.stderr[-4000:], elapsed
 
 
+def encode_realistic_hf_video(
+    ffmpeg: Path,
+    source_video: Path,
+    overlays: list[Path],
+    output: Path,
+    encoder: str,
+) -> tuple[bool, str, float]:
+    """Build a fully photographic Day 2 sequence from the approved HF clip."""
+    duration = 10 / 3
+    starts = (0.0, 1.35, 2.7)
+    command = [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning"]
+    for overlay in overlays:
+        command.extend(["-stream_loop", "-1", "-i", str(source_video)])
+        command.extend(["-loop", "1", "-framerate", "30", "-i", str(overlay)])
+    filters: list[str] = []
+    for index, start in enumerate(starts):
+        video_input = index * 2
+        overlay_input = video_input + 1
+        filters.extend([
+            f"[{video_input}:v]trim=start={start}:duration={duration},setpts=PTS-STARTPTS,"
+            "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,setsar=1[base" + str(index) + "]",
+            f"[{overlay_input}:v]trim=duration={duration},setpts=PTS-STARTPTS,"
+            f"scale=1080:1920,format=rgba[overlay{index}]",
+            f"[base{index}][overlay{index}]overlay=shortest=1,"
+            f"fade=t=in:st=0:d=0.18,fade=t=out:st={duration - 0.28:.3f}:d=0.28[scene{index}]",
+        ])
+    concat_inputs = "".join(f"[scene{index}]" for index in range(len(overlays)))
+    filters.append(f"{concat_inputs}concat=n={len(overlays)}:v=1:a=0,format=yuv420p[outv]")
+    command.extend(["-filter_complex", ";".join(filters), "-map", "[outv]"])
+    if encoder == "h264_nvenc":
+        command.extend([
+            "-c:v", encoder, "-preset", "p4", "-tune", "hq", "-rc", "vbr",
+            "-cq", "20", "-b:v", "5M", "-maxrate", "9M",
+        ])
+    else:
+        command.extend(["-c:v", "libx264", "-preset", "medium", "-crf", "19"])
+    command.extend([
+        "-r", "30", "-movflags", "+faststart",
+        "-metadata", "comment=Photographic HF promotional-credit source; locally caption-composited; cash cost INR 0",
+        str(output),
+    ])
+    started = time.perf_counter()
+    completed = subprocess.run(command, capture_output=True, text=True)
+    elapsed = time.perf_counter() - started
+    return completed.returncode == 0, completed.stderr[-4000:], elapsed
+
+
 def extract_frame(ffmpeg: Path, video: Path, output: Path) -> None:
     subprocess.run(
         [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-ss", "6.2", "-i", str(video), "-frames:v", "1", str(output)],
@@ -118,16 +167,17 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
         hf_source = root / "assets/source_media/day02_hf_wan.mp4"
         uses_hf_source = filename == "day02_one_shirt_three_ways.mp4" and hf_source.exists()
         if uses_hf_source:
-            ok, error, elapsed = encode_ai_assisted_video(
-                ffmpeg, scenes[0], hf_source, scenes[-1], output, "h264_nvenc"
+            overlays = generate_day02_realistic_overlays(frame_dir)
+            ok, error, elapsed = encode_realistic_hf_video(
+                ffmpeg, hf_source, overlays, output, "h264_nvenc"
             )
         else:
             ok, error, elapsed = encode_video(ffmpeg, scenes, output, "h264_nvenc")
         encoder = "h264_nvenc"
         if not ok:
             if uses_hf_source:
-                ok, fallback_error, elapsed = encode_ai_assisted_video(
-                    ffmpeg, scenes[0], hf_source, scenes[-1], output, "libx264"
+                ok, fallback_error, elapsed = encode_realistic_hf_video(
+                    ffmpeg, hf_source, overlays, output, "libx264"
                 )
             else:
                 ok, fallback_error, elapsed = encode_video(ffmpeg, scenes, output, "libx264")
@@ -146,6 +196,10 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
             "scenes": [str(path.relative_to(root)).replace("\\", "/") for path in scenes],
             "source_video": (
                 str(hf_source.relative_to(root)).replace("\\", "/") if uses_hf_source else None
+            ),
+            "photographic_overlays": (
+                [str(path.relative_to(root)).replace("\\", "/") for path in overlays]
+                if uses_hf_source else []
             ),
             "cash_cost_inr": 0,
         }

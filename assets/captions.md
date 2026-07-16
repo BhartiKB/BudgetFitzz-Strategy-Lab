@@ -6,9 +6,9 @@ A bigger wardrobe is not the same as a better wardrobe. Start with one textured 
 
 **CTA:** Save this 3-piece formula before your next purchase.
 
-## Day 2: One shirt. Office to date in 10 seconds.
+## Day 2: One overshirt. Commute to evening in 10 seconds.
 
-One good overshirt can work harder than three impulse buys. Scene 1: tee + overshirt + sneakers for the commute. Scene 2: button it, add tailored trousers, keep the palette quiet for work. Scene 3: open it again, switch to darker denim and a cleaner shoe for the evening. Save the transitions, then try them with what you already own. Follow @budgetfitzz for budget-first menswear systems.
+One textured overshirt can carry a commute, office and evening plan without a full outfit swap. Scene 1: keep it open over a cream tee and straight dark trouser for the commute. Scene 2: button it and clean up the cuff for work. Scene 3: open it back up and keep the same quiet palette for the evening. Save the three styling moves, then try them with what you already own. Follow @budgetfitzz for budget-first menswear systems.
 
 **CTA:** Save the three transitions and test one tonight.
 

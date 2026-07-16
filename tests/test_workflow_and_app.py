@@ -65,6 +65,13 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertNotIn("['150','historical items'", script)
         self.assertIn("data.overview_kpis", script)
 
+    def test_metric_formulas_are_kept_out_of_the_browser_ui(self):
+        markup = (ROOT / "app/index.html").read_text(encoding="utf-8")
+        script = (ROOT / "app/app.js").read_text(encoding="utf-8")
+        self.assertNotIn("Machine-readable formulas", markup)
+        self.assertNotIn('id="metric-grid"', markup)
+        self.assertNotIn("data.metric_contract.metrics", script)
+
 
 if __name__ == "__main__":
     unittest.main()

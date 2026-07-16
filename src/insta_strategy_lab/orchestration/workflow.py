@@ -129,7 +129,7 @@ class Workflow:
             )
             tool = "Pillow procedural renderer" if item.format == "post" else "Pillow scenes + FFmpeg NVENC"
             if hf_day_two:
-                tool = "Wan 2.2 HF promotional source + Pillow cards + FFmpeg NVENC"
+                tool = "Wan 2.2 HF photographic source + Pillow overlays + FFmpeg NVENC"
             entry = SpendEntry(
                 timestamp=datetime.now(UTC), run_id=self.run_id, asset=item.asset_filename,
                 provider="huggingface + local" if hf_day_two else provider["provider"],
