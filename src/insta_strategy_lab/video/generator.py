@@ -110,28 +110,36 @@ def encode_photographic_hf_video(
     output: Path,
     encoder: str,
 ) -> tuple[bool, str, float]:
-    """Build a fully photographic sequence from an approved HF clip."""
+    """Build a continuous photographic sequence with timed editorial overlays."""
     duration = 10 / len(overlays)
-    starts = tuple(round(index * 1.15, 2) for index in range(len(overlays)))
-    command = [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning"]
+    command = [
+        str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning",
+        "-stream_loop", "-1", "-i", str(source_video),
+    ]
     for overlay in overlays:
-        command.extend(["-stream_loop", "-1", "-i", str(source_video)])
         command.extend(["-loop", "1", "-framerate", "30", "-i", str(overlay)])
-    filters: list[str] = []
-    for index, start in enumerate(starts):
-        video_input = index * 2
-        overlay_input = video_input + 1
-        filters.extend([
-            f"[{video_input}:v]trim=start={start}:duration={duration},setpts=PTS-STARTPTS,"
-            "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=30,setsar=1[base" + str(index) + "]",
-            f"[{overlay_input}:v]trim=duration={duration},setpts=PTS-STARTPTS,"
-            f"scale=1080:1920,format=rgba[overlay{index}]",
-            f"[base{index}][overlay{index}]overlay=shortest=1,"
-            f"fade=t=in:st=0:d=0.18,fade=t=out:st={duration - 0.28:.3f}:d=0.28[scene{index}]",
-        ])
-    concat_inputs = "".join(f"[scene{index}]" for index in range(len(overlays)))
-    filters.append(f"{concat_inputs}concat=n={len(overlays)}:v=1:a=0,format=yuv420p[outv]")
-    command.extend(["-filter_complex", ";".join(filters), "-map", "[outv]"])
+    filters: list[str] = [
+        "[0:v]trim=duration=10,setpts=PTS-STARTPTS,"
+        "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,"
+        "fps=30,setsar=1[base]"
+    ]
+    for index in range(len(overlays)):
+        filters.append(
+            f"[{index + 1}:v]trim=duration=10,setpts=PTS-STARTPTS,"
+            f"scale=1080:1920,format=rgba[overlay{index}]"
+        )
+    current = "base"
+    for index in range(len(overlays)):
+        start = index * duration
+        end = (index + 1) * duration
+        output_label = "outv" if index == len(overlays) - 1 else f"stage{index}"
+        filters.append(
+            f"[{current}][overlay{index}]overlay=shortest=0:"
+            f"enable='gte(t,{start:.3f})*lt(t,{end:.3f})'[{output_label}]"
+        )
+        current = output_label
+    filters.append("[outv]format=yuv420p[final]")
+    command.extend(["-filter_complex", ";".join(filters), "-map", "[final]", "-t", "10"])
     if encoder == "h264_nvenc":
         command.extend([
             "-c:v", encoder, "-preset", "p4", "-tune", "hq", "-rc", "vbr",

@@ -25,6 +25,6 @@ test_persistent_state_when_present (test_workflow_and_app.WorkflowAppTests.test_
 test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
 
 ----------------------------------------------------------------------
-Ran 25 tests in 0.807s
+Ran 25 tests in 1.182s
 
 OK

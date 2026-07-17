@@ -6,11 +6,11 @@ A bigger wardrobe is not the same as a better wardrobe. Start with one textured 
 
 **CTA:** Save this 3-piece formula before your next purchase.
 
-## Day 2: One overshirt. Commute to evening in 10 seconds.
+## Day 2: One overshirt. Three small fit moves in 10 seconds.
 
-One textured overshirt can carry a commute, office and evening plan without a full outfit swap. Scene 1: keep it open over a cream tee and straight dark trouser for the commute. Scene 2: button it and clean up the cuff for work. Scene 3: open it back up and keep the same quiet palette for the evening. Save the three styling moves, then try them with what you already own. Follow @budgetfitzz for budget-first menswear systems.
+One overshirt, three small styling moves. First, wear it open so the cream tee stays visible and the layer feels relaxed. Second, button it lightly to create a cleaner front line without pulling the fabric. Third, check the collar, cuff and hem, then stop when the layer sits cleanly. This video shows one outfit in one setting, not three different occasions. Save the fit check and try it with a layer you already own. Follow @budgetfitzz for budget-first menswear systems.
 
-**CTA:** Save the three transitions and test one tonight.
+**CTA:** Save the three fit moves and test them tonight.
 
 ## Day 3: Date night: A, B or C? Pick one.
 
@@ -24,11 +24,11 @@ If your upgrade budget is ₹1,999, do not split it across five weak pieces. Pri
 
 **CTA:** Comment LINK for a shortlist built around the ₹1,999 cap.
 
-## Day 5: Your shirt may be fine. Check these 3 fit points.
+## Day 5: A realistic fit check, from shoulder to shoe.
 
-Your shirt may be fine. Check these three fit points before buying anything new. One: the shoulder seam should end at your shoulder, not down your arm. Two: aim for one clean trouser break over the shoe instead of heavy stacking. Three: do not pair an oversized top with an equally baggy bottom—the shape disappears. Fix one variable at a time, screenshot the checklist, and test it in the mirror. Follow @budgetfitzz for practical fit guidance.
+Use this as a mirror checklist, not a before-and-after. First, check that the sleeve seam sits near the shoulder and the tee lies smoothly without pulling. Second, check that the tee hem finishes close to the waistband with enough length to move and no excess bunching. Third, follow the trouser line down to a clean ankle and shoe. Read the whole silhouette before buying another piece. Save the three checks and test them on an outfit you already own. Follow @budgetfitzz for practical fit guidance.
 
-**CTA:** Screenshot the three checks and fix one today.
+**CTA:** Save the three visible fit checks and try them in the mirror.
 
 ## Day 6: One sneaker budget? Rank by use, not hype.
 

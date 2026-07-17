@@ -454,21 +454,21 @@ def generate_day02_realistic_overlays(output_dir: Path) -> list[Path]:
     definitions = [
         (
             "ONE OVERSHIRT.",
-            "COMMUTE → OFFICE → EVENING",
-            "01 / COMMUTE",
-            "KEEP IT OPEN • CREAM TEE • STRAIGHT DARK TROUSER",
+            "3 SMALL STYLING MOVES",
+            "01 / OPEN LAYER",
+            "LET THE CREAM TEE STAY VISIBLE.",
         ),
         (
-            "BUTTON IT FOR WORK.",
-            "ONE SMALL MOVE, SHARPER SHAPE",
-            "02 / OFFICE",
-            "CLEAN THE CUFF • LET THE TROUSER DO THE WORK",
+            "BUTTON FOR STRUCTURE.",
+            "FIND A CLEANER FRONT LINE",
+            "02 / BUTTON",
+            "FASTEN LIGHTLY. DON'T PULL THE FABRIC.",
         ),
         (
-            "OPEN IT BACK UP.",
-            "NO FULL OUTFIT SWAP REQUIRED",
-            "03 / EVENING",
-            "RELAX THE LAYER • KEEP THE PALETTE QUIET • SAVE THE 3 MOVES",
+            "CHECK THE FINISH.",
+            "COLLAR • CUFF • HEM",
+            "03 / FINAL CHECK",
+            "STOP WHEN THE LAYER SITS CLEANLY.",
         ),
     ]
     paths: list[Path] = []
@@ -497,10 +497,10 @@ def generate_day05_realistic_overlays(output_dir: Path) -> list[Path]:
     """Create typography-only fit-check overlays for photographic Day 5 footage."""
     output_dir.mkdir(parents=True, exist_ok=True)
     definitions = [
-        ("FIT, NOT A NEW SHIRT.", "CHECK 3 POINTS BEFORE BUYING", "FIT CHECK", "YOUR SHIRT MAY BE FINE. START WITH THE SHAPE."),
-        ("SHOULDER SEAM FIRST.", "THE SEAM SHOULD END AT YOUR SHOULDER", "01 / SHOULDERS", "TOO LOW MAKES THE WHOLE TOP LOOK COLLAPSED."),
-        ("CLEAN THE TROUSER BREAK.", "ONE CLEAN LINE OVER THE SHOE", "02 / TROUSER BREAK", "HEAVY STACKING SHORTENS THE SILHOUETTE."),
-        ("BALANCE THE PROPORTION.", "DON'T STACK OVERSIZED ON OVERSIZED", "03 / PROPORTION", "FIX ONE VARIABLE. SCREENSHOT THE THREE CHECKS."),
+        ("FIT CHECK. NO GUESSING.", "USE THE MIRROR FROM TOP TO BOTTOM", "START / FULL LOOK", "THIS SHOWS A BALANCED FIT. NOT A BEFORE/AFTER."),
+        ("CHECK THE SHOULDER LINE.", "THE SLEEVE SEAM SITS NEAR THE SHOULDER", "01 / SHOULDERS", "LOOK FOR A SMOOTH LINE WITHOUT PULLING."),
+        ("CHECK THE TEE HEM.", "IT FINISHES CLOSE TO THE WAISTBAND", "02 / TEE LENGTH", "ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING."),
+        ("CHECK THE TROUSER LINE.", "STRAIGHT FALL • CLEAN ANKLE", "03 / TROUSER", "READ THE WHOLE SILHOUETTE BEFORE BUYING."),
     ]
     paths: list[Path] = []
     for index, (title, subtitle, step, takeaway) in enumerate(definitions, start=1):
@@ -529,16 +529,16 @@ def generate_video_scenes(plan: list[PlanItem], output_dir: Path) -> dict[str, l
     scenes: dict[str, list[Path]] = {}
     definitions = {
         "day02_one_shirt_three_ways.mp4": [
-            ("ONE OVERSHIRT.", "COMMUTE TO EVENING", "Photographic HF footage with local editorial overlays.", LIME, ""),
-            ("01 / COMMUTE", "OPEN LAYER", "Cream tee. Straight dark trouser.", FOREST, ""),
-            ("02 / OFFICE", "BUTTON IT", "Clean cuff. Sharper shape.", BLUE, ""),
-            ("03 / EVENING", "OPEN IT BACK UP", "Keep the palette quiet.", LIME, ""),
+            ("ONE OVERSHIRT.", "THREE SMALL MOVES", "Photographic HF footage with local editorial overlays.", LIME, ""),
+            ("01 / OPEN", "SHOW THE BASE", "Let the cream tee stay visible.", FOREST, ""),
+            ("02 / BUTTON", "ADD STRUCTURE", "Fasten lightly without pulling.", BLUE, ""),
+            ("03 / CHECK", "COLLAR • CUFF • HEM", "Stop when the layer sits cleanly.", LIME, ""),
         ],
         "day05_fit_mistakes.mp4": [
-            ("FIT, NOT A NEW SHIRT", "FIT CHECK", "Photographic HF footage with local editorial overlays.", LIME, ""),
-            ("01 / SHOULDERS", "SEAM AT THE EDGE", "Too low makes the whole top collapse.", FOREST, ""),
-            ("02 / TROUSER BREAK", "ONE CLEAN LINE", "Heavy stacking shortens the silhouette.", BLUE, ""),
-            ("03 / PROPORTION", "BALANCE THE SHAPE", "Do not stack oversized on oversized.", LIME, ""),
+            ("FIT CHECK", "TOP TO BOTTOM", "Photographic HF footage with local editorial overlays.", LIME, ""),
+            ("01 / SHOULDERS", "SMOOTH LINE", "The sleeve seam sits near the shoulder.", FOREST, ""),
+            ("02 / TEE LENGTH", "WAISTBAND", "Enough length without excess bunching.", BLUE, ""),
+            ("03 / TROUSER", "STRAIGHT FALL", "Read the whole silhouette before buying.", LIME, ""),
         ],
     }
     for item in plan:

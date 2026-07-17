@@ -31,7 +31,7 @@
     "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
     "dimension": "Hook-style diversity",
     "before": "Dominant: Emotional / social 71/150 (47.3%)",
-    "after": "2 styles: List / specificity 5; Question 2",
+    "after": "3 styles: List / specificity 4; Question 2; Other 1",
     "after_kind": "planned design",
     "after_source": "analysis/seven_day_plan.json → same classifier"
   },
@@ -40,7 +40,7 @@
     "before_source": "data/raw/budgetfitzz_dataset_fixed.csv → computed pipeline",
     "dimension": "CTA coverage",
     "before": "Explicit CTA 136/150 (90.7%); missing 14",
-    "after": "Explicit CTA 7/7 (100.0%) across 4 CTA styles",
+    "after": "Explicit CTA 7/7 (100.0%) across 3 CTA styles",
     "after_kind": "planned design",
     "after_source": "analysis/seven_day_plan.json → same classifier"
   },
