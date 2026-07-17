@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2 - 2026-07-18
+
+- Added a free Render Blueprint, public host/port support, and a deployment artifact bundle.
+- Restricted the hosted server to allowlisted public routes so repository files and local credentials cannot be served.
+
 ## 1.1.1 - 2026-07-18
 
 - Added the project owner's Instagram product-search discovery journey to the generated final reports as a user-reported qualitative observation.

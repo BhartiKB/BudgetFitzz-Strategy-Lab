@@ -2,7 +2,7 @@
   "schema_version": "2.0",
   "generated_by": "insta_strategy_lab.reporting.builder.build_app_data",
   "run": {
-    "run_id": "budgetfitzz-20260717T205733Z",
+    "run_id": "budgetfitzz-20260717T211358Z",
     "status": "complete",
     "provider": "deterministic-template"
   },
@@ -88,7 +88,7 @@
       "raw_sha256": "ad796f7f0566bf34d46ff6f5ec4a3fad79dae3203adb31f9120ed12a6b905c30",
       "derived_source": "data/processed/budgetfitzz_derived.csv",
       "analysis_source": "analysis/analysis_results.json",
-      "calculation_run_id": "budgetfitzz-20260717T205733Z",
+      "calculation_run_id": "budgetfitzz-20260717T211358Z",
       "observed_rows": 150,
       "after_results_available": false,
       "after_note": "The seven-day pilot has not been published; after values are validated plan counts or explicitly labelled targets, never claimed results."
@@ -923,22 +923,22 @@
   "workflow": {
     "trace": [
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "DataAuditAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
         "output_reference": "analysis/dataset_audit.json",
         "decision_summary": "Validated schema, dates, missing values, duplicates, ranges, handles, and anomalies.",
         "evidence_ids": [],
-        "duration_sec": 0.031,
+        "duration_sec": 0.038,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:33.588917+00:00"
+        "timestamp": "2026-07-17T21:13:58.119376+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "MetricsAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
@@ -950,25 +950,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:33.592916+00:00"
+        "timestamp": "2026-07-17T21:13:58.124883+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "MetricsAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
         "output_reference": "data/processed/budgetfitzz_derived.csv",
         "decision_summary": "Applied the machine-readable metric contract without modifying raw columns.",
         "evidence_ids": [],
-        "duration_sec": 0.037,
+        "duration_sec": 0.059,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:33.640925+00:00"
+        "timestamp": "2026-07-17T21:13:58.201049+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "PerformanceAnalystAgent",
         "action": "execute",
         "input_reference": "data/processed/budgetfitzz_derived.csv",
@@ -990,10 +990,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:33.645430+00:00"
+        "timestamp": "2026-07-17T21:13:58.208054+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "PerformanceAnalystAgent",
         "action": "execute",
         "input_reference": "data/processed/budgetfitzz_derived.csv",
@@ -1010,15 +1010,15 @@
           "E08",
           "E09"
         ],
-        "duration_sec": 1.271,
+        "duration_sec": 1.751,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:34.939381+00:00"
+        "timestamp": "2026-07-17T21:13:59.976797+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "FailureDiagnosisAgent",
         "action": "execute",
         "input_reference": "analysis/evidence.json",
@@ -1038,10 +1038,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:34.945390+00:00"
+        "timestamp": "2026-07-17T21:13:59.983338+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "FailureDiagnosisAgent",
         "action": "execute",
         "input_reference": "analysis/evidence.json",
@@ -1056,15 +1056,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.006,
+        "duration_sec": 0.008,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:34.963397+00:00"
+        "timestamp": "2026-07-17T21:14:00.005430+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1083,10 +1083,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T20:57:34.973397+00:00"
+        "timestamp": "2026-07-17T21:14:00.020430+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "StrategyAgent",
         "action": "execute",
         "input_reference": "analysis/failure_diagnosis.json",
@@ -1107,10 +1107,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:34.977911+00:00"
+        "timestamp": "2026-07-17T21:14:00.028429+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "StrategyAgent",
         "action": "execute",
         "input_reference": "analysis/failure_diagnosis.json",
@@ -1126,15 +1126,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.005,
+        "duration_sec": 0.007,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:34.992912+00:00"
+        "timestamp": "2026-07-17T21:14:00.050422+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1152,10 +1152,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T20:57:35.001911+00:00"
+        "timestamp": "2026-07-17T21:14:00.062431+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "ContentPlannerAgent",
         "action": "execute",
         "input_reference": "analysis/revised_strategy.json",
@@ -1175,10 +1175,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:35.007912+00:00"
+        "timestamp": "2026-07-17T21:14:00.070430+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "ContentPlannerAgent",
         "action": "execute",
         "input_reference": "analysis/revised_strategy.json",
@@ -1193,15 +1193,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.007,
+        "duration_sec": 0.009,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:35.025912+00:00"
+        "timestamp": "2026-07-17T21:14:00.092867+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "CreativeDirectorAgent",
         "action": "execute",
         "input_reference": "analysis/seven_day_plan.json",
@@ -1217,10 +1217,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:35.042912+00:00"
+        "timestamp": "2026-07-17T21:14:00.118860+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "CreativeDirectorAgent",
         "action": "execute",
         "input_reference": "analysis/seven_day_plan.json",
@@ -1231,15 +1231,15 @@
           "E06",
           "E07"
         ],
-        "duration_sec": 0.007,
+        "duration_sec": 0.008,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:35.058256+00:00"
+        "timestamp": "2026-07-17T21:14:00.140393+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "AssetGenerationAgent",
         "action": "execute",
         "input_reference": "analysis/video_generation_briefs.json",
@@ -1255,10 +1255,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:35.062101+00:00"
+        "timestamp": "2026-07-17T21:14:00.147412+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "AssetGenerationAgent",
         "action": "execute",
         "input_reference": "analysis/video_generation_briefs.json",
@@ -1269,15 +1269,15 @@
           "E05",
           "E09"
         ],
-        "duration_sec": 8.026,
+        "duration_sec": 12.323,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:43.098128+00:00"
+        "timestamp": "2026-07-17T21:14:12.491739+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1293,10 +1293,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T20:57:43.107129+00:00"
+        "timestamp": "2026-07-17T21:14:12.505740+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "QualityAssuranceAgent",
         "action": "execute",
         "input_reference": "analysis + assets + logs",
@@ -1308,25 +1308,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:43.155129+00:00"
+        "timestamp": "2026-07-17T21:14:12.575751+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "QualityAssuranceAgent",
         "action": "execute",
         "input_reference": "analysis + assets + logs",
         "output_reference": "logs/validation_report.json",
         "decision_summary": "Validated analysis, plan counts, assets, codecs, spend, architecture, memory, trace, and app source.",
         "evidence_ids": [],
-        "duration_sec": 0.567,
+        "duration_sec": 0.94,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:43.732232+00:00"
+        "timestamp": "2026-07-17T21:14:13.533894+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "PackagingAgent",
         "action": "execute",
         "input_reference": "validated project",
@@ -1338,25 +1338,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:43.739232+00:00"
+        "timestamp": "2026-07-17T21:14:13.546914+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "PackagingAgent",
         "action": "execute",
         "input_reference": "validated project",
         "output_reference": "submission/final + submission ZIP",
         "decision_summary": "Assembled reports, sources, assets, prompts, logs, manifest, checksums, and the submission ZIP.",
         "evidence_ids": [],
-        "duration_sec": 8.425,
+        "duration_sec": 12.579,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T20:57:52.180040+00:00"
+        "timestamp": "2026-07-17T21:14:26.150117+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1370,10 +1370,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T20:57:52.189041+00:00"
+        "timestamp": "2026-07-17T21:14:26.175049+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T205733Z",
+        "run_id": "budgetfitzz-20260717T211358Z",
         "agent": "OrchestratorAgent",
         "action": "orchestrate",
         "input_reference": "",
@@ -1385,21 +1385,21 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T20:57:52.204554+00:00"
+        "timestamp": "2026-07-17T21:14:26.219616+00:00"
       }
     ],
     "trace_source": "logs/execution_trace.jsonl",
     "timings_sec": {
-      "DataAuditAgent": 0.031,
-      "MetricsAgent": 0.037,
-      "PerformanceAnalystAgent": 1.271,
-      "FailureDiagnosisAgent": 0.006,
-      "StrategyAgent": 0.005,
-      "ContentPlannerAgent": 0.007,
-      "CreativeDirectorAgent": 0.007,
-      "AssetGenerationAgent": 8.026,
-      "QualityAssuranceAgent": 0.567,
-      "PackagingAgent": 8.425
+      "DataAuditAgent": 0.038,
+      "MetricsAgent": 0.059,
+      "PerformanceAnalystAgent": 1.751,
+      "FailureDiagnosisAgent": 0.008,
+      "StrategyAgent": 0.007,
+      "ContentPlannerAgent": 0.009,
+      "CreativeDirectorAgent": 0.008,
+      "AssetGenerationAgent": 12.323,
+      "QualityAssuranceAgent": 0.94,
+      "PackagingAgent": 12.579
     },
     "retry_counts": {
       "DataAuditAgent": 0,

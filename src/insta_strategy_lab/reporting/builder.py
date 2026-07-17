@@ -88,6 +88,10 @@ Equivalent Python command:
 $env:PYTHONPATH='src'; .\\.venv\\Scripts\\python.exe app\\server.py --port 8501
 ```
 
+## Deploy on Render
+
+The root `render.yaml` defines a free Python web service in Singapore. It binds the dependency-free server to Render's public `0.0.0.0:$PORT`, checks `/api/status`, and serves only allowlisted public application, chart, asset, and deliverable routes. Run the finalization workflow before pushing so `deploy/` contains the public report, walkthrough, manifest, validation report, and submission package. Local credentials remain excluded by `.gitignore` and are never required by the hosted site.
+
 ## Reproduce
 
 ```powershell
@@ -298,6 +302,11 @@ Validate content against `PlanItem`. If required fields are absent, reissue the 
 """
     (root / "prompts/prompt_catalogue.md").write_text(prompts, encoding="utf-8")
     (root / "CHANGELOG.md").write_text("""# Changelog
+
+## 1.1.2 - 2026-07-18
+
+- Added a free Render Blueprint, public host/port support, and a deployment artifact bundle.
+- Restricted the hosted server to allowlisted public routes so repository files and local credentials cannot be served.
 
 ## 1.1.1 - 2026-07-18
 

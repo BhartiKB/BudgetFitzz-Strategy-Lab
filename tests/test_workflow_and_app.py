@@ -4,6 +4,7 @@ import subprocess
 import sys
 import time
 import unittest
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -43,6 +44,9 @@ class WorkflowAppTests(unittest.TestCase):
                     with urllib.request.urlopen(f"http://127.0.0.1:{port}/api/status", timeout=1) as response:
                         payload = json.loads(response.read().decode("utf-8"))
                     self.assertEqual(payload["status"], "ready")
+                    with self.assertRaises(urllib.error.HTTPError) as blocked:
+                        urllib.request.urlopen(f"http://127.0.0.1:{port}/.env", timeout=1)
+                    self.assertEqual(blocked.exception.code, 404)
                     break
                 except Exception:
                     time.sleep(0.1)
@@ -54,6 +58,13 @@ class WorkflowAppTests(unittest.TestCase):
                 process.stdout.close()
             if process.stderr:
                 process.stderr.close()
+
+    def test_render_blueprint_uses_free_python_web_service(self):
+        blueprint = (ROOT / "render.yaml").read_text(encoding="utf-8")
+        self.assertIn("runtime: python", blueprint)
+        self.assertIn("plan: free", blueprint)
+        self.assertIn("--host 0.0.0.0 --port $PORT", blueprint)
+        self.assertIn("healthCheckPath: /api/status", blueprint)
 
     def test_dashboard_metrics_are_pipeline_values_with_lineage(self):
         dashboard = json.loads((ROOT / "app/data/dashboard.json").read_text(encoding="utf-8"))

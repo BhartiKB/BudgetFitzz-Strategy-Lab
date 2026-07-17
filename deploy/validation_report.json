@@ -1,0 +1,260 @@
+{
+  "status": "PASS",
+  "mode": "final",
+  "passed": 42,
+  "failed": 0,
+  "checks": [
+    {
+      "check": "Original CSV preserved",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\data\\raw\\budgetfitzz_dataset_fixed.csv"
+    },
+    {
+      "check": "Original DOCX preserved",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\data\\raw\\Intern Task 2 - Performance Analysis and Strategy Revision.docx"
+    },
+    {
+      "check": "Checksums present",
+      "passed": true,
+      "required": true,
+      "evidence": "docs/source_checksums.sha256"
+    },
+    {
+      "check": "At least fourteen historical items",
+      "passed": true,
+      "required": true,
+      "evidence": "n=150"
+    },
+    {
+      "check": "Dataset spans at least two weeks",
+      "passed": true,
+      "required": true,
+      "evidence": "span_days=121"
+    },
+    {
+      "check": "Posts and videos exist in baseline",
+      "passed": true,
+      "required": true,
+      "evidence": "['post', 'video']"
+    },
+    {
+      "check": "Raw and derived values separated",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\data\\processed\\budgetfitzz_derived.csv"
+    },
+    {
+      "check": "Metric formulas documented",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\data\\processed\\metric_contract.json"
+    },
+    {
+      "check": "Analysis reproducible",
+      "passed": true,
+      "required": true,
+      "evidence": "analysis_results + grouped tables"
+    },
+    {
+      "check": "Sample sizes displayed",
+      "passed": true,
+      "required": true,
+      "evidence": "n column in each group table"
+    },
+    {
+      "check": "Outliers handled transparently",
+      "passed": true,
+      "required": true,
+      "evidence": "analysis/tables/outliers.csv"
+    },
+    {
+      "check": "Failure diagnosis supported",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\analysis\\failure_diagnosis.json"
+    },
+    {
+      "check": "Strategy changes linked to evidence",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\analysis\\revised_strategy.json"
+    },
+    {
+      "check": "Seven-day plan has exactly seven items",
+      "passed": true,
+      "required": true,
+      "evidence": "items=7"
+    },
+    {
+      "check": "Exactly five posts",
+      "passed": true,
+      "required": true,
+      "evidence": "posts=5"
+    },
+    {
+      "check": "Exactly two videos",
+      "passed": true,
+      "required": true,
+      "evidence": "videos=2"
+    },
+    {
+      "check": "Every plan field populated",
+      "passed": true,
+      "required": true,
+      "evidence": "required_fields=19"
+    },
+    {
+      "check": "Video storyboards map visuals to agent captions",
+      "passed": true,
+      "required": true,
+      "evidence": "day02_one_shirt_three_ways.mp4:3 aligned beats; day05_fit_mistakes.mp4:4 aligned beats"
+    },
+    {
+      "check": "Five valid 1080x1350 PNG assets",
+      "passed": true,
+      "required": true,
+      "evidence": "day01_capsule_formula.png:(1080, 1350),variance=6872,alt=True; day03_colour_vote.png:(1080, 1350),variance=3495,alt=True; day04_budget_priority.png:(1080, 1350),variance=9707,alt=True; day06_sneaker_scorecard.png:(1080, 1350),variance=6610,alt=True; day07_wardrobe_audit.png:(1080, 1350),variance=3096,alt=True"
+    },
+    {
+      "check": "No duplicate post assets",
+      "passed": true,
+      "required": true,
+      "evidence": "unique_hashes=5"
+    },
+    {
+      "check": "Two valid 1080x1920 H.264 videos",
+      "passed": true,
+      "required": true,
+      "evidence": "day02_one_shirt_three_ways.mp4:h264,1080x1920,10.00s; day05_fit_mistakes.mp4:h264,1080x1920,10.00s"
+    },
+    {
+      "check": "Assets match plan",
+      "passed": true,
+      "required": true,
+      "evidence": "All asset_filename mappings resolve"
+    },
+    {
+      "check": "Captions and CTAs exist",
+      "passed": true,
+      "required": true,
+      "evidence": "7/7 items"
+    },
+    {
+      "check": "No placeholder text",
+      "passed": true,
+      "required": true,
+      "evidence": "Structured content scan"
+    },
+    {
+      "check": "Before-versus-after comparison exists",
+      "passed": true,
+      "required": true,
+      "evidence": "analysis/before_after.json"
+    },
+    {
+      "check": "Target metrics labelled",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\analysis\\target_metrics.json"
+    },
+    {
+      "check": "Spend log parseable with currency",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\logs\\spend_log.csv"
+    },
+    {
+      "check": "Paid generation spend <= INR 100",
+      "passed": true,
+      "required": true,
+      "evidence": "paid_total_inr=0.00"
+    },
+    {
+      "check": "Agent architecture implemented",
+      "passed": true,
+      "required": true,
+      "evidence": "modular package files"
+    },
+    {
+      "check": "Persistent workflow memory",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\logs\\workflow.db"
+    },
+    {
+      "check": "Retry handling implemented",
+      "passed": true,
+      "required": true,
+      "evidence": "workflow.py"
+    },
+    {
+      "check": "Configurable workflow and human checkpoints",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\config\\workflow.json"
+    },
+    {
+      "check": "Execution trace exists",
+      "passed": true,
+      "required": true,
+      "evidence": "logs/execution_trace.jsonl"
+    },
+    {
+      "check": "GPU report exists",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\logs\\hardware_report.json"
+    },
+    {
+      "check": "Application source complete",
+      "passed": true,
+      "required": true,
+      "evidence": "server.py, index.html, app.js, styles.css"
+    },
+    {
+      "check": "Generated platform manifest is valid",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\app\\data\\platform_manifest.json"
+    },
+    {
+      "check": "Demo video exists",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\submission\\final\\platform_walkthrough.mp4"
+    },
+    {
+      "check": "Final PDF exists",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\submission\\final\\final_report.pdf"
+    },
+    {
+      "check": "Final ZIP exists",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\submission\\insta_strategy_lab_task2_submission.zip"
+    },
+    {
+      "check": "Manifest references valid files",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\submission\\final\\submission_manifest.json"
+    },
+    {
+      "check": "No broken internal HTML paths",
+      "passed": true,
+      "required": true,
+      "evidence": "report=[]; app=[]"
+    },
+    {
+      "check": "Extracted package is directly runnable",
+      "passed": true,
+      "required": true,
+      "evidence": "launcher=True; app=[]"
+    }
+  ]
+}

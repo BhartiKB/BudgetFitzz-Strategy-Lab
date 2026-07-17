@@ -73,6 +73,20 @@ class VideoPackageTests(unittest.TestCase):
             self.skipTest("Package not built yet")
         self.assertTrue(zipfile.is_zipfile(path))
 
+    def test_public_deploy_bundle_is_complete_when_present(self):
+        deploy = ROOT / "deploy"
+        if not deploy.exists():
+            self.skipTest("Deployment bundle not built yet")
+        expected = {
+            "final_report.pdf",
+            "platform_walkthrough.mp4",
+            "submission_manifest.json",
+            "validation_report.json",
+            "insta_strategy_lab_task2_submission.zip",
+        }
+        self.assertTrue(expected.issubset({path.name for path in deploy.iterdir()}))
+        self.assertTrue(zipfile.is_zipfile(deploy / "insta_strategy_lab_task2_submission.zip"))
+
 
 if __name__ == "__main__":
     unittest.main()

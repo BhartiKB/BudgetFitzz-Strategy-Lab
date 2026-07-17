@@ -35,7 +35,9 @@ from insta_strategy_lab.providers import GenerationPolicy, LocalProvider
 from insta_strategy_lab.reporting.builder import (
     build_app_data, build_documentation, build_final_reports, load_qualitative_observations,
 )
-from insta_strategy_lab.reporting.packaging import assemble_submission, create_zip, write_manifest
+from insta_strategy_lab.reporting.packaging import (
+    assemble_deploy_bundle, assemble_submission, create_zip, write_manifest,
+)
 from insta_strategy_lab.schemas import PlanItem, SpendEntry
 from insta_strategy_lab.storage import WorkflowMemory
 from insta_strategy_lab.utils.files import write_json
@@ -333,7 +335,8 @@ class Workflow:
             qualitative = load_qualitative_observations(self.root)
             build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after, qualitative)
             manifest = write_manifest(final_dir); archive = create_zip(self.root, final_dir)
-            return {"final_dir": str(final_dir), "manifest_files": manifest["file_count"], "zip": str(archive)}
+            deploy_dir = assemble_deploy_bundle(self.root, final_dir, archive)
+            return {"final_dir": str(final_dir), "manifest_files": manifest["file_count"], "zip": str(archive), "deploy_dir": str(deploy_dir)}
         packaged = self.stage(PackagingAgent("PackagingAgent", "Assembled reports, sources, assets, prompts, logs, manifest, checksums, and the submission ZIP.", packaging_action), "validated project", "submission/final + submission ZIP")
 
         self.auto_checkpoint("final_export_approval", ["validation:preflight-pass"])

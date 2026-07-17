@@ -107,3 +107,21 @@ def create_zip(root: Path, final_dir: Path) -> Path:
         for path in sorted(p for p in final_dir.rglob("*") if p.is_file()):
             archive.write(path, Path("insta_strategy_lab_task2") / path.relative_to(final_dir))
     return output
+
+
+def assemble_deploy_bundle(root: Path, final_dir: Path, archive: Path) -> Path:
+    """Copy only public deliverables required by the hosted application."""
+    deploy_dir = root / "deploy"
+    deploy_dir.mkdir(parents=True, exist_ok=True)
+    file_map = {
+        final_dir / "final_report.pdf": deploy_dir / "final_report.pdf",
+        final_dir / "platform_walkthrough.mp4": deploy_dir / "platform_walkthrough.mp4",
+        final_dir / "submission_manifest.json": deploy_dir / "submission_manifest.json",
+        root / "logs/validation_report.json": deploy_dir / "validation_report.json",
+        archive: deploy_dir / "insta_strategy_lab_task2_submission.zip",
+    }
+    for source, destination in file_map.items():
+        if not source.is_file():
+            raise FileNotFoundError(f"Required deployment artifact is missing: {source}")
+        copy_file(source, destination)
+    return deploy_dir

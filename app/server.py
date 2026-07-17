@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+import os
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -19,12 +20,12 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_GET(self):  # noqa: N802
         request_path = unquote(urlparse(self.path).path)
-        if self.path in ("/", ""):
+        if request_path in ("/", ""):
             self.send_response(302)
             self.send_header("Location", "/app/index.html")
             self.end_headers()
             return
-        if self.path == "/api/status":
+        if request_path == "/api/status":
             payload = {"status": "ready", "platform": "BudgetFitzz Strategy Lab", "offline": True}
             data = json.dumps(payload).encode("utf-8")
             self.send_response(200)
@@ -35,12 +36,14 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if request_path == "/final_report.pdf":
             self._serve_first_existing([
+                ROOT / "deploy/final_report.pdf",
                 ROOT / "submission/final/final_report.pdf",
                 ROOT / "final_report.pdf",
             ])
             return
         if request_path == "/submission-package.zip":
             self._serve_first_existing([
+                ROOT / "deploy/insta_strategy_lab_task2_submission.zip",
                 ROOT / "submission/insta_strategy_lab_task2_submission.zip",
                 ROOT / "insta_strategy_lab_task2_submission.zip",
                 ROOT.parent / "insta_strategy_lab_task2_submission.zip",
@@ -53,7 +56,41 @@ class Handler(SimpleHTTPRequestHandler):
                 return
             self._serve_first_existing([ROOT / "assets" / relative, ROOT / relative])
             return
-        super().do_GET()
+        explicit_files = {
+            "/submission/final/platform_walkthrough.mp4": ROOT / "deploy/platform_walkthrough.mp4",
+            "/submission/final/submission_manifest.json": ROOT / "deploy/submission_manifest.json",
+            "/logs/validation_report.json": ROOT / "deploy/validation_report.json",
+        }
+        if request_path in explicit_files:
+            self._serve_first_existing([explicit_files[request_path], ROOT / request_path.lstrip("/")])
+            return
+        if request_path == "/app":
+            self.send_response(302)
+            self.send_header("Location", "/app/index.html")
+            self.end_headers()
+            return
+        if request_path.startswith("/app/"):
+            self._serve_public_tree(request_path, "/app/", ROOT / "app")
+            return
+        if request_path.startswith("/analysis/charts/"):
+            self._serve_public_tree(request_path, "/analysis/charts/", ROOT / "analysis/charts")
+            return
+        self.send_error(404, "Public route not found")
+
+    def do_HEAD(self):  # noqa: N802
+        self.send_error(405, "HEAD requests are disabled")
+
+    def _serve_public_tree(self, request_path: str, url_prefix: str, directory: Path) -> None:
+        relative = Path(request_path.removeprefix(url_prefix))
+        if not relative.parts or ".." in relative.parts:
+            self.send_error(400, "Invalid public path")
+            return
+        root = directory.resolve()
+        candidate = (root / relative).resolve()
+        if not candidate.is_relative_to(root):
+            self.send_error(400, "Invalid public path")
+            return
+        self._serve_first_existing([candidate])
 
     def _serve_first_existing(self, candidates: list[Path], download_name: str | None = None) -> None:
         for candidate in candidates:
@@ -73,10 +110,11 @@ class Handler(SimpleHTTPRequestHandler):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--port", type=int, default=8501)
+    parser.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", "8501")))
     args = parser.parse_args()
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    print(f"BudgetFitzz Strategy Lab ready at http://127.0.0.1:{args.port}", flush=True)
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
+    print(f"BudgetFitzz Strategy Lab ready at http://{args.host}:{args.port}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

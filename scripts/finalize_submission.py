@@ -14,7 +14,9 @@ from insta_strategy_lab.providers import LocalProvider  # noqa: E402
 from insta_strategy_lab.reporting.builder import (  # noqa: E402
     build_app_data, build_final_reports, load_qualitative_observations,
 )
-from insta_strategy_lab.reporting.packaging import assemble_submission, create_zip, write_manifest  # noqa: E402
+from insta_strategy_lab.reporting.packaging import (  # noqa: E402
+    assemble_deploy_bundle, assemble_submission, create_zip, write_manifest,
+)
 from insta_strategy_lab.schemas import PlanItem  # noqa: E402
 from insta_strategy_lab.validation import validate_project  # noqa: E402
 
@@ -57,7 +59,8 @@ def main() -> None:
     shutil.copy2(ROOT / "logs/validation_report.md", final_dir / "validation_report.md")
     build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after, qualitative)
     write_manifest(final_dir); archive = create_zip(ROOT, final_dir)
-    print(json.dumps({"status":"PASS","pdf":str(final_dir/'final_report.pdf'),"demo":str(final_dir/'platform_walkthrough.mp4'),"zip":str(archive)}, indent=2))
+    deploy_dir = assemble_deploy_bundle(ROOT, final_dir, archive)
+    print(json.dumps({"status":"PASS","pdf":str(final_dir/'final_report.pdf'),"demo":str(final_dir/'platform_walkthrough.mp4'),"zip":str(archive),"deploy_dir":str(deploy_dir)}, indent=2))
 
 
 if __name__ == "__main__":
