@@ -93,6 +93,35 @@ def validate_project(root: Path, final: bool = False) -> dict[str, Any]:
     plan_complete = all(required_plan_fields.issubset(item) and all(str(item.get(key, "")).strip() for key in required_plan_fields) for item in plan)
     checks.append(check("Every plan field populated", plan_complete, f"required_fields={len(required_plan_fields)}"))
 
+    brief_path = root / "analysis/video_generation_briefs.json"
+    brief_payload = json.loads(brief_path.read_text(encoding="utf-8")) if brief_path.exists() else {}
+    briefs = brief_payload.get("briefs", [])
+    video_plan_by_asset = {item["asset_filename"]: item for item in plan if item.get("format") == "video"}
+    storyboard_ok = (
+        brief_payload.get("generated_by") == ["ContentPlannerAgent", "CreativeDirectorAgent"]
+        and len(briefs) == 2
+        and {item.get("asset_filename") for item in briefs} == set(video_plan_by_asset)
+    )
+    storyboard_evidence: list[str] = []
+    for brief in briefs:
+        planned = video_plan_by_asset.get(brief.get("asset_filename"), {})
+        caption = str(planned.get("full_proposed_caption", "")).lower()
+        beats = brief.get("beats", [])
+        aligned = bool(beats) and all(
+            str(beat.get("caption_evidence", "")).lower() in caption
+            and len(beat.get("source_window_sec", [])) == 2
+            and float(beat["source_window_sec"][1]) > float(beat["source_window_sec"][0])
+            and bool(beat.get("focus_graphic"))
+            for beat in beats
+        )
+        storyboard_ok = storyboard_ok and aligned
+        storyboard_evidence.append(f"{brief.get('asset_filename')}:{len(beats)} aligned beats")
+    checks.append(check(
+        "Video storyboards map visuals to agent captions",
+        storyboard_ok,
+        "; ".join(storyboard_evidence) if storyboard_evidence else str(brief_path),
+    ))
+
     post_files = [root / "assets/posts" / item["asset_filename"] for item in plan if item.get("format") == "post"]
     video_files = [root / "assets/videos" / item["asset_filename"] for item in plan if item.get("format") == "video"]
     post_valid = True

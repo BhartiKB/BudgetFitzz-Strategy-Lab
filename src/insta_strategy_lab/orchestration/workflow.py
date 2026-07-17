@@ -20,6 +20,7 @@ from insta_strategy_lab.agents import (
     PerformanceAnalystAgent, QualityAssuranceAgent, StrategyAgent,
 )
 from insta_strategy_lab.agents.content_strategy import build_failure_diagnosis, build_plan, build_strategy
+from insta_strategy_lab.agents.video_brief import build_video_generation_briefs
 from insta_strategy_lab.analytics.charts import generate_charts
 from insta_strategy_lab.analytics.core import (
     METRIC_CONTRACT,
@@ -286,17 +287,27 @@ class Workflow:
         provider = asdict(LocalProvider(self.root).select()); self.context["provider"] = provider
         def creative_action():
             if not (self.root / "config/brand_tokens.yaml").exists(): raise FileNotFoundError("brand tokens missing")
-            write_json(self.root / "analysis/provider_selection.json", provider); return provider
-        self.stage(CreativeDirectorAgent("CreativeDirectorAgent", "Locked the visual system, prompts, original-asset rules, and zero-cost local provider.", creative_action), "analysis/seven_day_plan.json", "config/brand_tokens.yaml", ["E03","E06","E07"])
+            video_briefs = build_video_generation_briefs(plan)
+            write_json(self.root / "analysis/provider_selection.json", provider)
+            write_json(self.root / "analysis/video_generation_briefs.json", video_briefs)
+            self.context["video_briefs"] = video_briefs
+            return {"provider": provider, "video_briefs": video_briefs}
+        creative = self.stage(CreativeDirectorAgent("CreativeDirectorAgent", "Converted the ContentPlanner captions into machine-readable visual beats, locked the brand system, and selected a zero-cash-cost local compositor.", creative_action), "analysis/seven_day_plan.json", "analysis/video_generation_briefs.json + config/brand_tokens.yaml", ["E03","E06","E07"])
 
         def asset_action():
             media_policy.assert_media_call_allowed("local", estimated_cost_inr=0)
             posts = generate_posts(plan, self.root / "assets/posts")
             scenes = generate_video_scenes(plan, self.root / "assets/video_frames")
-            video_results = generate_videos(self.root, scenes, self.root / "assets/videos", self.root / "assets/video_frames")
+            video_results = generate_videos(
+                self.root,
+                scenes,
+                self.root / "assets/videos",
+                self.root / "assets/video_frames",
+                creative["video_briefs"],
+            )
             hardware = hardware_report(self.root, video_results); write_json(self.root / "logs/hardware_report.json", hardware)
             self.context.update({"video_results": video_results, "hardware": hardware}); return {"posts": [str(x) for x in posts], "videos": video_results}
-        self.stage(AssetGenerationAgent("AssetGenerationAgent", "Composited four audited HF photographs into the agent-authored post system, retained the Day 7 deterministic fallback, and rendered two captioned H.264 videos with NVENC-first encoding.", asset_action), "analysis/seven_day_plan.json", "assets/posts + assets/videos", ["E03","E05","E09"])
+        self.stage(AssetGenerationAgent("AssetGenerationAgent", "Rendered two caption-backed photographic storyboards with beat-specific source windows, garment callouts, and NVENC-first H.264 encoding.", asset_action), "analysis/video_generation_briefs.json", "assets/posts + assets/videos", ["E03","E05","E09"])
         self.auto_checkpoint("asset_approval", ["E03","E05","E09"])
 
         hardware = self.context["hardware"]

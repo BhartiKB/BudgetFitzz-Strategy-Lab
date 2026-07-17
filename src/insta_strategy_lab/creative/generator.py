@@ -524,6 +524,76 @@ def generate_day05_realistic_overlays(output_dir: Path) -> list[Path]:
     return paths
 
 
+def _focus_line(draw: ImageDraw.ImageDraw, points: list[tuple[int, int]], width: int = 7) -> None:
+    """Draw a high-contrast editorial guide that remains legible over footage."""
+    draw.line(points, fill=(10, 18, 13, 210), width=width + 8, joint="curve")
+    draw.line(points, fill=LIME, width=width, joint="curve")
+
+
+def _focus_dot(draw: ImageDraw.ImageDraw, x: int, y: int, radius: int = 15) -> None:
+    draw.ellipse((x - radius - 6, y - radius - 6, x + radius + 6, y + radius + 6), fill=(10, 18, 13, 210))
+    draw.ellipse((x - radius, y - radius, x + radius, y + radius), fill=LIME)
+
+
+def _draw_focus_graphic(draw: ImageDraw.ImageDraw, graphic: str) -> None:
+    """Illustrate the exact garment detail named by a storyboard beat."""
+    if graphic == "open_layer":
+        _focus_line(draw, [(425, 520), (480, 825), (455, 1225)])
+        _focus_line(draw, [(655, 520), (600, 825), (625, 1225)])
+    elif graphic == "button_line":
+        _focus_line(draw, [(540, 555), (540, 1240)])
+        for y in (735, 885, 1035):
+            _focus_dot(draw, 540, y, 11)
+    elif graphic == "collar_cuff_hem":
+        for x, y in ((540, 505), (790, 1010), (540, 1240)):
+            _focus_dot(draw, x, y)
+    elif graphic == "silhouette":
+        _focus_line(draw, [(315, 475), (285, 475), (285, 1350), (315, 1350)])
+        _focus_line(draw, [(765, 475), (795, 475), (795, 1350), (765, 1350)])
+    elif graphic == "shoulder_line":
+        _focus_line(draw, [(340, 595), (540, 540), (740, 595)])
+        _focus_dot(draw, 340, 595)
+        _focus_dot(draw, 740, 595)
+    elif graphic == "hem_line":
+        _focus_line(draw, [(350, 1060), (730, 1060)])
+        _focus_line(draw, [(350, 1100), (730, 1100)], width=4)
+    elif graphic == "trouser_line":
+        _focus_line(draw, [(455, 1005), (465, 1350)])
+        _focus_line(draw, [(625, 1005), (615, 1350)])
+
+
+def generate_agent_video_overlays(brief: dict, output_dir: Path) -> list[Path]:
+    """Render transparent, caption-derived overlays from a CreativeDirector brief."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+    beats = brief.get("beats", [])
+    if not beats:
+        raise ValueError("Agent video brief has no visual beats")
+    day = int(brief["day"])
+    paths: list[Path] = []
+    for index, beat in enumerate(beats, start=1):
+        if int(beat.get("sequence", 0)) != index:
+            raise ValueError("Agent video brief beat sequence must be consecutive")
+        image = Image.new("RGBA", (1080, 1920), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, 1080, 355), fill=(23, 33, 27, 205))
+        draw.rectangle((0, 1385, 1080, 1920), fill=(23, 33, 27, 220))
+        _draw_focus_graphic(draw, str(beat["focus_graphic"]))
+        wordmark(draw, light=True, day=day)
+        draw.text((72, 165), str(beat["title"]), font=font(42, True), fill="#FFFFFF")
+        draw.text((72, 225), str(beat["subtitle"]), font=font(24, True), fill=LIME)
+        draw.rounded_rectangle((72, 1460, 430, 1518), radius=22, fill=LIME)
+        draw.text((98, 1474), str(beat["step"]), font=font(22, True), fill=INK)
+        text_block(draw, (72, 1560), str(beat["takeaway"]), 40, 900, "#FFFFFF", True, 12)
+        draw.text((72, 1812), "@budgetfitzz  /  caption-backed visual", font=font(22, True), fill="#D8E8DF")
+        for progress in range(len(beats)):
+            fill = LIME if progress < index else "#5D8274"
+            draw.rounded_rectangle((72 + progress * 116, 1865, 164 + progress * 116, 1879), radius=7, fill=fill)
+        path = output_dir / f"day{day:02d}_agent_overlay_{index}.png"
+        image.save(path, "PNG", optimize=True)
+        paths.append(path)
+    return paths
+
+
 def generate_video_scenes(plan: list[PlanItem], output_dir: Path) -> dict[str, list[Path]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     scenes: dict[str, list[Path]] = {}

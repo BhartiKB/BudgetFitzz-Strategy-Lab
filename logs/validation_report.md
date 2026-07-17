@@ -1,6 +1,6 @@
 # Validation report
 
-Status: **PASS** (40 passed, 0 failed)
+Status: **PASS** (41 passed, 0 failed)
 
 - [x] Original CSV preserved — C:\Users\bhart\Documents\Task2\data\raw\budgetfitzz_dataset_fixed.csv
 - [x] Original DOCX preserved — C:\Users\bhart\Documents\Task2\data\raw\Intern Task 2 - Performance Analysis and Strategy Revision.docx
@@ -19,6 +19,7 @@ Status: **PASS** (40 passed, 0 failed)
 - [x] Exactly five posts — posts=5
 - [x] Exactly two videos — videos=2
 - [x] Every plan field populated — required_fields=19
+- [x] Video storyboards map visuals to agent captions — day02_one_shirt_three_ways.mp4:3 aligned beats; day05_fit_mistakes.mp4:4 aligned beats
 - [x] Five valid 1080x1350 PNG assets — day01_capsule_formula.png:(1080, 1350),variance=6872,alt=True; day03_colour_vote.png:(1080, 1350),variance=3495,alt=True; day04_budget_priority.png:(1080, 1350),variance=9707,alt=True; day06_sneaker_scorecard.png:(1080, 1350),variance=6610,alt=True; day07_wardrobe_audit.png:(1080, 1350),variance=3096,alt=True
 - [x] No duplicate post assets — unique_hashes=5
 - [x] Two valid 1080x1920 H.264 videos — day02_one_shirt_three_ways.mp4:h264,1080x1920,10.00s; day05_fit_mistakes.mp4:h264,1080x1920,10.00s

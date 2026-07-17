@@ -8,7 +8,11 @@ import time
 from pathlib import Path
 from typing import Any
 
-from insta_strategy_lab.creative import generate_day02_realistic_overlays, generate_day05_realistic_overlays
+from insta_strategy_lab.creative import (
+    generate_agent_video_overlays,
+    generate_day02_realistic_overlays,
+    generate_day05_realistic_overlays,
+)
 
 
 def ffmpeg_paths(root: Path) -> tuple[Path, Path]:
@@ -158,6 +162,74 @@ def encode_photographic_hf_video(
     return completed.returncode == 0, completed.stderr[-4000:], elapsed
 
 
+def encode_agent_storyboard_video(
+    ffmpeg: Path,
+    source_video: Path,
+    overlays: list[Path],
+    beats: list[dict[str, Any]],
+    output: Path,
+    encoder: str,
+) -> tuple[bool, str, float]:
+    """Render caption-backed source windows instead of looping one generic clip."""
+    if len(overlays) != len(beats) or not beats:
+        raise ValueError("Every storyboard beat must have exactly one overlay")
+    command = [
+        str(ffmpeg), "-y", "-hide_banner", "-loglevel", "warning",
+        "-i", str(source_video),
+    ]
+    for overlay in overlays:
+        command.extend(["-loop", "1", "-framerate", "30", "-i", str(overlay)])
+
+    split_outputs = "".join(f"[source{index}]" for index in range(len(beats)))
+    filters: list[str] = [f"[0:v]split={len(beats)}{split_outputs}"]
+    beat_outputs: list[str] = []
+    for index, beat in enumerate(beats):
+        start, end = (float(value) for value in beat["source_window_sec"])
+        duration = float(beat["duration_sec"])
+        if start < 0 or end <= start or duration <= 0:
+            raise ValueError(f"Invalid source window for beat {index + 1}")
+        stretch = duration / (end - start)
+        zoom = max(1.0, float(beat.get("zoom", 1.0)))
+        scaled_width = int(round((1080 * zoom) / 2) * 2)
+        scaled_height = int(round((1920 * zoom) / 2) * 2)
+        crop_x = max(0, (scaled_width - 1080) // 2)
+        crop_y = min(max(0, int(beat.get("crop_y", 0))), max(0, scaled_height - 1920))
+        filters.append(
+            f"[source{index}]trim=start={start:.3f}:end={end:.3f},"
+            f"setpts=(PTS-STARTPTS)*{stretch:.6f},scale={scaled_width}:{scaled_height},"
+            f"crop=1080:1920:{crop_x}:{crop_y},fps=30,setsar=1[base{index}]"
+        )
+        filters.append(
+            f"[{index + 1}:v]trim=duration={duration:.6f},setpts=PTS-STARTPTS,"
+            f"scale=1080:1920,format=rgba[overlay{index}]"
+        )
+        filters.append(
+            f"[base{index}][overlay{index}]overlay=shortest=1,"
+            f"trim=duration={duration:.6f},setpts=PTS-STARTPTS[beat{index}]"
+        )
+        beat_outputs.append(f"[beat{index}]")
+    filters.append(
+        f"{''.join(beat_outputs)}concat=n={len(beats)}:v=1:a=0,format=yuv420p[final]"
+    )
+    command.extend(["-filter_complex", ";".join(filters), "-map", "[final]", "-t", "10"])
+    if encoder == "h264_nvenc":
+        command.extend([
+            "-c:v", encoder, "-preset", "p4", "-tune", "hq", "-rc", "vbr",
+            "-cq", "20", "-b:v", "5M", "-maxrate", "9M",
+        ])
+    else:
+        command.extend(["-c:v", "libx264", "-preset", "medium", "-crf", "19"])
+    command.extend([
+        "-r", "30", "-movflags", "+faststart",
+        "-metadata", "comment=Agent-backed photographic edit; caption-aligned visual beats; cash cost INR 0",
+        str(output),
+    ])
+    started = time.perf_counter()
+    completed = subprocess.run(command, capture_output=True, text=True)
+    elapsed = time.perf_counter() - started
+    return completed.returncode == 0, completed.stderr[-4000:], elapsed
+
+
 def extract_frame(ffmpeg: Path, video: Path, output: Path) -> None:
     subprocess.run(
         [str(ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-ss", "6.2", "-i", str(video), "-frames:v", "1", str(output)],
@@ -165,20 +237,43 @@ def extract_frame(ffmpeg: Path, video: Path, output: Path) -> None:
     )
 
 
-def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Path, frame_dir: Path) -> dict[str, Any]:
+def generate_videos(
+    root: Path,
+    scene_map: dict[str, list[Path]],
+    output_dir: Path,
+    frame_dir: Path,
+    video_briefs: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     ffmpeg, ffprobe = ffmpeg_paths(root)
     output_dir.mkdir(parents=True, exist_ok=True)
     frame_dir.mkdir(parents=True, exist_ok=True)
     results: dict[str, Any] = {"ffmpeg": str(ffmpeg), "selected_encoder": "h264_nvenc", "videos": {}}
+    brief_by_filename = {
+        str(brief["asset_filename"]): brief
+        for brief in (video_briefs or {}).get("briefs", [])
+    }
     for filename, scenes in scene_map.items():
         output = output_dir / filename
         hf_sources = {
             "day02_one_shirt_three_ways.mp4": root / "assets/source_media/day02_hf_wan.mp4",
             "day05_fit_mistakes.mp4": root / "assets/source_media/day05_hf_wan.mp4",
         }
-        hf_source = hf_sources.get(filename)
+        brief = brief_by_filename.get(filename)
+        hf_source = (
+            root / str(brief["source_video"])
+            if brief is not None
+            else hf_sources.get(filename)
+        )
         uses_hf_source = hf_source is not None and hf_source.exists()
-        if uses_hf_source:
+        uses_agent_storyboard = brief is not None and uses_hf_source
+        if brief is not None and not uses_hf_source:
+            raise FileNotFoundError(f"Storyboard source is missing for {filename}: {hf_source}")
+        if uses_agent_storyboard:
+            overlays = generate_agent_video_overlays(brief, frame_dir)
+            ok, error, elapsed = encode_agent_storyboard_video(
+                ffmpeg, hf_source, overlays, brief["beats"], output, "h264_nvenc"
+            )
+        elif uses_hf_source:
             overlays = (
                 generate_day02_realistic_overlays(frame_dir)
                 if filename == "day02_one_shirt_three_ways.mp4"
@@ -191,7 +286,11 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
             ok, error, elapsed = encode_video(ffmpeg, scenes, output, "h264_nvenc")
         encoder = "h264_nvenc"
         if not ok:
-            if uses_hf_source:
+            if uses_agent_storyboard:
+                ok, fallback_error, elapsed = encode_agent_storyboard_video(
+                    ffmpeg, hf_source, overlays, brief["beats"], output, "libx264"
+                )
+            elif uses_hf_source:
                 ok, fallback_error, elapsed = encode_photographic_hf_video(
                     ffmpeg, hf_source, overlays, output, "libx264"
                 )
@@ -216,6 +315,13 @@ def generate_videos(root: Path, scene_map: dict[str, list[Path]], output_dir: Pa
             "photographic_overlays": (
                 [str(path.relative_to(root)).replace("\\", "/") for path in overlays]
                 if uses_hf_source else []
+            ),
+            "rendering_mode": "agent_storyboard" if uses_agent_storyboard else (
+                "photographic_loop" if uses_hf_source else "local_scene_cards"
+            ),
+            "caption_evidence": (
+                [beat["caption_evidence"] for beat in brief["beats"]]
+                if uses_agent_storyboard else []
             ),
             "cash_cost_inr": 0,
         }

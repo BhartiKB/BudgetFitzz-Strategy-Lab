@@ -51,6 +51,22 @@ class VideoPackageTests(unittest.TestCase):
         self.assertIn("photographic", day_five["visual_direction"].lower())
         self.assertTrue((ROOT / "assets/source_media/day05_hf_wan.mp4").exists())
 
+    def test_agent_storyboards_are_caption_backed(self):
+        plan = json.loads((ROOT / "analysis/seven_day_plan.json").read_text(encoding="utf-8"))
+        payload = json.loads((ROOT / "analysis/video_generation_briefs.json").read_text(encoding="utf-8"))
+        self.assertEqual(payload["generated_by"], ["ContentPlannerAgent", "CreativeDirectorAgent"])
+        self.assertEqual(len(payload["briefs"]), 2)
+        plan_by_asset = {item["asset_filename"]: item for item in plan if item["format"] == "video"}
+        self.assertEqual({item["asset_filename"] for item in payload["briefs"]}, set(plan_by_asset))
+        for brief in payload["briefs"]:
+            caption = plan_by_asset[brief["asset_filename"]]["full_proposed_caption"].lower()
+            self.assertTrue(brief["creative_director_decision"]["why"])
+            self.assertTrue(brief["beats"])
+            for beat in brief["beats"]:
+                self.assertIn(beat["caption_evidence"].lower(), caption)
+                self.assertGreater(beat["source_window_sec"][1], beat["source_window_sec"][0])
+                self.assertTrue(beat["focus_graphic"])
+
     def test_package_is_valid_zip_when_present(self):
         path = ROOT / "submission/insta_strategy_lab_task2_submission.zip"
         if not path.exists():

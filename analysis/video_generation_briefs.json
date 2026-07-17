@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "generated_by": [
+    "ContentPlannerAgent",
+    "CreativeDirectorAgent"
+  ],
+  "briefs": [
+    {
+      "day": 2,
+      "asset_filename": "day02_one_shirt_three_ways.mp4",
+      "source_video": "assets/source_media/day02_hf_wan.mp4",
+      "content_planner_inputs": {
+        "topic": "One shirt, three situations",
+        "hook": "One overshirt. Three small fit moves in 10 seconds.",
+        "content_idea": "Show three visible adjustments to one forest textured overshirt: wear it open, button it lightly, then check the collar, cuff, and hem.",
+        "visual_direction": "One continuous all-photographic HF outfit clip with three timed editorial overlays and no illustrated garments or fictional location changes.",
+        "caption_direction": "Describe only the styling actions visible in the footage.",
+        "full_proposed_caption": "One overshirt, three small styling moves. First, wear it open so the cream tee stays visible and the layer feels relaxed. Second, button it lightly to create a cleaner front line without pulling the fabric. Third, check the collar, cuff and hem, then stop when the layer sits cleanly. This video shows one outfit in one setting, not three different occasions. Save the fit check and try it with a layer you already own. Follow @budgetfitzz for budget-first menswear systems.",
+        "cta": "Save the three fit moves and test them tonight.",
+        "baseline_insight": "E02 + E05 + E09: video is under-tested; mean performance is outlier-driven and median retention is about 55%."
+      },
+      "creative_director_decision": {
+        "approach": "caption-first editorial demonstration",
+        "why": "Each visual beat quotes a claim from the approved caption, uses a matching source-time window, and adds a restrained garment callout. The renderer does not ask one generic loop to represent several unrelated actions.",
+        "realism_rules": [
+          "Preserve the photographic person and garment source.",
+          "Use reframing and typography; do not synthesize new anatomy locally.",
+          "Show only a detail that is visible in the selected source window.",
+          "Treat the fit guidance as a checklist, not a fabricated before-and-after."
+        ]
+      },
+      "beats": [
+        {
+          "sequence": 1,
+          "duration_sec": 3.333333,
+          "title": "ONE OVERSHIRT.",
+          "subtitle": "KEEP THE BASE LAYER VISIBLE",
+          "step": "01 / OPEN LAYER",
+          "takeaway": "LET THE CREAM TEE FRAME THE OUTFIT.",
+          "caption_evidence": "wear it open",
+          "source_window_sec": [
+            0.9,
+            2.15
+          ],
+          "zoom": 1.08,
+          "crop_y": 45,
+          "focus_graphic": "open_layer"
+        },
+        {
+          "sequence": 2,
+          "duration_sec": 3.333333,
+          "title": "BUTTON FOR STRUCTURE.",
+          "subtitle": "WATCH THE FRONT LINE",
+          "step": "02 / BUTTON",
+          "takeaway": "FASTEN LIGHTLY. DON'T PULL THE FABRIC.",
+          "caption_evidence": "button it lightly",
+          "source_window_sec": [
+            0.0,
+            1.25
+          ],
+          "zoom": 1.18,
+          "crop_y": 80,
+          "focus_graphic": "button_line"
+        },
+        {
+          "sequence": 3,
+          "duration_sec": 3.333333,
+          "title": "CHECK THE FINISH.",
+          "subtitle": "COLLAR / CUFF / HEM",
+          "step": "03 / FINAL CHECK",
+          "takeaway": "STOP WHEN THE LAYER SITS CLEANLY.",
+          "caption_evidence": "check the collar, cuff and hem",
+          "source_window_sec": [
+            2.8,
+            4.05
+          ],
+          "zoom": 1.08,
+          "crop_y": 55,
+          "focus_graphic": "collar_cuff_hem"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "asset_filename": "day05_fit_mistakes.mp4",
+      "source_video": "assets/source_media/day05_hf_wan.mp4",
+      "content_planner_inputs": {
+        "topic": "Three fit mistakes",
+        "hook": "A realistic fit check, from shoulder to shoe.",
+        "content_idea": "Use the visible balanced outfit to check the shoulder line, tee hem, and straight trouser line without claiming a before-and-after transformation.",
+        "visual_direction": "One continuous all-photographic HF full-body clip with four timed editorial overlays and no illustrated garments or unsupported corrections.",
+        "caption_direction": "Describe the fit visible in the footage and label it as a mirror checklist, not a transformation.",
+        "full_proposed_caption": "Use this as a mirror checklist, not a before-and-after. First, check that the sleeve seam sits near the shoulder and the tee lies smoothly without pulling. Second, check that the tee hem finishes close to the waistband with enough length to move and no excess bunching. Third, follow the trouser line down to a clean ankle and shoe. Read the whole silhouette before buying another piece. Save the three checks and test them on an outfit you already own. Follow @budgetfitzz for practical fit guidance.",
+        "cta": "Save the three visible fit checks and try them in the mirror.",
+        "baseline_insight": "E03 + E09: education is more saveable and current video retention leaves room for faster, explicit progression."
+      },
+      "creative_director_decision": {
+        "approach": "caption-first editorial demonstration",
+        "why": "Each visual beat quotes a claim from the approved caption, uses a matching source-time window, and adds a restrained garment callout. The renderer does not ask one generic loop to represent several unrelated actions.",
+        "realism_rules": [
+          "Preserve the photographic person and garment source.",
+          "Use reframing and typography; do not synthesize new anatomy locally.",
+          "Show only a detail that is visible in the selected source window.",
+          "Treat the fit guidance as a checklist, not a fabricated before-and-after."
+        ]
+      },
+      "beats": [
+        {
+          "sequence": 1,
+          "duration_sec": 2.5,
+          "title": "START WITH THE WHOLE FIT.",
+          "subtitle": "READ THE SILHOUETTE FIRST",
+          "step": "START / FULL LOOK",
+          "takeaway": "THIS IS A MIRROR CHECKLIST, NOT A TRANSFORMATION.",
+          "caption_evidence": "mirror checklist",
+          "source_window_sec": [
+            3.65,
+            4.9
+          ],
+          "zoom": 1.0,
+          "crop_y": 0,
+          "focus_graphic": "silhouette"
+        },
+        {
+          "sequence": 2,
+          "duration_sec": 2.5,
+          "title": "CHECK THE SHOULDER LINE.",
+          "subtitle": "FIND THE SLEEVE SEAM",
+          "step": "01 / SHOULDER",
+          "takeaway": "THE SEAM SHOULD SIT NEAR THE SHOULDER.",
+          "caption_evidence": "sleeve seam sits near the shoulder",
+          "source_window_sec": [
+            0.0,
+            1.25
+          ],
+          "zoom": 1.22,
+          "crop_y": 0,
+          "focus_graphic": "shoulder_line"
+        },
+        {
+          "sequence": 3,
+          "duration_sec": 2.5,
+          "title": "CHECK THE TEE HEM.",
+          "subtitle": "COMPARE IT WITH THE WAISTBAND",
+          "step": "02 / TEE HEM",
+          "takeaway": "ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING.",
+          "caption_evidence": "tee hem finishes close to the waistband",
+          "source_window_sec": [
+            1.25,
+            2.5
+          ],
+          "zoom": 1.22,
+          "crop_y": 190,
+          "focus_graphic": "hem_line"
+        },
+        {
+          "sequence": 4,
+          "duration_sec": 2.5,
+          "title": "FOLLOW THE TROUSER LINE.",
+          "subtitle": "STRAIGHT FALL TO A CLEAN ANKLE",
+          "step": "03 / TROUSER",
+          "takeaway": "READ THE LINE ALL THE WAY TO THE SHOE.",
+          "caption_evidence": "follow the trouser line down to a clean ankle and shoe",
+          "source_window_sec": [
+            2.5,
+            3.75
+          ],
+          "zoom": 1.14,
+          "crop_y": 265,
+          "focus_graphic": "trouser_line"
+        }
+      ]
+    }
+  ]
+}
