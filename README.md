@@ -2,6 +2,8 @@
 
 Production-quality offline platform for Intern Task 2: Performance Analysis and Strategy Revision.
 
+**Live website:** [budgetfitzz-strategy-lab.onrender.com](https://budgetfitzz-strategy-lab.onrender.com)
+
 ## Verified outcome
 
 - Historical dataset: 150 records (137 posts, 13 videos)
