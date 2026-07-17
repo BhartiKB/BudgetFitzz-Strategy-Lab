@@ -3,63 +3,52 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#12231a">
-  <title>BudgetFitzz — Strategy Intelligence</title>
-  <link rel="stylesheet" href="styles.css?v=10">
-  <link rel="stylesheet" href="responsive.css?v=10">
-  <link rel="stylesheet" href="frontend-fixes.css?v=10">
+  <meta name="theme-color" content="#f7f3ea">
+  <meta name="description" content="BudgetFitzz editorial creator workspace for evidence-led social strategy.">
+  <title>BudgetFitzz — Editorial Creator Atelier</title>
+  <link rel="stylesheet" href="tokens.css?v=11.1">
+  <link rel="stylesheet" href="styles.css?v=11.1">
+  <link rel="stylesheet" href="responsive.css?v=11.1">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <aside class="sidebar" aria-label="Primary navigation">
-    <a class="brand" href="#overview" aria-label="BudgetFitzz home">budgetfitzz<span>lab</span></a>
-    <p class="brand-context">Strategy intelligence</p>
-    <nav id="nav" class="navigation" aria-label="Platform views"></nav>
-    <div class="sidebar-status"><span class="pulse" aria-hidden="true"></span><span>Offline workspace</span><strong>₹0 paid spend</strong></div>
-  </aside>
-  <main id="main-content" tabindex="-1">
-    <section id="overview" class="view view--overview" aria-labelledby="overview-title">
-      <div class="view-topline"><span class="eyebrow">PERFORMANCE ANALYSIS · STRATEGY REVISION</span><span id="run-chip" class="status-chip">Loading run</span></div>
-      <div class="hero-copy"><p class="hero-kicker">Budget-first menswear</p><h1 id="overview-title">Turn evidence into<br><em>useful momentum.</em></h1><p class="lede">One local platform for the audit, the creative logic, the seven-day pilot, and the checks that keep claims honest.</p></div>
-      <div class="hero-actions"><a class="button button--primary" href="/final_report.pdf">Open final report</a><a class="button button--secondary" href="/submission-package.zip">Download submission</a></div>
-      <div id="overview-kpis" class="kpi-grid" aria-label="Observed baseline metrics"></div>
-      <aside id="lineage-callout" class="lineage-callout" aria-label="Data lineage"></aside>
-    </section>
+  <div class="app-shell">
+    <aside class="app-rail" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="BudgetFitzz home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span><strong>BudgetFitzz</strong><small>Editorial atelier</small></span>
+      </a>
+      <nav id="desktop-nav" class="route-nav" aria-label="Workspace routes"></nav>
+      <div id="rail-status" class="rail-status" aria-live="polite"></div>
+    </aside>
 
-    <section id="content" class="view view--content" aria-labelledby="content-title">
-      <div class="section-heading"><div><span class="eyebrow">CONTENT STUDIO</span><h2 id="content-title">Make the content logic visible.</h2></div><p id="plan-summary" class="section-summary"></p></div>
-      <div class="studio-tabs" role="tablist" aria-label="Content formats"><button class="tab is-active" role="tab" aria-selected="true" aria-controls="post-panel" id="post-tab">Posts</button><button class="tab" role="tab" aria-selected="false" aria-controls="video-panel" id="video-tab">Videos</button></div>
-      <div id="post-panel" class="tab-panel" role="tabpanel" aria-labelledby="post-tab"><div id="post-gallery" class="asset-gallery"></div></div>
-      <div id="video-panel" class="tab-panel" role="tabpanel" aria-labelledby="video-tab" hidden><div id="video-gallery" class="video-gallery"></div></div>
-    </section>
+    <div class="workspace">
+      <header class="topbar">
+        <a class="mobile-brand" href="#home" aria-label="BudgetFitzz home"><span aria-hidden="true">B</span> BudgetFitzz Atelier</a>
+        <p id="route-context" class="route-context">Editorial creator workspace</p>
+        <div id="topbar-status" class="topbar-status" aria-live="polite"></div>
+      </header>
 
-    <section id="performance" class="view view--performance" aria-labelledby="performance-title">
-      <div class="section-heading"><div><span class="eyebrow eyebrow--lime">PERFORMANCE</span><h2 id="performance-title">Read the baseline without flattening its limits.</h2></div><span class="status-chip status-chip--dark">Observed values</span></div>
-      <div id="observed-metrics" class="metric-grid" aria-label="Observed calculated metrics"></div>
-      <div id="chart-gallery" class="chart-gallery"></div>
-      <div id="summary-tables" class="summary-tables"></div>
-    </section>
+      <main id="main-content" class="route-stage" tabindex="-1">
+        <div class="loading-state" role="status" aria-live="polite">
+          <span class="loading-state__mark" aria-hidden="true"></span>
+          <div><strong>Opening the atelier</strong><p>Loading the generated strategy manifest…</p></div>
+        </div>
+      </main>
+    </div>
+  </div>
 
-    <section id="strategy" class="view view--strategy" aria-labelledby="strategy-title">
-      <div class="section-heading"><div><span class="eyebrow">STRATEGY</span><h2 id="strategy-title">A revision with evidence attached.</h2></div><span class="status-chip">Plan, not results</span></div>
-      <div id="diagnosis-card" class="diagnosis-card"></div>
-      <div id="strategy-grid" class="strategy-grid"></div>
-      <div class="comparison-wrap"><div><span class="eyebrow">BEFORE / PILOT DESIGN</span><h3>Observed values vs proposed pilot.</h3></div><p id="after-note" class="section-summary"></p></div>
-      <div id="comparison-grid" class="comparison-grid"></div>
-    </section>
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation"></nav>
 
-    <section id="workflow" class="view view--workflow" aria-labelledby="workflow-title">
-      <div class="section-heading"><div><span class="eyebrow eyebrow--lime">WORKFLOW</span><h2 id="workflow-title">Why this content exists.</h2></div><span class="status-chip status-chip--dark">Agent trace</span></div>
-      <div class="workflow-rail" aria-label="Workflow stages"><span>Raw inputs</span><i aria-hidden="true">→</i><span>Audit</span><i aria-hidden="true">→</i><span>Diagnosis</span><i aria-hidden="true">→</i><span>Plan</span><i aria-hidden="true">→</i><span>Creative direction</span><i aria-hidden="true">→</i><span>Validation</span></div>
-      <div id="trace-list" class="trace-list" aria-live="polite"></div>
-    </section>
+  <dialog id="route-sheet" class="sheet-dialog" aria-labelledby="route-sheet-title">
+    <div class="dialog-head"><div><span class="overline">WORKSPACE</span><h2 id="route-sheet-title">All routes</h2></div><button class="icon-button" data-close-dialog="route-sheet" aria-label="Close routes">×</button></div>
+    <nav id="sheet-nav" class="sheet-nav" aria-label="All workspace routes"></nav>
+  </dialog>
 
-    <section id="validation" class="view view--validation" aria-labelledby="validation-title">
-      <div><span class="eyebrow eyebrow--lime">FINAL VALIDATION</span><h2 id="validation-title">Production gate loading.</h2><p>Dimensions, codecs, plan counts, spend, provenance, PDF, demo, and package integrity are checked before export.</p></div>
-      <div id="validation-score" class="validation-score" aria-label="Validation check score"></div>
-    </section>
-  </main>
-  <div id="app-status" class="app-status" role="status" aria-live="polite">Loading generated platform data…</div>
-  <script src="app.js?v=10"></script>
+  <dialog id="preview-modal" class="preview-dialog" aria-labelledby="preview-title">
+    <div id="preview-content"></div>
+  </dialog>
+
+  <script src="app.js?v=11.2"></script>
 </body>
 </html>

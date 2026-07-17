@@ -21,12 +21,12 @@ def font(size: int, bold: bool = False):
 
 
 def title_card(path: Path, title: str, subtitle: str) -> None:
-    image = Image.new("RGB", (1920, 1080), "#17211B")
+    image = Image.new("RGB", (1920, 1080), "#1F2621")
     draw = ImageDraw.Draw(image)
-    draw.text((110, 96), "budgetfitzz lab", font=font(38, True), fill="#B7F34A")
+    draw.text((110, 96), "BUDGETFITZZ / EDITORIAL CREATOR ATELIER", font=font(30, True), fill="#DDF58B")
     draw.text((110, 340), title, font=font(86, True), fill="#FFFFFF")
-    draw.text((114, 455), subtitle, font=font(34), fill="#C4CEC6")
-    draw.rounded_rectangle((110, 820, 1810, 830), radius=5, fill="#B7F34A")
+    draw.text((114, 455), subtitle, font=font(34), fill="#CBD8C7")
+    draw.rounded_rectangle((110, 820, 1810, 830), radius=5, fill="#B65435")
     draw.text((110, 870), "Actual local platform states • no mock interface", font=font(24, True), fill="#FFFFFF")
     image.save(path, "PNG", optimize=True)
 
@@ -38,8 +38,8 @@ def main() -> None:
         raise SystemExit("At least four actual application screenshots are required in tmp/demo_screens")
     title = screenshot_dir / "00_title.png"
     end = screenshot_dir / "99_end.png"
-    title_card(title, "Performance to strategy.", "An end-to-end local platform walkthrough")
-    title_card(end, "Validated. Packaged. Ready.", "5 posts • 2 videos • INR 0 paid generation")
+    title_card(title, "Evidence to editorial action.", "A manifest-driven creator workspace walkthrough")
+    title_card(end, "Validated. Packaged. Ready.", "5 posts • 2 videos • INR 0 direct paid spend")
     inputs = [title, *screenshots, end]
     # Avoid recursively including generated cards when rerun.
     ordered = []

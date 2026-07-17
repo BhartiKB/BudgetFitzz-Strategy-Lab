@@ -1,35 +1,55 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "generated_by": "insta_strategy_lab.reporting.builder.build_app_data",
   "run": {
-    "run_id": "budgetfitzz-20260717T115645Z",
+    "run_id": "budgetfitzz-20260717T201909Z",
     "status": "complete",
     "provider": "deterministic-template"
   },
   "navigation": [
     {
-      "id": "overview",
-      "label": "Overview"
+      "id": "home",
+      "label": "Home",
+      "icon": "home"
     },
     {
-      "id": "content",
-      "label": "Content Studio"
+      "id": "insights",
+      "label": "Insights",
+      "icon": "chart"
     },
     {
-      "id": "performance",
-      "label": "Performance"
+      "id": "diagnosis",
+      "label": "Diagnosis",
+      "icon": "search"
     },
     {
       "id": "strategy",
       "label": "Strategy"
     },
     {
-      "id": "workflow",
-      "label": "Workflow"
+      "id": "content-plan",
+      "label": "Content Plan",
+      "icon": "calendar"
+    },
+    {
+      "id": "studio",
+      "label": "Studio",
+      "icon": "studio"
+    },
+    {
+      "id": "agents",
+      "label": "Agents",
+      "icon": "agents"
     },
     {
       "id": "validation",
-      "label": "Validation"
+      "label": "Validation",
+      "icon": "check"
+    },
+    {
+      "id": "submission",
+      "label": "Submission",
+      "icon": "send"
     }
   ],
   "overview": {
@@ -68,7 +88,7 @@
       "raw_sha256": "ad796f7f0566bf34d46ff6f5ec4a3fad79dae3203adb31f9120ed12a6b905c30",
       "derived_source": "data/processed/budgetfitzz_derived.csv",
       "analysis_source": "analysis/analysis_results.json",
-      "calculation_run_id": "budgetfitzz-20260717T115645Z",
+      "calculation_run_id": "budgetfitzz-20260717T201909Z",
       "observed_rows": 150,
       "after_results_available": false,
       "after_note": "The seven-day pilot has not been published; after values are validated plan counts or explicitly labelled targets, never claimed results."
@@ -903,22 +923,22 @@
   "workflow": {
     "trace": [
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "DataAuditAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
         "output_reference": "analysis/dataset_audit.json",
         "decision_summary": "Validated schema, dates, missing values, duplicates, ranges, handles, and anomalies.",
         "evidence_ids": [],
-        "duration_sec": 0.036,
+        "duration_sec": 0.042,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:45.687558+00:00"
+        "timestamp": "2026-07-17T20:19:10.156658+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "MetricsAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
@@ -930,25 +950,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:45.693082+00:00"
+        "timestamp": "2026-07-17T20:19:10.161656+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "MetricsAgent",
         "action": "execute",
         "input_reference": "data/raw/budgetfitzz_dataset_fixed.csv",
         "output_reference": "data/processed/budgetfitzz_derived.csv",
         "decision_summary": "Applied the machine-readable metric contract without modifying raw columns.",
         "evidence_ids": [],
-        "duration_sec": 0.053,
+        "duration_sec": 0.056,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:45.756648+00:00"
+        "timestamp": "2026-07-17T20:19:10.228809+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "PerformanceAnalystAgent",
         "action": "execute",
         "input_reference": "data/processed/budgetfitzz_derived.csv",
@@ -970,10 +990,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:45.762647+00:00"
+        "timestamp": "2026-07-17T20:19:10.233807+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "PerformanceAnalystAgent",
         "action": "execute",
         "input_reference": "data/processed/budgetfitzz_derived.csv",
@@ -990,15 +1010,15 @@
           "E08",
           "E09"
         ],
-        "duration_sec": 2.281,
+        "duration_sec": 2.09,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.056170+00:00"
+        "timestamp": "2026-07-17T20:19:12.344437+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "FailureDiagnosisAgent",
         "action": "execute",
         "input_reference": "analysis/evidence.json",
@@ -1018,10 +1038,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.061177+00:00"
+        "timestamp": "2026-07-17T20:19:12.352435+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "FailureDiagnosisAgent",
         "action": "execute",
         "input_reference": "analysis/evidence.json",
@@ -1036,15 +1056,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.006,
+        "duration_sec": 0.007,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.077187+00:00"
+        "timestamp": "2026-07-17T20:19:12.374463+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1063,10 +1083,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T11:56:48.086182+00:00"
+        "timestamp": "2026-07-17T20:19:12.387977+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "StrategyAgent",
         "action": "execute",
         "input_reference": "analysis/failure_diagnosis.json",
@@ -1087,10 +1107,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.091706+00:00"
+        "timestamp": "2026-07-17T20:19:12.394832+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "StrategyAgent",
         "action": "execute",
         "input_reference": "analysis/failure_diagnosis.json",
@@ -1106,15 +1126,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.006,
+        "duration_sec": 0.009,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.108708+00:00"
+        "timestamp": "2026-07-17T20:19:12.416823+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1132,10 +1152,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T11:56:48.118707+00:00"
+        "timestamp": "2026-07-17T20:19:12.431871+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "ContentPlannerAgent",
         "action": "execute",
         "input_reference": "analysis/revised_strategy.json",
@@ -1155,10 +1175,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.124707+00:00"
+        "timestamp": "2026-07-17T20:19:12.437876+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "ContentPlannerAgent",
         "action": "execute",
         "input_reference": "analysis/revised_strategy.json",
@@ -1173,15 +1193,15 @@
           "E07",
           "E09"
         ],
-        "duration_sec": 0.007,
+        "duration_sec": 0.008,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.141705+00:00"
+        "timestamp": "2026-07-17T20:19:12.457013+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "CreativeDirectorAgent",
         "action": "execute",
         "input_reference": "analysis/seven_day_plan.json",
@@ -1197,10 +1217,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.160800+00:00"
+        "timestamp": "2026-07-17T20:19:13.250606+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "CreativeDirectorAgent",
         "action": "execute",
         "input_reference": "analysis/seven_day_plan.json",
@@ -1211,15 +1231,15 @@
           "E06",
           "E07"
         ],
-        "duration_sec": 0.009,
+        "duration_sec": 0.016,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.180717+00:00"
+        "timestamp": "2026-07-17T20:19:13.286619+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "AssetGenerationAgent",
         "action": "execute",
         "input_reference": "analysis/video_generation_briefs.json",
@@ -1235,10 +1255,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:48.186765+00:00"
+        "timestamp": "2026-07-17T20:19:13.294157+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "AssetGenerationAgent",
         "action": "execute",
         "input_reference": "analysis/video_generation_briefs.json",
@@ -1249,15 +1269,15 @@
           "E05",
           "E09"
         ],
-        "duration_sec": 9.808,
+        "duration_sec": 35.49,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:58.006928+00:00"
+        "timestamp": "2026-07-17T20:19:48.805680+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1273,10 +1293,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T11:56:58.019175+00:00"
+        "timestamp": "2026-07-17T20:19:48.817985+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "QualityAssuranceAgent",
         "action": "execute",
         "input_reference": "analysis + assets + logs",
@@ -1288,25 +1308,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:56:58.074915+00:00"
+        "timestamp": "2026-07-17T20:19:48.897537+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "QualityAssuranceAgent",
         "action": "execute",
         "input_reference": "analysis + assets + logs",
         "output_reference": "logs/validation_report.json",
         "decision_summary": "Validated analysis, plan counts, assets, codecs, spend, architecture, memory, trace, and app source.",
         "evidence_ids": [],
-        "duration_sec": 2.316,
+        "duration_sec": 2.921,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:57:00.399556+00:00"
+        "timestamp": "2026-07-17T20:19:51.833653+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "PackagingAgent",
         "action": "execute",
         "input_reference": "validated project",
@@ -1318,25 +1338,25 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:57:00.404073+00:00"
+        "timestamp": "2026-07-17T20:19:51.840203+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "PackagingAgent",
         "action": "execute",
         "input_reference": "validated project",
         "output_reference": "submission/final + submission ZIP",
         "decision_summary": "Assembled reports, sources, assets, prompts, logs, manifest, checksums, and the submission ZIP.",
         "evidence_ids": [],
-        "duration_sec": 17.591,
+        "duration_sec": 26.119,
         "status": "completed",
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "python-local",
-        "timestamp": "2026-07-17T11:57:18.007899+00:00"
+        "timestamp": "2026-07-17T20:20:17.978045+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "OrchestratorAgent",
         "action": "checkpoint",
         "input_reference": "",
@@ -1350,10 +1370,10 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T11:57:18.020075+00:00"
+        "timestamp": "2026-07-17T20:20:17.990115+00:00"
       },
       {
-        "run_id": "budgetfitzz-20260717T115645Z",
+        "run_id": "budgetfitzz-20260717T201909Z",
         "agent": "OrchestratorAgent",
         "action": "orchestrate",
         "input_reference": "",
@@ -1365,10 +1385,35 @@
         "error": null,
         "retry_number": 0,
         "provider_or_tool": "workflow-state-machine",
-        "timestamp": "2026-07-17T11:57:18.041152+00:00"
+        "timestamp": "2026-07-17T20:20:18.011450+00:00"
       }
     ],
-    "trace_source": "logs/execution_trace.jsonl"
+    "trace_source": "logs/execution_trace.jsonl",
+    "timings_sec": {
+      "DataAuditAgent": 0.042,
+      "MetricsAgent": 0.056,
+      "PerformanceAnalystAgent": 2.09,
+      "FailureDiagnosisAgent": 0.007,
+      "StrategyAgent": 0.009,
+      "ContentPlannerAgent": 0.008,
+      "CreativeDirectorAgent": 0.016,
+      "AssetGenerationAgent": 35.49,
+      "QualityAssuranceAgent": 2.921,
+      "PackagingAgent": 26.119
+    },
+    "retry_counts": {
+      "DataAuditAgent": 0,
+      "MetricsAgent": 0,
+      "PerformanceAnalystAgent": 0,
+      "FailureDiagnosisAgent": 0,
+      "StrategyAgent": 0,
+      "ContentPlannerAgent": 0,
+      "CreativeDirectorAgent": 0,
+      "AssetGenerationAgent": 0,
+      "QualityAssuranceAgent": 0,
+      "PackagingAgent": 0
+    },
+    "total_retries": 0
   },
   "validation": {
     "status": "PASS",
@@ -1629,6 +1674,73 @@
         "evidence": "launcher=True; app=[]"
       }
     ]
+  },
+  "operations": {
+    "spend": {
+      "currency": "INR",
+      "paid_generation_total_inr": 0,
+      "cap_inr": 100,
+      "within_cap": true,
+      "entries": 7,
+      "promotional_credit_list_value_usd": 0.05,
+      "subscription_treatment": "Development subscriptions are separate from direct revised-content generation expenses."
+    },
+    "hardware": {
+      "gpu_name": "NVIDIA GeForce RTX 4050 Laptop GPU",
+      "vram": "6141 MiB",
+      "selected_video_encoder": "h264_nvenc",
+      "gpu_used_meaningfully": true
+    }
+  },
+  "submission": {
+    "files": [
+      {
+        "label": "Final report",
+        "path": "submission/final/final_report.pdf",
+        "href": "/final_report.pdf",
+        "type": "PDF",
+        "available": true,
+        "bytes": 7756796,
+        "size_note": null
+      },
+      {
+        "label": "Platform walkthrough",
+        "path": "submission/final/platform_walkthrough.mp4",
+        "href": "/submission/final/platform_walkthrough.mp4",
+        "type": "MP4",
+        "available": true,
+        "bytes": 4339546,
+        "size_note": null
+      },
+      {
+        "label": "Submission package",
+        "path": "submission/insta_strategy_lab_task2_submission.zip",
+        "href": "/submission-package.zip",
+        "type": "ZIP",
+        "available": true,
+        "bytes": null,
+        "size_note": "Final size verified by package validator"
+      },
+      {
+        "label": "Submission manifest",
+        "path": "submission/final/submission_manifest.json",
+        "href": "/submission/final/submission_manifest.json",
+        "type": "JSON",
+        "available": true,
+        "bytes": 50369,
+        "size_note": null
+      },
+      {
+        "label": "Validation report",
+        "path": "logs/validation_report.json",
+        "href": "/logs/validation_report.json",
+        "type": "JSON",
+        "available": true,
+        "bytes": 7751,
+        "size_note": null
+      }
+    ],
+    "ready": true
   },
   "contract": {
     "metric_contract": "data/processed/metric_contract.json",

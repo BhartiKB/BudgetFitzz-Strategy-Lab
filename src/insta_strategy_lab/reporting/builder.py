@@ -336,17 +336,54 @@ def build_app_data(
     video_briefs = {"schema_version": "unavailable", "generated_by": [], "briefs": []}
     if video_briefs_path.exists():
         video_briefs = json.loads(video_briefs_path.read_text(encoding="utf-8"))
+    hardware_path = root / "logs/hardware_report.json"
+    hardware = json.loads(hardware_path.read_text(encoding="utf-8")) if hardware_path.exists() else {}
+    spend_path = root / "logs/spend_summary.json"
+    spend = json.loads(spend_path.read_text(encoding="utf-8")) if spend_path.exists() else {
+        "currency": "INR", "paid_generation_total_inr": 0, "within_cap": True, "entries": 0,
+    }
+    timing_path = root / "logs/timing_report.json"
+    timings = json.loads(timing_path.read_text(encoding="utf-8")) if timing_path.exists() else {
+        "agent_timings_sec": {},
+    }
+    retry_path = root / "logs/retry_report.json"
+    retries = json.loads(retry_path.read_text(encoding="utf-8")) if retry_path.exists() else {
+        "retry_counts": {}, "total_retries": 0,
+    }
+    submission_specs = [
+        ("Final report", "submission/final/final_report.pdf", "/final_report.pdf", "PDF"),
+        ("Platform walkthrough", "submission/final/platform_walkthrough.mp4", "/submission/final/platform_walkthrough.mp4", "MP4"),
+        ("Submission package", "submission/insta_strategy_lab_task2_submission.zip", "/submission-package.zip", "ZIP"),
+        ("Submission manifest", "submission/final/submission_manifest.json", "/submission/final/submission_manifest.json", "JSON"),
+        ("Validation report", "logs/validation_report.json", "/logs/validation_report.json", "JSON"),
+    ]
+    submission_files = []
+    for label, relative, href, file_type in submission_specs:
+        path = root / relative
+        self_referential_archive = file_type == "ZIP"
+        submission_files.append({
+            "label": label,
+            "path": relative,
+            "href": href,
+            "type": file_type,
+            "available": path.is_file(),
+            "bytes": None if self_referential_archive else (path.stat().st_size if path.is_file() else 0),
+            "size_note": "Final size verified by package validator" if self_referential_archive else None,
+        })
     manifest = {
-        "schema_version": "1.0",
+        "schema_version": "2.0",
         "generated_by": "insta_strategy_lab.reporting.builder.build_app_data",
         "run": payload["run"],
         "navigation": [
-            {"id": "overview", "label": "Overview"},
-            {"id": "content", "label": "Content Studio"},
-            {"id": "performance", "label": "Performance"},
+            {"id": "home", "label": "Home", "icon": "home"},
+            {"id": "insights", "label": "Insights", "icon": "chart"},
+            {"id": "diagnosis", "label": "Diagnosis", "icon": "search"},
             {"id": "strategy", "label": "Strategy"},
-            {"id": "workflow", "label": "Workflow"},
-            {"id": "validation", "label": "Validation"},
+            {"id": "content-plan", "label": "Content Plan", "icon": "calendar"},
+            {"id": "studio", "label": "Studio", "icon": "studio"},
+            {"id": "agents", "label": "Agents", "icon": "agents"},
+            {"id": "validation", "label": "Validation", "icon": "check"},
+            {"id": "submission", "label": "Submission", "icon": "send"},
         ],
         "overview": {"kpis": overview_kpis, "lineage": payload["data_lineage"], "audit": results["audit"]},
         "performance": {"observed_metrics": observed_metrics, "summaries": payload["summaries"], "charts": [
@@ -362,8 +399,27 @@ def build_app_data(
             "video_briefs": video_briefs,
             "asset_root": "../assets",
         },
-        "workflow": {"trace": trace[-24:], "trace_source": "logs/execution_trace.jsonl"},
+        "workflow": {
+            "trace": trace[-24:],
+            "trace_source": "logs/execution_trace.jsonl",
+            "timings_sec": timings.get("agent_timings_sec", {}),
+            "retry_counts": retries.get("retry_counts", {}),
+            "total_retries": retries.get("total_retries", 0),
+        },
         "validation": validation,
+        "operations": {
+            "spend": spend,
+            "hardware": {
+                "gpu_name": hardware.get("gpu_name", "Unavailable"),
+                "vram": hardware.get("vram", "Unavailable"),
+                "selected_video_encoder": hardware.get("selected_video_encoder", "Unavailable"),
+                "gpu_used_meaningfully": hardware.get("gpu_used_meaningfully", False),
+            },
+        },
+        "submission": {
+            "files": submission_files,
+            "ready": validation.get("status") == "PASS" and all(item["available"] for item in submission_files[:3]),
+        },
         "contract": {"metric_contract": "data/processed/metric_contract.json", "formulas_visible_in_ui": False},
     }
     write_json(root / "app/data/platform_manifest.json", manifest)

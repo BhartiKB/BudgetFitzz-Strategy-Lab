@@ -21,12 +21,14 @@ test_video_validity (test_video_and_package.VideoPackageTests.test_video_validit
 test_application_smoke (test_workflow_and_app.WorkflowAppTests.test_application_smoke) ... ok
 test_browser_code_does_not_embed_copied_kpi_values (test_workflow_and_app.WorkflowAppTests.test_browser_code_does_not_embed_copied_kpi_values) ... ok
 test_dashboard_metrics_are_pipeline_values_with_lineage (test_workflow_and_app.WorkflowAppTests.test_dashboard_metrics_are_pipeline_values_with_lineage) ... ok
+test_editorial_workspace_manifest_contract (test_workflow_and_app.WorkflowAppTests.test_editorial_workspace_manifest_contract) ... ok
+test_editorial_workspace_source_has_routes_states_and_tokens (test_workflow_and_app.WorkflowAppTests.test_editorial_workspace_source_has_routes_states_and_tokens) ... ok
 test_metric_formulas_are_kept_out_of_the_browser_ui (test_workflow_and_app.WorkflowAppTests.test_metric_formulas_are_kept_out_of_the_browser_ui) ... ok
 test_persistent_state_when_present (test_workflow_and_app.WorkflowAppTests.test_persistent_state_when_present) ... ok
 test_platform_manifest_is_generated_and_keeps_plan_and_video_context (test_workflow_and_app.WorkflowAppTests.test_platform_manifest_is_generated_and_keeps_plan_and_video_context) ... ok
 test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
 
 ----------------------------------------------------------------------
-Ran 27 tests in 1.127s
+Ran 29 tests in 0.858s
 
 OK

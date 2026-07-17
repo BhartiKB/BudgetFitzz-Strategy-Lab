@@ -22,6 +22,8 @@ The dataset is described truthfully as a user-provided local evaluation dataset 
 
 Then open `http://127.0.0.1:8501`.
 
+The Version 11 frontend is the **BudgetFitzz Editorial Creator Atelier**: a warm, responsive, manifest-driven workspace with Home, Insights, Diagnosis, Strategy, Content Plan, Studio, Agents, Validation, and Submission routes. The visual system was developed through a private Google Stitch project using only authorized UI labels and summarized findings; no raw inputs, keys, source files, or private media were uploaded.
+
 Equivalent Python command:
 
 ```powershell

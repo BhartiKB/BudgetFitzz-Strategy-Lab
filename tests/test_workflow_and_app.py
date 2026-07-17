@@ -70,6 +70,32 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertFalse(manifest["contract"]["formulas_visible_in_ui"])
         self.assertEqual(manifest["overview"]["kpis"], dashboard["overview_kpis"])
 
+    def test_editorial_workspace_manifest_contract(self):
+        manifest = json.loads((ROOT / "app/data/platform_manifest.json").read_text(encoding="utf-8"))
+        expected_routes = [
+            "home", "insights", "diagnosis", "strategy", "content-plan",
+            "studio", "agents", "validation", "submission",
+        ]
+        self.assertEqual(manifest["schema_version"], "2.0")
+        self.assertEqual([item["id"] for item in manifest["navigation"]], expected_routes)
+        self.assertEqual(manifest["operations"]["spend"]["paid_generation_total_inr"], 0)
+        self.assertEqual(len(manifest["submission"]["files"]), 5)
+        self.assertTrue(all("available" in item and "bytes" in item for item in manifest["submission"]["files"]))
+
+    def test_editorial_workspace_source_has_routes_states_and_tokens(self):
+        markup = (ROOT / "app/index.html").read_text(encoding="utf-8")
+        script = (ROOT / "app/app.js").read_text(encoding="utf-8")
+        tokens = (ROOT / "app/tokens.css").read_text(encoding="utf-8")
+        responsive = (ROOT / "app/responsive.css").read_text(encoding="utf-8")
+        self.assertIn("tokens.css", markup)
+        self.assertIn("routeRenderers", script)
+        self.assertIn("loading-state", markup)
+        self.assertIn("error-state", script)
+        self.assertIn("empty-state", script)
+        self.assertIn("--bf-canvas", tokens)
+        self.assertIn("--bf-terracotta", tokens)
+        self.assertIn("min-height: 44px", responsive)
+
     def test_browser_code_does_not_embed_copied_kpi_values(self):
         script = (ROOT / "app/app.js").read_text(encoding="utf-8")
         self.assertNotIn("['150','historical items'", script)

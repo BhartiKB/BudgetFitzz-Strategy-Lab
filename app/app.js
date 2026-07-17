@@ -1,127 +1,467 @@
-const $ = (selector) => document.querySelector(selector);
-const create = (tag, className, value) => {
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+const state = {
+  manifest: null,
+  route: 'home',
+  selectedDay: 1,
+  planFormat: 'all',
+  studioFormat: 'all',
+};
+
+const icons = {
+  home: '<path d="M3 11.5 12 4l9 7.5v8a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  chart: '<path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/>',
+  strategy: '<path d="M4 19V5m0 3h9l-2.5 3L13 14H4m9 5 3-3 4 4"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4m8-4v4M3 10h18M8 14h3m3 0h3m-9 3h3"/>',
+  studio: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m4 18 5-5 3 3 3-4 5 6"/>',
+  agents: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c.5-4 2.5-6 6-6s5.5 2 6 6m0-5c3 0 5 1.5 5.5 5"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/>',
+  send: '<path d="m3 4 18 8-18 8 3-8zm3 8h15"/>',
+  more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
+  play: '<path d="m9 7 8 5-8 5z"/>',
+  file: '<path d="M6 3h8l4 4v14H6zM14 3v5h5M9 13h6m-6 4h6"/>',
+};
+
+function icon(name, className = '') {
+  return `<svg class="icon ${className}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${icons[name] || icons.strategy}</svg>`;
+}
+
+function el(tag, className = '', text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
-  if (value !== undefined) node.textContent = value;
+  if (text !== undefined) node.textContent = text;
   return node;
-};
-const appendText = (parent, tag, className, value) => parent.append(create(tag, className, value));
+}
+
+function append(parent, tag, className, text) {
+  const node = el(tag, className, text);
+  parent.append(node);
+  return node;
+}
+
+function formatBytes(bytes) {
+  if (!bytes) return 'Not generated';
+  const units = ['B', 'KB', 'MB', 'GB'];
+  let value = bytes;
+  let index = 0;
+  while (value >= 1024 && index < units.length - 1) { value /= 1024; index += 1; }
+  return `${value.toFixed(index ? 1 : 0)} ${units[index]}`;
+}
+
+function formatDate(value, options = { weekday: 'short', month: 'short', day: 'numeric' }) {
+  const parsed = new Date(`${value}T00:00:00`);
+  return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleDateString('en-IN', options);
+}
+
+function valueKind(kind, text = kind) {
+  return `<span class="value-kind value-kind--${kind}">${text}</span>`;
+}
+
+function routeHeader({ eyebrow, title, summary, aside = '' }) {
+  const header = el('header', 'route-header');
+  const copy = el('div', 'route-header__copy');
+  append(copy, 'span', 'overline', eyebrow);
+  const heading = append(copy, 'h1', '', title);
+  heading.id = 'route-title';
+  if (summary) append(copy, 'p', 'route-summary', summary);
+  header.append(copy);
+  if (aside) { const meta = el('div', 'route-header__aside'); meta.innerHTML = aside; header.append(meta); }
+  return header;
+}
+
+function sourceNote(text, sampleSize) {
+  const note = el('small', 'source-note');
+  note.textContent = sampleSize === undefined ? text : `${text} · n=${sampleSize}`;
+  return note;
+}
+
+function emptyState(title, detail) {
+  const box = el('div', 'empty-state');
+  append(box, 'strong', '', title);
+  append(box, 'p', '', detail);
+  return box;
+}
 
 async function loadManifest() {
   const response = await fetch('data/platform_manifest.json', { cache: 'no-store' });
-  if (!response.ok) throw new Error('The generated platform manifest is unavailable. Run the pipeline to refresh it.');
-  return response.json();
+  if (!response.ok) throw new Error(`Manifest request failed (${response.status}).`);
+  const manifest = await response.json();
+  const required = ['navigation', 'overview', 'performance', 'strategy', 'content_studio', 'workflow', 'validation'];
+  const missing = required.filter((key) => !manifest[key]);
+  if (missing.length) throw new Error(`Generated manifest is missing: ${missing.join(', ')}.`);
+  return manifest;
 }
 
-function renderNavigation(manifest) {
-  const nav = $('#nav');
-  manifest.navigation.forEach((item) => {
-    const link = create('a', 'navigation-link', item.label);
+function renderChrome(manifest) {
+  const makeLink = (item, mobile = false) => {
+    const link = el('a', mobile ? 'mobile-nav__link' : 'route-link');
     link.href = `#${item.id}`;
-    nav.append(link);
+    link.dataset.route = item.id;
+    link.innerHTML = `${icon(item.icon || item.id)}<span>${item.label}</span>`;
+    return link;
+  };
+
+  manifest.navigation.forEach((item) => {
+    $('#desktop-nav').append(makeLink(item));
+    $('#sheet-nav').append(makeLink(item));
   });
+
+  const primaryMobile = ['home', 'insights', 'content-plan', 'studio'];
+  manifest.navigation.filter((item) => primaryMobile.includes(item.id)).forEach((item) => $('#mobile-nav').append(makeLink(item, true)));
+  const more = el('button', 'mobile-nav__link');
+  more.type = 'button';
+  more.innerHTML = `${icon('more')}<span>More</span>`;
+  more.addEventListener('click', () => $('#route-sheet').showModal());
+  $('#mobile-nav').append(more);
+
+  const validation = manifest.validation;
+  const spend = manifest.operations?.spend?.paid_generation_total_inr ?? 0;
+  $('#topbar-status').innerHTML = `${valueKind(validation.status === 'PASS' ? 'validated' : 'error', `${validation.status === 'PASS' ? '✓' : '!'} Validation ${validation.status}`)}${valueKind('neutral', `₹${Number(spend).toFixed(0)} paid spend`)}`;
+  $('#rail-status').innerHTML = `<span class="status-dot" aria-hidden="true"></span><div><strong>${validation.passed}/${validation.passed + validation.failed} checks passed</strong><small>Run ${manifest.run.run_id}</small></div>`;
+
+  $$('[data-close-dialog]').forEach((button) => button.addEventListener('click', () => $(`#${button.dataset.closeDialog}`).close()));
+  $$('dialog').forEach((dialog) => dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); }));
+  $('#sheet-nav').addEventListener('click', () => $('#route-sheet').close());
 }
 
-function renderOverview(manifest) {
-  const { overview, run } = manifest;
-  $('#run-chip').textContent = `${run.status.toUpperCase()} · ${run.provider}`;
-  const grid = $('#overview-kpis');
-  overview.kpis.forEach((item) => {
-    const card = create('article', 'kpi-card');
-    appendText(card, 'span', 'kpi-label', item.label);
-    appendText(card, 'strong', 'kpi-value', item.value);
-    appendText(card, 'p', 'kpi-detail', item.detail);
-    appendText(card, 'small', 'source-note', `Calculated: ${item.source} · n=${item.sample_size}`);
-    grid.append(card);
-  });
-  const lineage = overview.lineage;
-  $('#lineage-callout').textContent = `Observed source: ${lineage.raw_source} · ${lineage.observed_rows} rows · run ${lineage.calculation_run_id}. Original provenance remains unspecified; targets and hypotheses are never presented as results.`;
+function signalCard(item, index) {
+  const card = el('article', `signal-card signal-card--${index + 1}`);
+  card.innerHTML = valueKind(index === 2 ? 'directional' : 'observed', index === 2 ? 'Derived comparison' : 'Observed');
+  append(card, 'strong', 'signal-card__value', item.value);
+  append(card, 'span', 'signal-card__label', item.label);
+  append(card, 'p', '', item.detail);
+  card.append(sourceNote(item.source, item.sample_size));
+  return card;
 }
 
-function renderContent(manifest) {
-  const { plan, plan_counts: counts, asset_root: assets, video_briefs: briefData } = manifest.content_studio;
-  $('#plan-summary').textContent = `${counts.post} posts + ${counts.video} videos · ${plan.length} validated items · local assets only`;
-  plan.filter((item) => item.format === 'post').forEach((item) => {
-    const card = create('article', 'asset-card');
-    const image = create('img');
-    image.loading = 'lazy'; image.src = `${assets}/posts/${item.asset_filename}`; image.alt = `Day ${item.day}: ${item.hook}`;
-    card.append(image);
-    const copy = create('div', 'asset-card__copy');
-    appendText(copy, 'span', 'eyebrow', `DAY ${item.day} · ${item.content_pillar}`);
-    appendText(copy, 'h3', '', item.hook);
-    appendText(copy, 'p', '', item.content_idea);
-    appendText(copy, 'small', 'metric-tag', item.primary_kpi);
-    card.append(copy); $('#post-gallery').append(card);
+function planMedia(item, compact = false) {
+  const root = state.manifest.content_studio.asset_root;
+  const wrap = el('div', `plan-media ${compact ? 'plan-media--compact' : ''} plan-media--${item.format}`);
+  if (item.format === 'video') {
+    const video = el('video');
+    video.controls = !compact;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.poster = `${root}/video_frames/${item.asset_filename.replace(/\.mp4$/, '')}_preview.png`;
+    const source = el('source'); source.src = `${root}/videos/${item.asset_filename}`; source.type = 'video/mp4'; video.append(source);
+    wrap.append(video);
+    if (compact) { const badge = el('span', 'video-badge'); badge.innerHTML = `${icon('play')} Video`; wrap.append(badge); }
+  } else {
+    const image = el('img');
+    image.src = `${root}/posts/${item.asset_filename}`;
+    image.alt = `Day ${item.day} creative: ${item.hook}`;
+    image.loading = 'lazy';
+    wrap.append(image);
+  }
+  return wrap;
+}
+
+function contentCard(item, { interactive = false, compact = false } = {}) {
+  const card = el(interactive ? 'button' : 'article', `content-card content-card--${item.format}`);
+  if (interactive) { card.type = 'button'; card.dataset.day = item.day; card.setAttribute('aria-label', `Preview day ${item.day}: ${item.hook}`); }
+  card.append(planMedia(item, compact));
+  const copy = el('div', 'content-card__copy');
+  copy.innerHTML = `${valueKind(item.format === 'video' ? 'directional' : 'neutral', `Day ${item.day} · ${item.format}`)}`;
+  append(copy, 'h3', '', item.hook);
+  append(copy, 'p', '', item.content_pillar);
+  card.append(copy);
+  return card;
+}
+
+function renderHome() {
+  const manifest = state.manifest;
+  const view = el('div', 'route route--home');
+  const hero = el('section', 'home-hero');
+  const copy = el('div', 'home-hero__copy');
+  copy.innerHTML = `${valueKind('observed', 'Observed baseline')}<span class="issue-no">ISSUE 01 / STRATEGY INTELLIGENCE</span>`;
+  append(copy, 'h1', '', 'Baseline: Overwhelmingly Promotional').id = 'route-title';
+  append(copy, 'p', 'hero-deck', manifest.strategy.diagnosis.selected_diagnosis);
+  const actions = el('div', 'button-row');
+  const primary = el('a', 'button button--primary'); primary.href = '#strategy'; primary.innerHTML = `Review revised strategy ${icon('arrow')}`;
+  const secondary = el('a', 'button button--secondary', 'Open seven-day plan'); secondary.href = '#content-plan';
+  actions.append(primary, secondary); copy.append(actions);
+  const note = el('aside', 'hero-note');
+  append(note, 'span', 'overline', 'EDITORIAL POSITION');
+  append(note, 'p', '', manifest.strategy.diagnosis.outlier_caveat);
+  note.append(sourceNote(manifest.overview.lineage.analysis_source));
+  hero.append(copy, note); view.append(hero);
+
+  const signals = el('section', 'signal-grid');
+  signals.setAttribute('aria-label', 'Observed strategy signals');
+  manifest.overview.kpis.forEach((item, index) => signals.append(signalCard(item, index)));
+  view.append(signals);
+
+  const section = el('section', 'editorial-section');
+  const head = el('div', 'section-head');
+  head.innerHTML = '<div><span class="overline">THIS WEEK IN THE ATELIER</span><h2>Seven useful reasons to publish.</h2></div>';
+  const all = el('a', 'text-link'); all.href = '#content-plan'; all.innerHTML = `View content plan ${icon('arrow')}`; head.append(all); section.append(head);
+  const strip = el('div', 'home-plan-strip');
+  manifest.content_studio.plan.forEach((item) => strip.append(contentCard(item, { compact: true })));
+  section.append(strip); view.append(section);
+
+  const provenance = el('aside', 'provenance-band');
+  provenance.innerHTML = `<div><span class="overline">DATA LINEAGE</span><strong>${manifest.overview.lineage.observed_rows} observed rows · ${manifest.overview.audit.span_days} days</strong></div><p>${manifest.overview.lineage.after_note}</p>`;
+  view.append(provenance);
+  return view;
+}
+
+function metricCard(item) {
+  const card = el('article', 'metric-card');
+  card.innerHTML = valueKind('observed', 'Observed');
+  append(card, 'strong', '', item.display);
+  append(card, 'h3', '', item.metric);
+  card.append(sourceNote(item.source, item.n));
+  return card;
+}
+
+function summaryTable(title, rows, key) {
+  const card = el('article', 'table-card');
+  append(card, 'h2', '', title);
+  const scroll = el('div', 'table-scroll');
+  const table = el('table');
+  table.innerHTML = '<thead><tr><th>Group</th><th>n</th><th>Median ER</th><th>Q1–Q3</th><th>Mean ER</th><th>Confidence</th></tr></thead>';
+  const body = el('tbody');
+  rows.forEach((row) => {
+    const tr = el('tr');
+    [row[key], row.n, `${row.median.toFixed(3)}%`, `${row.q1.toFixed(3)}–${row.q3.toFixed(3)}%`, `${row.mean.toFixed(3)}%`, row.sample_note].forEach((value) => append(tr, 'td', '', String(value)));
+    body.append(tr);
   });
-  const briefs = new Map((briefData.briefs || []).map((brief) => [brief.day, brief]));
-  plan.filter((item) => item.format === 'video').forEach((item) => {
-    const card = create('article', 'video-card');
-    const video = create('video', 'video-card__media');
-    video.controls = true; video.muted = true; video.playsInline = true; video.preload = 'metadata';
-    const stem = item.asset_filename.replace(/\.mp4$/, '');
-    video.poster = `${assets}/video_frames/${stem}_preview.png`;
-    const source = create('source'); source.src = `${assets}/videos/${item.asset_filename}`; source.type = 'video/mp4'; video.append(source); card.append(video);
-    const copy = create('div', 'video-card__copy');
-    appendText(copy, 'span', 'eyebrow eyebrow--lime', `DAY ${item.day} · VIDEO`);
-    appendText(copy, 'h3', '', item.hook);
-    appendText(copy, 'p', '', item.full_proposed_caption);
-    appendText(copy, 'small', 'metric-tag metric-tag--dark', item.reasoned_target_range);
-    const brief = briefs.get(item.day);
-    if (brief) {
-      const rationale = create('details', 'storyboard');
-      const summary = create('summary', '', 'Why the video matches the caption'); rationale.append(summary);
-      appendText(rationale, 'p', '', brief.creative_director_decision.why);
-      const beats = create('ol', 'storyboard__beats');
-      brief.beats.forEach((beat) => appendText(beats, 'li', '', `${beat.step}: “${beat.caption_evidence}” — ${beat.takeaway}`));
-      rationale.append(beats); copy.append(rationale);
+  table.append(body); scroll.append(table); card.append(scroll); return card;
+}
+
+function renderInsights() {
+  const { overview, performance } = state.manifest;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'INSIGHTS / OBSERVED EVIDENCE', title: 'Read the baseline without flattening its limits.', summary: 'Every number below is calculated by the analytical pipeline. Robust summaries sit beside means so one extreme video cannot silently define the story.', aside: valueKind('observed', 'Observed values only') }));
+
+  const audit = overview.audit;
+  const quality = el('section', 'quality-strip');
+  [
+    ['Rows analysed', audit.rows, `${audit.date_min} to ${audit.date_max}`],
+    ['Duplicate IDs', audit.duplicate_ids, 'No removals or hidden deduplication'],
+    ['Invalid dates', audit.invalid_dates, `${audit.span_days}-day observed window`],
+    ['Missing CTAs', audit.missing_by_column.cta, 'Retained and reported as missing'],
+  ].forEach(([label, value, detail]) => { const card = el('article', 'quality-card'); append(card, 'span', '', label); append(card, 'strong', '', String(value)); append(card, 'small', '', detail); quality.append(card); });
+  view.append(quality);
+
+  const metrics = el('section', 'metric-grid');
+  performance.observed_metrics.forEach((item) => metrics.append(metricCard(item)));
+  view.append(metrics);
+
+  const charts = el('section', 'chart-grid');
+  performance.charts.forEach((chart) => {
+    const figure = el('figure', 'chart-card');
+    const image = el('img'); image.src = chart.src; image.alt = chart.alt; image.loading = 'lazy';
+    const caption = el('figcaption'); append(caption, 'span', 'overline', 'INTERPRETATION'); append(caption, 'strong', '', chart.caption);
+    figure.append(image, caption); charts.append(figure);
+  });
+  view.append(charts);
+
+  const tables = el('section', 'table-grid');
+  tables.append(summaryTable('Format performance', performance.summaries.format, 'format'), summaryTable('Pillar performance', performance.summaries.pillar, 'pillar'));
+  view.append(tables);
+  return view;
+}
+
+function renderDiagnosis() {
+  const { diagnosis } = state.manifest.strategy;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'DIAGNOSIS / EVIDENCE TEST', title: 'The failure is the content system, not one bad post.', summary: 'The diagnosis retains counterevidence and outliers. It identifies a mix problem to test, not a causal result to claim.', aside: valueKind('directional', diagnosis.hypothesis_result) }));
+  const lead = el('section', 'diagnosis-layout');
+  const statement = el('article', 'diagnosis-statement');
+  statement.innerHTML = valueKind('observed', 'Supported by observed evidence');
+  append(statement, 'h2', '', diagnosis.selected_diagnosis);
+  const evidence = el('div', 'evidence-list'); diagnosis.support.forEach((item) => append(evidence, 'span', 'evidence-chip', item)); statement.append(evidence);
+  const caveat = el('aside', 'caveat-card'); append(caveat, 'span', 'overline', 'OUTLIER CHECK'); append(caveat, 'p', '', diagnosis.outlier_caveat);
+  lead.append(statement, caveat); view.append(lead);
+  const counter = el('section', 'counter-section');
+  const head = el('div', 'section-head'); head.innerHTML = '<div><span class="overline">COUNTEREVIDENCE</span><h2>What the data does not prove.</h2></div>'; counter.append(head);
+  const list = el('ol', 'counter-list'); diagnosis.counterevidence.forEach((item) => append(list, 'li', '', item)); counter.append(list); view.append(counter);
+  return view;
+}
+
+function renderStrategy() {
+  const { strategy, before_after: comparison } = state.manifest.strategy;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'STRATEGY / REVISED TEST DESIGN', title: 'Change the publishing behavior, then measure the response.', summary: 'Each revision links to evidence, a success measure, and a limitation. Proposed ranges remain labelled targets.', aside: valueKind('target', 'Plan, not results') }));
+  const changes = el('section', 'strategy-grid');
+  strategy.evidence_linked_changes.forEach((change, index) => {
+    const card = el('article', 'strategy-card'); append(card, 'span', 'strategy-card__no', String(index + 1).padStart(2, '0')); append(card, 'span', 'evidence-chip', change.evidence); append(card, 'h2', '', change.strategy_change); append(card, 'p', '', change.finding);
+    const measure = el('div', 'strategy-measure'); measure.innerHTML = valueKind('target', 'Success measure'); append(measure, 'p', '', change.success_metric); card.append(measure, sourceNote(change.confidence_or_limitation)); changes.append(card);
+  });
+  view.append(changes);
+  const beforeAfter = el('section', 'before-after');
+  const head = el('div', 'section-head'); head.innerHTML = '<div><span class="overline">BEFORE / REVISED PILOT</span><h2>Observed baseline beside the proposed test.</h2></div>'; beforeAfter.append(head);
+  const grid = el('div', 'comparison-grid');
+  comparison.forEach((item) => { const card = el('article', 'comparison-card'); append(card, 'span', 'overline', item.dimension); const before = el('div'); before.innerHTML = valueKind(item.before_kind, item.before_kind); append(before, 'strong', '', item.before); before.append(sourceNote(item.before_source)); const after = el('div'); after.innerHTML = valueKind(item.after_kind, item.after_kind); append(after, 'strong', '', item.after); after.append(sourceNote(item.after_source)); card.append(before, after); grid.append(card); });
+  beforeAfter.append(grid); view.append(beforeAfter); return view;
+}
+
+function filterBar(active, items, handler) {
+  const group = el('div', 'filter-bar'); group.setAttribute('role', 'group'); group.setAttribute('aria-label', 'Content format');
+  items.forEach(([value, label]) => { const button = el('button', `filter-chip ${active === value ? 'is-active' : ''}`, label); button.type = 'button'; button.setAttribute('aria-pressed', String(active === value)); button.addEventListener('click', () => handler(value)); group.append(button); });
+  return group;
+}
+
+function selectedPlanItem() {
+  return state.manifest.content_studio.plan.find((item) => item.day === state.selectedDay) || state.manifest.content_studio.plan[0];
+}
+
+function planDetail(item) {
+  const detail = el('article', 'plan-detail');
+  detail.append(planMedia(item));
+  const copy = el('div', 'plan-detail__copy');
+  copy.innerHTML = `${valueKind(item.format === 'video' ? 'directional' : 'neutral', `Day ${item.day} · ${item.format}`)}${valueKind('target', 'Pilot target')}`;
+  append(copy, 'span', 'overline plan-time', `${formatDate(item.date)} · ${item.recommended_publication_time}`);
+  append(copy, 'h2', '', item.hook);
+  append(copy, 'p', 'plan-idea', item.content_idea);
+  const caption = el('div', 'caption-block'); append(caption, 'span', 'overline', 'PROPOSED CAPTION'); append(caption, 'p', '', item.full_proposed_caption); copy.append(caption);
+  const facts = el('dl', 'detail-list');
+  [['CTA', item.cta], ['Primary KPI', item.primary_kpi], ['Target range', item.reasoned_target_range], ['Evidence link', item.baseline_insight]].forEach(([term, value]) => { append(facts, 'dt', '', term); append(facts, 'dd', '', value); }); copy.append(facts);
+  detail.append(copy); return detail;
+}
+
+function renderContentPlan() {
+  const { plan, plan_counts: counts } = state.manifest.content_studio;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'CONTENT PLAN / SEVEN-DAY PILOT', title: 'One week. Seven useful reasons to return.', summary: 'The plan is generated by ContentPlannerAgent and refined by CreativeDirectorAgent. Select a day to inspect its media, caption, CTA, KPI, and evidence link.', aside: `${valueKind('validated', `${counts.post} posts`)}${valueKind('directional', `${counts.video} videos`)}` }));
+  view.append(filterBar(state.planFormat, [['all', 'All 7'], ['post', 'Posts'], ['video', 'Videos']], (value) => {
+    state.planFormat = value;
+    const selected = selectedPlanItem();
+    if (value !== 'all' && selected.format !== value) {
+      state.selectedDay = plan.find((item) => item.format === value)?.day || selected.day;
     }
-    card.append(copy); $('#video-gallery').append(card);
-  });
-  const tabs = [...document.querySelectorAll('.tab')];
-  tabs.forEach((tab) => tab.addEventListener('click', () => {
-    const showVideos = tab.id === 'video-tab';
-    tabs.forEach((item) => { const active = item === tab; item.classList.toggle('is-active', active); item.setAttribute('aria-selected', String(active)); });
-    $('#post-panel').hidden = showVideos; $('#video-panel').hidden = !showVideos;
+    renderRoute(false);
   }));
+  const calendar = el('section', 'week-strip'); calendar.setAttribute('aria-label', 'Seven-day content plan');
+  plan.forEach((item) => { const hidden = state.planFormat !== 'all' && item.format !== state.planFormat; const button = el('button', `day-card ${state.selectedDay === item.day ? 'is-active' : ''} ${hidden ? 'is-muted' : ''}`); button.type = 'button'; button.dataset.day = item.day; button.setAttribute('aria-pressed', String(state.selectedDay === item.day)); button.innerHTML = `<span>Day ${item.day}</span><strong>${formatDate(item.date, { weekday: 'short' })}</strong><small>${item.format}</small>`; button.addEventListener('click', () => { state.selectedDay = item.day; renderRoute(false); }); calendar.append(button); });
+  view.append(calendar, planDetail(selectedPlanItem()));
+  return view;
 }
 
-function renderPerformance(manifest) {
-  const { observed_metrics: metrics, charts, summaries } = manifest.performance;
-  metrics.forEach((item) => {
-    const card = create('article', 'metric-card'); appendText(card, 'span', '', item.metric); appendText(card, 'strong', '', item.display); appendText(card, 'small', '', `n=${item.n} · ${item.source}`); $('#observed-metrics').append(card);
-  });
-  charts.forEach((chart) => {
-    const figure = create('figure', 'chart-card'); const image = create('img'); image.src = chart.src; image.alt = chart.alt; image.loading = 'lazy'; figure.append(image); appendText(figure, 'figcaption', '', chart.caption); $('#chart-gallery').append(figure);
-  });
-  [['Format performance', summaries.format, 'format'], ['Pillar performance', summaries.pillar, 'pillar']].forEach(([title, rows, key]) => {
-    const panel = create('article', 'summary-card'); appendText(panel, 'h3', '', title);
-    const scroll = create('div', 'table-scroll'); const table = create('table'); const head = create('thead'); const headRow = create('tr'); ['Group', 'n', 'Median ER', 'Q1–Q3', 'Mean ER', 'Confidence'].forEach((label) => appendText(headRow, 'th', '', label)); head.append(headRow); table.append(head);
-    const body = create('tbody'); rows.forEach((row) => { const tr = create('tr'); [row[key], row.n, `${row.median.toFixed(3)}%`, `${row.q1.toFixed(3)}–${row.q3.toFixed(3)}%`, `${row.mean.toFixed(3)}%`, row.sample_note].forEach((value) => appendText(tr, 'td', '', String(value))); body.append(tr); }); table.append(body); scroll.append(table); panel.append(scroll); $('#summary-tables').append(panel);
-  });
+function openPreview(day) {
+  const item = state.manifest.content_studio.plan.find((candidate) => candidate.day === Number(day));
+  if (!item) return;
+  const briefs = state.manifest.content_studio.video_briefs.briefs || [];
+  const brief = briefs.find((candidate) => candidate.day === item.day);
+  const content = $('#preview-content'); content.replaceChildren();
+  const head = el('div', 'dialog-head'); const heading = el('div'); heading.innerHTML = `<span class="overline">DAY ${item.day} · ${item.format.toUpperCase()}</span>`; append(heading, 'h2', '', item.hook).id = 'preview-title'; const close = el('button', 'icon-button', '×'); close.type = 'button'; close.setAttribute('aria-label', 'Close preview'); close.addEventListener('click', () => $('#preview-modal').close()); head.append(heading, close); content.append(head);
+  const body = el('div', 'preview-body'); body.append(planMedia(item)); const copy = el('div', 'preview-copy'); append(copy, 'p', 'plan-idea', item.full_proposed_caption); const cta = el('div', 'cta-note'); cta.innerHTML = valueKind('target', 'CTA'); append(cta, 'strong', '', item.cta); copy.append(cta);
+  if (brief) { const details = el('details', 'agent-rationale'); const summary = el('summary', '', 'Agent rationale and storyboard'); details.append(summary); append(details, 'p', '', brief.creative_director_decision.why); const list = el('ol'); brief.beats.forEach((beat) => append(list, 'li', '', `${beat.step}: “${beat.caption_evidence}” — ${beat.takeaway}`)); details.append(list); copy.append(details); }
+  body.append(copy); content.append(body); $('#preview-modal').showModal();
 }
 
-function renderStrategy(manifest) {
-  const { diagnosis, strategy, before_after: comparison } = manifest.strategy;
-  appendText($('#diagnosis-card'), 'span', 'eyebrow eyebrow--lime', 'FAILURE DIAGNOSIS'); appendText($('#diagnosis-card'), 'h3', '', diagnosis.selected_diagnosis); appendText($('#diagnosis-card'), 'p', '', diagnosis.outlier_caveat);
-  strategy.evidence_linked_changes.forEach((change) => {
-    const card = create('article', 'strategy-card'); appendText(card, 'span', 'evidence-id', change.evidence); appendText(card, 'h3', '', change.strategy_change); appendText(card, 'p', '', change.finding); appendText(card, 'small', '', `Success measure: ${change.success_metric}`); appendText(card, 'small', 'source-note', change.confidence_or_limitation); $('#strategy-grid').append(card);
-  });
-  $('#after-note').textContent = manifest.overview.lineage.after_note;
-  comparison.forEach((item) => { const card = create('article', 'comparison-card'); appendText(card, 'span', '', item.dimension); appendText(card, 'small', 'value-kind', item.before_kind.toUpperCase()); appendText(card, 'strong', '', item.before); appendText(card, 'small', 'source-note', item.before_source); appendText(card, 'i', '', '↓'); appendText(card, 'small', 'value-kind', item.after_kind.toUpperCase()); appendText(card, 'b', '', item.after); appendText(card, 'small', 'source-note', item.after_source); $('#comparison-grid').append(card); });
+function renderStudio() {
+  const { plan } = state.manifest.content_studio;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'STUDIO / FINISHED MEDIA', title: 'Review the visual and the reason together.', summary: 'Every preview stays paired with its proposed caption, CTA, KPI, target and agent rationale. Nothing in this gallery is an unsupported standalone asset.', aside: valueKind('validated', '7 finished assets') }));
+  view.append(filterBar(state.studioFormat, [['all', 'All'], ['post', 'Posts 4:5'], ['video', 'Videos 9:16']], (value) => { state.studioFormat = value; renderRoute(false); }));
+  const filtered = plan.filter((item) => state.studioFormat === 'all' || item.format === state.studioFormat);
+  const gallery = el('section', 'studio-gallery');
+  if (!filtered.length) gallery.append(emptyState('No assets in this view', 'Choose a different format to review generated media.'));
+  filtered.forEach((item) => gallery.append(contentCard(item, { interactive: true })));
+  gallery.addEventListener('click', (event) => { const card = event.target.closest('[data-day]'); if (card) openPreview(card.dataset.day); });
+  view.append(gallery); return view;
 }
 
-function renderWorkflow(manifest) {
-  manifest.workflow.trace.forEach((entry) => { const row = create('article', 'trace-row'); appendText(row, 'strong', '', entry.agent); appendText(row, 'p', '', entry.decision_summary); appendText(row, 'span', `trace-status trace-status--${String(entry.status).toLowerCase()}`, entry.status); $('#trace-list').append(row); });
+function finalTraceEntries(trace) {
+  const byAgent = new Map();
+  trace.forEach((entry) => { const previous = byAgent.get(entry.agent); if (!previous || entry.status !== 'started') byAgent.set(entry.agent, entry); });
+  return [...byAgent.values()];
 }
 
-function renderValidation(manifest) {
-  const validation = manifest.validation; $('#validation-title').textContent = validation.status === 'PASS' ? 'Production gate passed.' : 'Repair gate active.'; $('#validation-score').innerHTML = `<strong>${validation.passed}/${validation.passed + validation.failed}</strong><span>checks passed</span>`;
+function renderAgents() {
+  const workflow = state.manifest.workflow;
+  const entries = finalTraceEntries(workflow.trace);
+  const totalDuration = Object.values(workflow.timings_sec || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'AGENTS / DECISION TRACE', title: 'The content has a recorded reason for existing.', summary: 'The trace exposes concise decisions, evidence references, tools, durations and retries. It intentionally stores no hidden chain-of-thought.', aside: `${valueKind('validated', `${entries.length} agents`)}${valueKind('neutral', `${totalDuration.toFixed(2)}s recorded`)}` }));
+  const flow = el('section', 'agent-flow');
+  entries.forEach((entry, index) => { const node = el('article', 'agent-node'); append(node, 'span', 'agent-node__index', String(index + 1).padStart(2, '0')); const copy = el('div'); append(copy, 'h2', '', entry.agent.replace(/Agent$/, ' Agent')); append(copy, 'p', '', entry.decision_summary); const meta = el('div', 'agent-meta'); meta.innerHTML = `${valueKind(entry.status === 'completed' || entry.status === 'approved' ? 'validated' : 'neutral', entry.status)}<span>${entry.provider_or_tool}</span><span>${Number(entry.duration_sec || workflow.timings_sec?.[entry.agent] || 0).toFixed(3)}s</span><span>retry ${entry.retry_number ?? workflow.retry_counts?.[entry.agent] ?? 0}</span>`; copy.append(meta); if (entry.evidence_ids?.length) { const evidence = el('div', 'evidence-list'); entry.evidence_ids.forEach((id) => append(evidence, 'span', 'evidence-chip', id)); copy.append(evidence); } node.append(copy); flow.append(node); });
+  view.append(flow); return view;
 }
 
-function activateNavigation() {
-  const links = [...document.querySelectorAll('.navigation-link')];
-  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) links.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`)); }), { rootMargin: '-20% 0px -65% 0px' });
-  document.querySelectorAll('.view[id]').forEach((section) => observer.observe(section));
+function validationCategory(name) {
+  if (/CSV|DOCX|Checksum|Dataset|Raw|Metric|Analysis|Sample|Outlier/i.test(name)) return 'Data & analysis';
+  if (/plan|post|video|asset|caption|placeholder|Before|Target/i.test(name)) return 'Content & media';
+  if (/Agent|workflow|Retry|GPU|trace|checkpoint/i.test(name)) return 'Agents & operations';
+  return 'Application & package';
 }
 
-loadManifest().then((manifest) => { renderNavigation(manifest); renderOverview(manifest); renderContent(manifest); renderPerformance(manifest); renderStrategy(manifest); renderWorkflow(manifest); renderValidation(manifest); activateNavigation(); $('#app-status').remove(); }).catch((error) => { $('#app-status').textContent = error.message; $('#app-status').classList.add('app-status--error'); console.error(error); });
+function renderValidation() {
+  const validation = state.manifest.validation;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'VALIDATION / PRODUCTION GATE', title: validation.status === 'PASS' ? 'The production gate is clear.' : 'The production gate needs attention.', summary: 'Raw preservation, calculations, plan counts, media dimensions, captions, spend, application paths and packaging are checked before export.', aside: valueKind(validation.status === 'PASS' ? 'validated' : 'error', validation.status) }));
+  const score = el('section', 'validation-score'); score.innerHTML = `<strong>${validation.passed}</strong><span>of ${validation.passed + validation.failed}<br>checks passed</span><div class="score-track"><i style="width:${(validation.passed / Math.max(1, validation.passed + validation.failed)) * 100}%"></i></div>`; view.append(score);
+  const groups = new Map();
+  (validation.checks || []).forEach((check) => { const category = validationCategory(check.check); if (!groups.has(category)) groups.set(category, []); groups.get(category).push(check); });
+  const grid = el('section', 'validation-groups');
+  groups.forEach((checks, category) => { const card = el('article', 'validation-group'); const head = el('div', 'validation-group__head'); append(head, 'h2', '', category); append(head, 'span', 'count-badge', `${checks.filter((item) => item.passed).length}/${checks.length}`); card.append(head); const list = el('ul'); checks.forEach((check) => { const li = el('li'); li.innerHTML = `<span class="check-mark ${check.passed ? 'is-pass' : 'is-fail'}" aria-hidden="true">${check.passed ? '✓' : '!'}</span><div><strong>${check.check}</strong><small>${check.evidence}</small></div>`; list.append(li); }); card.append(list); grid.append(card); });
+  view.append(grid); return view;
+}
+
+function renderSubmission() {
+  const { submission, operations, validation } = state.manifest;
+  const view = el('div', 'route');
+  view.append(routeHeader({ eyebrow: 'SUBMISSION / FILE SHELF', title: submission?.ready ? 'Ready for handoff.' : 'Handoff files are being assembled.', summary: 'The shelf reports filesystem availability and file metadata from the generated manifest. The self-referential ZIP size is verified separately by the package validator.', aside: valueKind(submission?.ready ? 'validated' : 'target', submission?.ready ? 'Package ready' : 'Build pending') }));
+  const band = el('section', 'submission-band');
+  band.innerHTML = `<div><span class="overline">FINAL STATUS</span><strong>${validation.status}</strong><small>${validation.passed}/${validation.passed + validation.failed} checks</small></div><div><span class="overline">DIRECT PAID SPEND</span><strong>₹${Number(operations?.spend?.paid_generation_total_inr || 0).toFixed(0)}</strong><small>${operations?.spend?.within_cap ? 'Within documented cap' : 'Review required'}</small></div><div><span class="overline">VIDEO ENCODER</span><strong>${operations?.hardware?.selected_video_encoder || 'Unavailable'}</strong><small>${operations?.hardware?.gpu_name || 'Hardware not reported'}</small></div>`;
+  view.append(band);
+  const shelf = el('section', 'file-shelf');
+  (submission?.files || []).forEach((file) => { const card = el('article', `file-card ${file.available ? '' : 'is-missing'}`); card.innerHTML = `<span class="file-icon">${icon('file')}</span>`; const copy = el('div'); copy.innerHTML = `${valueKind(file.available ? 'validated' : 'error', file.available ? 'Available' : 'Missing')}<h2>${file.label}</h2>`; append(copy, 'p', '', file.path); append(copy, 'small', '', `${file.type} · ${file.size_note || formatBytes(file.bytes)}`); card.append(copy); if (file.available) { const link = el('a', 'button button--secondary', file.type === 'ZIP' ? 'Download' : 'Open'); link.href = file.href; if (file.type === 'ZIP') link.setAttribute('download', ''); card.append(link); } shelf.append(card); });
+  if (!submission?.files?.length) shelf.append(emptyState('No file shelf in this run', 'Run the pipeline and finalizer to regenerate submission metadata.'));
+  view.append(shelf); return view;
+}
+
+const routeRenderers = {
+  home: renderHome,
+  insights: renderInsights,
+  diagnosis: renderDiagnosis,
+  strategy: renderStrategy,
+  'content-plan': renderContentPlan,
+  studio: renderStudio,
+  agents: renderAgents,
+  validation: renderValidation,
+  submission: renderSubmission,
+};
+
+function currentRoute() {
+  const requested = window.location.hash.replace(/^#/, '') || 'home';
+  return routeRenderers[requested] ? requested : 'home';
+}
+
+function renderRoute(focus = true) {
+  state.route = currentRoute();
+  const stage = $('#main-content');
+  stage.replaceChildren(routeRenderers[state.route]());
+  $$('[data-route]').forEach((link) => { const active = link.dataset.route === state.route; link.classList.toggle('is-active', active); if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current'); });
+  const label = state.manifest.navigation.find((item) => item.id === state.route)?.label || 'Home';
+  $('#route-context').textContent = `${label} / BudgetFitzz Editorial Atelier`;
+  document.title = `${label} — BudgetFitzz Atelier`;
+  if (focus) { stage.focus({ preventScroll: true }); window.scrollTo({ top: 0, behavior: 'instant' }); }
+}
+
+function renderError(error) {
+  const stage = $('#main-content');
+  const box = el('div', 'error-state');
+  append(box, 'span', 'overline', 'MANIFEST ERROR');
+  append(box, 'h1', '', 'The atelier could not open.').id = 'route-title';
+  append(box, 'p', '', error.message);
+  append(box, 'code', '', 'PYTHONPATH=src .venv\\Scripts\\python.exe scripts\\run_pipeline.py');
+  const button = el('button', 'button button--primary', 'Retry loading'); button.type = 'button'; button.addEventListener('click', () => window.location.reload()); box.append(button); stage.replaceChildren(box);
+}
+
+window.addEventListener('hashchange', () => { if (state.manifest) renderRoute(); });
+
+loadManifest().then((manifest) => {
+  state.manifest = manifest;
+  renderChrome(manifest);
+  renderRoute(false);
+}).catch((error) => {
+  console.error('BudgetFitzz manifest load failed:', error);
+  renderError(error);
+});

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0 - 2026-07-18
+
+- Redesigned the frontend as the Stitch-informed BudgetFitzz Editorial Creator Atelier.
+- Added nine manifest-driven routes, responsive bottom navigation, planner filtering, studio previews, agent trace, grouped validation, and a live submission shelf.
+- Added central design tokens plus loading, empty, error, selected, target, observed, and validated states.
+- Expanded the generated platform manifest with operation, hardware, spend, timing, retry, and submission-file metadata.
+- Documented three Stitch directions, the selected desktop/mobile refinement, responsive rules, screenshots, and visual QA.
+
 ## 1.0.0 - 2026-07-17
 
 - Preserved and checksummed source inputs.
