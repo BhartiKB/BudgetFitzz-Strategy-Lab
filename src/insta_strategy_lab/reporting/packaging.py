@@ -27,6 +27,7 @@ def assemble_submission(root: Path) -> Path:
     file_map = {
         "README.md": "README.md",
         "docs/business_context.md": "business_context.md",
+        "docs/qualitative_observations.md": "qualitative_observations.md",
         "docs/data_provenance.md": "data_provenance.md",
         "docs/source_checksums.sha256": "source_checksums.sha256",
         "data/raw/budgetfitzz_dataset_fixed.csv": "references/budgetfitzz_dataset_fixed.csv",

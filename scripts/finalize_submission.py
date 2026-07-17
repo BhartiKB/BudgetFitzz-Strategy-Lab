@@ -11,7 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from insta_strategy_lab.providers import LocalProvider  # noqa: E402
-from insta_strategy_lab.reporting.builder import build_app_data, build_final_reports  # noqa: E402
+from insta_strategy_lab.reporting.builder import (  # noqa: E402
+    build_app_data, build_final_reports, load_qualitative_observations,
+)
 from insta_strategy_lab.reporting.packaging import assemble_submission, create_zip, write_manifest  # noqa: E402
 from insta_strategy_lab.schemas import PlanItem  # noqa: E402
 from insta_strategy_lab.validation import validate_project  # noqa: E402
@@ -29,6 +31,7 @@ def main() -> None:
     hardware = load("logs/hardware_report.json")
     before_after = load("analysis/before_after.json")
     provider = load("analysis/provider_selection.json")
+    qualitative = load_qualitative_observations(ROOT)
     history = []
     import sqlite3
     with sqlite3.connect(ROOT / "logs/workflow.db") as conn:
@@ -43,7 +46,7 @@ def main() -> None:
         raise SystemExit(f"Final validation failed before rebuild: {failed}")
     build_app_data(ROOT, run_id, results, diagnosis, strategy, plan, provider, validation, before_after)
     final_dir = assemble_submission(ROOT)
-    build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after)
+    build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after, qualitative)
     write_manifest(final_dir); create_zip(ROOT, final_dir)
 
     validation = validate_project(ROOT, final=True)
@@ -52,7 +55,7 @@ def main() -> None:
         raise SystemExit(f"Final validation failed after rebuild: {failed}")
     shutil.copy2(ROOT / "logs/validation_report.json", final_dir / "validation_report.json")
     shutil.copy2(ROOT / "logs/validation_report.md", final_dir / "validation_report.md")
-    build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after)
+    build_final_reports(final_dir, results, diagnosis, strategy, plan, hardware, validation, before_after, qualitative)
     write_manifest(final_dir); archive = create_zip(ROOT, final_dir)
     print(json.dumps({"status":"PASS","pdf":str(final_dir/'final_report.pdf'),"demo":str(final_dir/'platform_walkthrough.mp4'),"zip":str(archive)}, indent=2))
 

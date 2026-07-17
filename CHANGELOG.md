@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2026-07-18
+
+- Added the project owner's Instagram product-search discovery journey to the generated final reports as a user-reported qualitative observation.
+- Kept the observation separate from calculated metrics and added an explicit limitation plus a follow-up measurement plan.
+
 ## 1.1.0 - 2026-07-18
 
 - Redesigned the frontend as the Stitch-informed BudgetFitzz Editorial Creator Atelier.

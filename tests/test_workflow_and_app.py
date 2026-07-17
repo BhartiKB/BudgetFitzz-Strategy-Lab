@@ -7,11 +7,19 @@ import unittest
 import urllib.request
 from pathlib import Path
 
+from insta_strategy_lab.reporting.builder import load_qualitative_observations
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class WorkflowAppTests(unittest.TestCase):
+    def test_instagram_discovery_observation_is_qualitative_and_guarded(self):
+        observation = load_qualitative_observations(ROOT)["instagram_product_search_discovery"]
+        self.assertEqual(observation["evidence_type"], "user-reported qualitative observation")
+        self.assertIn("searching and comparing multiple fashion products", observation["observation"])
+        self.assertIn("does not establish", observation["limitation"])
+
     def test_retry_and_checkpoint_configuration(self):
         config = json.loads((ROOT / "config/workflow.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(config["max_retries"], 1)

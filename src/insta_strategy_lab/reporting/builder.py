@@ -22,6 +22,21 @@ from insta_strategy_lab.schemas import PlanItem
 from insta_strategy_lab.utils.files import sha256, write_json
 
 
+def load_qualitative_observations(root: Path) -> dict[str, Any]:
+    """Load user-supplied context that must remain separate from measured data."""
+    path = root / "config/qualitative_observations.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    observation = payload["instagram_product_search_discovery"]
+    required = {
+        "evidence_type", "observation", "interpretation", "limitation",
+        "recommended_action", "reported_on",
+    }
+    missing = required.difference(observation)
+    if missing:
+        raise ValueError(f"Qualitative observation is missing fields: {sorted(missing)}")
+    return payload
+
+
 def md_table(headers: list[str], rows: list[list[Any]]) -> str:
     head = "| " + " | ".join(headers) + " |"
     rule = "| " + " | ".join(["---"] * len(headers)) + " |"
@@ -34,6 +49,7 @@ def build_documentation(
     plan: list[PlanItem], hardware: dict[str, Any], provider: dict[str, Any], run_id: str,
 ) -> None:
     facts = results["verified_facts"]
+    discovery = load_qualitative_observations(root)["instagram_product_search_discovery"]
     checksums = {
         "data/raw/budgetfitzz_dataset_fixed.csv": sha256(root / "data/raw/budgetfitzz_dataset_fixed.csv"),
         "data/raw/Intern Task 2 - Performance Analysis and Strategy Revision.docx": sha256(root / "data/raw/Intern Task 2 - Performance Analysis and Strategy Revision.docx"),
@@ -63,6 +79,8 @@ The dataset is described truthfully as a user-provided local evaluation dataset 
 ```
 
 Then open `http://127.0.0.1:8501`.
+
+The Version 11 frontend is the **BudgetFitzz Editorial Creator Atelier**: a warm, responsive, manifest-driven workspace with Home, Insights, Diagnosis, Strategy, Content Plan, Studio, Agents, Validation, and Submission routes. The visual system was developed through a private Google Stitch project using only authorized UI labels and summarized findings; no raw inputs, keys, source files, or private media were uploaded.
 
 Equivalent Python command:
 
@@ -129,11 +147,33 @@ Future ranges are targets and hypotheses, not achieved post-publication results.
         encoding="utf-8",
     )
 
-    (root / "docs/business_context.md").write_text("""# Business context
+    (root / "docs/business_context.md").write_text(f"""# Business context
 
 The following is an explicit project assumption, not an externally verified fact.
 
 BudgetFitzz is treated as an Instagram-first affordable men's fashion discovery and styling brand in Delhi NCR, India. The assumed primary audience is Indian men aged approximately 18-30, especially college students, early-career professionals, and price-sensitive buyers. The assumed voice is direct, practical, energetic, modern, budget-conscious, and non-pretentious. The commercial objective is qualified engagement, saves, shares, profile actions, link-request comments, affiliate-product interest, and repeat audience growth. The content objective is to become useful enough to save and share rather than publishing predominantly repetitive promotions.
+
+## User-reported Instagram discovery observation
+
+- **Evidence type:** {discovery['evidence_type']}
+- **Observation:** {discovery['observation']}
+- **Interpretation:** {discovery['interpretation']}
+- **Limitation:** {discovery['limitation']}
+- **Recommended validation:** {discovery['recommended_action']}
+""", encoding="utf-8")
+
+    (root / "docs/qualitative_observations.md").write_text(f"""# Qualitative observations
+
+## Instagram product-search discovery
+
+- **Evidence type:** {discovery['evidence_type']}
+- **Reported on:** {discovery['reported_on']}
+- **Observation:** {discovery['observation']}
+- **Interpretation:** {discovery['interpretation']}
+- **Limitation:** {discovery['limitation']}
+- **Recommended action:** {discovery['recommended_action']}
+
+This observation is contextual evidence only and is not included in calculated dataset metrics.
 """, encoding="utf-8")
 
     (root / "docs/architecture.md").write_text(f"""# Architecture
@@ -258,6 +298,19 @@ Validate content against `PlanItem`. If required fields are absent, reissue the 
 """
     (root / "prompts/prompt_catalogue.md").write_text(prompts, encoding="utf-8")
     (root / "CHANGELOG.md").write_text("""# Changelog
+
+## 1.1.1 - 2026-07-18
+
+- Added the project owner's Instagram product-search discovery journey to the generated final reports as a user-reported qualitative observation.
+- Kept the observation separate from calculated metrics and added an explicit limitation plus a follow-up measurement plan.
+
+## 1.1.0 - 2026-07-18
+
+- Redesigned the frontend as the Stitch-informed BudgetFitzz Editorial Creator Atelier.
+- Added nine manifest-driven routes, responsive bottom navigation, planner filtering, studio previews, agent trace, grouped validation, and a live submission shelf.
+- Added central design tokens plus loading, empty, error, selected, target, observed, and validated states.
+- Expanded the generated platform manifest with operation, hardware, spend, timing, retry, and submission-file metadata.
+- Documented three Stitch directions, the selected desktop/mobile refinement, responsive rules, screenshots, and visual QA.
 
 ## 1.0.0 - 2026-07-17
 
@@ -428,6 +481,7 @@ def build_app_data(
 def report_markdown(
     results: dict[str, Any], diagnosis: dict[str, Any], strategy: dict[str, Any], plan: list[PlanItem],
     hardware: dict[str, Any], validation: dict[str, Any], before_after: list[dict[str, Any]],
+    discovery: dict[str, Any],
 ) -> str:
     facts = results["verified_facts"]
     lines = [
@@ -436,6 +490,12 @@ def report_markdown(
         diagnosis["selected_diagnosis"], "",
         f"The verified baseline contains {facts['record_count']} items: {facts['post_count']} posts and {facts['video_count']} videos. Promotion represents {facts['promotion_share_pct']:.1f}% of the mix. Education's median save rate is {facts['education_median_save_rate_pct']:.3f}% versus {facts['promotion_median_save_rate_pct']:.3f}% for promotion. This is directional evidence, not causal proof.", "",
         "## Business context", "", "BudgetFitzz is treated as an affordable men's fashion discovery and styling brand in Delhi NCR. This is an explicit project assumption, not an externally verified fact.", "",
+        "## Qualitative Instagram discovery signal", "",
+        f"**Evidence type:** {discovery['evidence_type']}.", "",
+        discovery["observation"], "",
+        f"**Interpretation:** {discovery['interpretation']}", "",
+        f"**Limitation:** {discovery['limitation']}", "",
+        f"**Recommended validation:** {discovery['recommended_action']}", "",
         "## Dataset provenance", "", "User-provided local evaluation dataset; original provenance unspecified. The project does not claim it is a genuine Instagram export.", "",
         "## Dataset audit", "", md_table(["Check", "Verified value"], [["Records", facts["record_count"]], ["Date span", f"{results['audit']['date_min']} to {results['audit']['date_max']}"], ["Missing CTAs", facts["missing_cta_count"]], ["@aristostyling rows", facts["aristostyling_rows"]], ["Video views > reach", facts["video_views_exceed_reach_count"]]]), "",
         "## Metric definitions", "", "Engagements = likes + comments + shares + saves. Engagement rate = engagements / reach x 100. Save/share/comment/like rates use reach. Average watch time = watch time / video plays. Retention proxy = average watch time / video duration x 100. Division by zero returns missing; raw columns are never overwritten.", "",
@@ -459,7 +519,10 @@ def report_markdown(
     return "\n".join(lines)
 
 
-def report_html(markdown_text: str, plan: list[PlanItem], facts: dict[str, Any], diagnosis: dict[str, Any], before_after: list[dict[str, Any]]) -> str:
+def report_html(
+    markdown_text: str, plan: list[PlanItem], facts: dict[str, Any],
+    diagnosis: dict[str, Any], before_after: list[dict[str, Any]], discovery: dict[str, Any],
+) -> str:
     cards = "".join(f"<article><small>DAY {i.day} · {i.format.upper()}</small><h3>{html.escape(i.hook)}</h3><p>{html.escape(i.content_idea)}</p><b>{html.escape(i.reasoned_target_range)}</b></article>" for i in plan)
     previews = "".join(
         f"<figure><img src=\"{'posts/'+i.asset_filename if i.format=='post' else 'video_frames/'+Path(i.asset_filename).stem+'_preview.png'}\" alt=\"{html.escape(i.hook)}\"><figcaption>Day {i.day} · {html.escape(i.topic)}</figcaption></figure>"
@@ -468,12 +531,13 @@ def report_html(markdown_text: str, plan: list[PlanItem], facts: dict[str, Any],
     compare_rows = "".join(f"<tr><td>{html.escape(x['dimension'])}</td><td>{html.escape(x['before'])}</td><td>{html.escape(x['after'])}</td></tr>" for x in before_after)
     return f"""<!doctype html><html><head><meta charset="utf-8"><title>BudgetFitzz Final Report</title><style>
     :root{{--ink:#17211b;--forest:#0f6b4f;--lime:#b7f34a;--canvas:#f6f2e9;--coral:#ff7a45}}*{{box-sizing:border-box}}body{{margin:0;background:var(--canvas);color:var(--ink);font-family:Segoe UI,Arial,sans-serif;line-height:1.55}}header,main{{max-width:1180px;margin:auto;padding:64px}}header{{min-height:520px;display:flex;flex-direction:column;justify-content:center}}header h1{{font-size:76px;line-height:.96;letter-spacing:-4px;margin:12px 0}}header em{{color:var(--forest);font-style:normal}}.eyebrow{{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--forest)}}.kpis{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px}}.kpis div,article{{background:#fff;border:1px solid #d9ddd4;border-radius:20px;padding:22px}}.kpis strong{{display:block;font-size:32px}}section{{padding:54px 0;border-top:1px solid #d9ddd4}}h2{{font-size:44px;letter-spacing:-2px}}.diagnosis{{background:var(--ink);color:#fff;border-radius:28px;padding:34px;font-size:21px}}.charts,.previews,.plan{{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}}img{{width:100%;border-radius:18px;display:block}}figure{{margin:0;background:#fff;border-radius:20px;padding:10px}}figcaption{{padding:10px;color:#627067}}table{{width:100%;border-collapse:collapse;background:#fff}}th,td{{padding:14px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}}th{{background:#e6f1d9}}footer{{background:var(--forest);color:#fff;padding:44px;text-align:center}}@media(max-width:760px){{header,main{{padding:28px}}header h1{{font-size:48px}}.kpis,.charts,.previews,.plan{{grid-template-columns:1fr}}}}
-    </style></head><body><header><div class="eyebrow">FINAL PROJECT REPORT</div><h1>BudgetFitzz<br><em>Strategy Lab</em></h1><p>Performance analysis, failure diagnosis, revised strategy, seven-day pilot, finished assets, agent workflow, GPU use, spend, and validation.</p><div class="kpis"><div><strong>{facts['record_count']}</strong>historical items</div><div><strong>{facts['promotion_share_pct']:.1f}%</strong>promotion</div><div><strong>5 + 2</strong>posts + videos</div><div><strong>INR 0</strong>paid spend</div></div></header><main><section><div class="eyebrow">EXECUTIVE SUMMARY</div><h2>Imbalance is the failure.</h2><div class="diagnosis">{html.escape(diagnosis['selected_diagnosis'])}</div></section><section><div class="eyebrow">ANALYSIS</div><h2>Evidence over averages</h2><div class="charts"><figure><img src="charts/format_comparison.png" alt="Format comparison"></figure><figure><img src="charts/pillar_comparison.png" alt="Pillar comparison"></figure><figure><img src="charts/content_mix.png" alt="Content mix"></figure><figure><img src="charts/video_retention.png" alt="Video retention"></figure></div></section><section><div class="eyebrow">SEVEN-DAY PLAN</div><h2>Exactly five posts and two videos</h2><div class="plan">{cards}</div></section><section><div class="eyebrow">ASSET PREVIEWS</div><h2>Seven finished local assets</h2><div class="previews">{previews}</div></section><section><div class="eyebrow">BEFORE / AFTER</div><h2>Observed baseline vs test design</h2><table><thead><tr><th>Dimension</th><th>Observed baseline</th><th>Revised design</th></tr></thead><tbody>{compare_rows}</tbody></table></section><section><div class="eyebrow">FULL TECHNICAL REPORT</div><pre style="white-space:pre-wrap;font:14px/1.55 Segoe UI,Arial">{html.escape(markdown_text)}</pre></section></main><footer>Generated locally · Dataset kept local · Direct generation spend INR 0</footer></body></html>"""
+    </style></head><body><header><div class="eyebrow">FINAL PROJECT REPORT</div><h1>BudgetFitzz<br><em>Strategy Lab</em></h1><p>Performance analysis, failure diagnosis, revised strategy, seven-day pilot, finished assets, agent workflow, GPU use, spend, and validation.</p><div class="kpis"><div><strong>{facts['record_count']}</strong>historical items</div><div><strong>{facts['promotion_share_pct']:.1f}%</strong>promotion</div><div><strong>5 + 2</strong>posts + videos</div><div><strong>INR 0</strong>paid spend</div></div></header><main><section><div class="eyebrow">EXECUTIVE SUMMARY</div><h2>Imbalance is the failure.</h2><div class="diagnosis">{html.escape(diagnosis['selected_diagnosis'])}</div></section><section><div class="eyebrow">QUALITATIVE DISCOVERY SIGNAL</div><h2>Found during active Instagram product research.</h2><p><strong>User-reported observation:</strong> {html.escape(discovery['observation'])}</p><p>{html.escape(discovery['interpretation'])}</p><p><strong>Guardrail:</strong> {html.escape(discovery['limitation'])}</p><p><strong>Next measurement:</strong> {html.escape(discovery['recommended_action'])}</p></section><section><div class="eyebrow">ANALYSIS</div><h2>Evidence over averages</h2><div class="charts"><figure><img src="charts/format_comparison.png" alt="Format comparison"></figure><figure><img src="charts/pillar_comparison.png" alt="Pillar comparison"></figure><figure><img src="charts/content_mix.png" alt="Content mix"></figure><figure><img src="charts/video_retention.png" alt="Video retention"></figure></div></section><section><div class="eyebrow">SEVEN-DAY PLAN</div><h2>Exactly five posts and two videos</h2><div class="plan">{cards}</div></section><section><div class="eyebrow">ASSET PREVIEWS</div><h2>Seven finished local assets</h2><div class="previews">{previews}</div></section><section><div class="eyebrow">BEFORE / AFTER</div><h2>Observed baseline vs test design</h2><table><thead><tr><th>Dimension</th><th>Observed baseline</th><th>Revised design</th></tr></thead><tbody>{compare_rows}</tbody></table></section><section><div class="eyebrow">FULL TECHNICAL REPORT</div><pre style="white-space:pre-wrap;font:14px/1.55 Segoe UI,Arial">{html.escape(markdown_text)}</pre></section></main><footer>Generated locally · Dataset kept local · Direct generation spend INR 0</footer></body></html>"""
 
 
 def build_pdf(
     output: Path, results: dict[str, Any], diagnosis: dict[str, Any], strategy: dict[str, Any], plan: list[PlanItem],
-    hardware: dict[str, Any], validation: dict[str, Any], before_after: list[dict[str, Any]], assets_root: Path,
+    hardware: dict[str, Any], validation: dict[str, Any], before_after: list[dict[str, Any]],
+    assets_root: Path, discovery: dict[str, Any],
 ) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
     doc = SimpleDocTemplate(str(output), pagesize=letter, rightMargin=48, leftMargin=48, topMargin=54, bottomMargin=48, title="BudgetFitzz Performance Analysis and Strategy Revision", author="BudgetFitzz local agentic pipeline")
@@ -503,7 +567,7 @@ def build_pdf(
     story += [cover_table, Spacer(1, 18), P("PROJECT ASSUMPTION", "Kicker"), P("BudgetFitzz is treated as an affordable men's fashion discovery and styling brand in Delhi NCR for Indian men aged about 18-30. This context is assumed, not externally verified.", "Bodyx"), PageBreak()]
     story += [P("01 / EXECUTIVE SUMMARY", "Kicker"), P("The diagnosis", "H1x"), P(diagnosis["selected_diagnosis"]), P("Interpretation guardrail", "H2x"), P(diagnosis["outlier_caveat"]), P("Verified baseline", "H2x")]
     audit_rows = [[P("Records","Smallx"),P(facts["record_count"],"Smallx")],[P("Formats","Smallx"),P(f"{facts['post_count']} posts / {facts['video_count']} videos","Smallx")],[P("Promotion","Smallx"),P(f"{facts['promotion_share_pct']:.1f}%","Smallx")],[P("Missing CTA","Smallx"),P(facts["missing_cta_count"],"Smallx")],[P("Views > reach","Smallx"),P(facts["video_views_exceed_reach_count"],"Smallx")]]
-    t=Table(audit_rows,colWidths=[1.55*inch,3.7*inch]);t.setStyle(TableStyle([("BACKGROUND",(0,0),(0,-1),colors.HexColor("#E6F1D9")),("GRID",(0,0),(-1,-1),.5,colors.HexColor("#D9DDD4")),("VALIGN",(0,0),(-1,-1),"TOP"),("LEFTPADDING",(0,0),(-1,-1),8),("TOPPADDING",(0,0),(-1,-1),7),("BOTTOMPADDING",(0,0),(-1,-1),7)]));story += [t, Spacer(1,10), P("Provenance", "H2x"), P("User-provided local evaluation dataset; original provenance unspecified. It is not described as a genuine Instagram export."), PageBreak()]
+    t=Table(audit_rows,colWidths=[1.55*inch,3.7*inch]);t.setStyle(TableStyle([("BACKGROUND",(0,0),(0,-1),colors.HexColor("#E6F1D9")),("GRID",(0,0),(-1,-1),.5,colors.HexColor("#D9DDD4")),("VALIGN",(0,0),(-1,-1),"TOP"),("LEFTPADDING",(0,0),(-1,-1),8),("TOPPADDING",(0,0),(-1,-1),7),("BOTTOMPADDING",(0,0),(-1,-1),7)]));story += [t, Spacer(1,10), P("Qualitative Instagram discovery signal", "H2x"), P(discovery["observation"]), P(discovery["interpretation"], "Smallx"), P(f"Guardrail: {discovery['limitation']}", "Smallx"), P(f"Recommended validation: {discovery['recommended_action']}", "Smallx"), P("Dataset provenance", "H2x"), P("User-provided local evaluation dataset; original provenance unspecified. It is not described as a genuine Instagram export."), PageBreak()]
     story += [P("02 / METRICS AND METHOD", "Kicker"), P("Metric contract", "H1x"), P("Engagements = likes + comments + shares + saves. Engagement rate by reach = engagements / reach x 100. Like, comment, share and save rates use reach. Frequency = impressions / reach. Average watch time = watch time / video plays. Retention proxy = average watch time / duration x 100. Weighted score uses 1x likes, 3x comments, 4x shares and 4x saves."), P("Robust analysis", "H2x"), P("Raw values are preserved. Group tables report n, median, quartiles, mean, 10% trimmed mean, 5% winsorized mean and 2,000-sample bootstrap median intervals. Static-post video fields remain unavailable. Views are plays. n<3 is anecdotal; n=3-4 directional; n>=5 is cautious."), PageBreak()]
     chart_dir = assets_root / "charts"
     for title, name in [("Format comparison","format_comparison.png"),("Pillar save-rate comparison","pillar_comparison.png"),("Historical content mix","content_mix.png"),("Video retention proxy","video_retention.png")]:
@@ -532,10 +596,12 @@ def build_pdf(
 def build_final_reports(
     final_dir: Path, results: dict[str, Any], diagnosis: dict[str, Any], strategy: dict[str, Any], plan: list[PlanItem],
     hardware: dict[str, Any], validation: dict[str, Any], before_after: list[dict[str, Any]],
+    qualitative_observations: dict[str, Any],
 ) -> None:
     final_dir.mkdir(parents=True, exist_ok=True)
-    markdown_text = report_markdown(results, diagnosis, strategy, plan, hardware, validation, before_after)
+    discovery = qualitative_observations["instagram_product_search_discovery"]
+    markdown_text = report_markdown(results, diagnosis, strategy, plan, hardware, validation, before_after, discovery)
     (final_dir / "final_report.md").write_text(markdown_text, encoding="utf-8")
-    html_text = report_html(markdown_text, plan, results["verified_facts"], diagnosis, before_after)
+    html_text = report_html(markdown_text, plan, results["verified_facts"], diagnosis, before_after, discovery)
     (final_dir / "final_report.html").write_text(html_text, encoding="utf-8")
-    build_pdf(final_dir / "final_report.pdf", results, diagnosis, strategy, plan, hardware, validation, before_after, final_dir)
+    build_pdf(final_dir / "final_report.pdf", results, diagnosis, strategy, plan, hardware, validation, before_after, final_dir, discovery)
