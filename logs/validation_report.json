@@ -1,7 +1,7 @@
 {
   "status": "PASS",
   "mode": "final",
-  "passed": 41,
+  "passed": 42,
   "failed": 0,
   "checks": [
     {
@@ -213,6 +213,12 @@
       "passed": true,
       "required": true,
       "evidence": "server.py, index.html, app.js, styles.css"
+    },
+    {
+      "check": "Generated platform manifest is valid",
+      "passed": true,
+      "required": true,
+      "evidence": "C:\\Users\\bhart\\Documents\\Task2\\app\\data\\platform_manifest.json"
     },
     {
       "check": "Demo video exists",

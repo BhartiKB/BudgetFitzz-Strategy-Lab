@@ -60,10 +60,21 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertTrue(all(item["before_kind"] == "observed" for item in dashboard["before_after"]))
         self.assertTrue(all(item["after_kind"] != "observed" for item in dashboard["before_after"]))
 
+    def test_platform_manifest_is_generated_and_keeps_plan_and_video_context(self):
+        manifest = json.loads((ROOT / "app/data/platform_manifest.json").read_text(encoding="utf-8"))
+        dashboard = json.loads((ROOT / "app/data/dashboard.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["generated_by"], "insta_strategy_lab.reporting.builder.build_app_data")
+        self.assertEqual(len(manifest["content_studio"]["plan"]), 7)
+        self.assertEqual(manifest["content_studio"]["plan_counts"], {"post": 5, "video": 2})
+        self.assertEqual(len(manifest["content_studio"]["video_briefs"]["briefs"]), 2)
+        self.assertFalse(manifest["contract"]["formulas_visible_in_ui"])
+        self.assertEqual(manifest["overview"]["kpis"], dashboard["overview_kpis"])
+
     def test_browser_code_does_not_embed_copied_kpi_values(self):
         script = (ROOT / "app/app.js").read_text(encoding="utf-8")
         self.assertNotIn("['150','historical items'", script)
-        self.assertIn("data.overview_kpis", script)
+        self.assertIn("platform_manifest.json", script)
+        self.assertIn("overview.kpis", script)
 
     def test_metric_formulas_are_kept_out_of_the_browser_ui(self):
         markup = (ROOT / "app/index.html").read_text(encoding="utf-8")

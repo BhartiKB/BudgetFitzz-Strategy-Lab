@@ -1,6 +1,6 @@
 # Validation report
 
-Status: **PASS** (41 passed, 0 failed)
+Status: **PASS** (42 passed, 0 failed)
 
 - [x] Original CSV preserved — C:\Users\bhart\Documents\Task2\data\raw\budgetfitzz_dataset_fixed.csv
 - [x] Original DOCX preserved — C:\Users\bhart\Documents\Task2\data\raw\Intern Task 2 - Performance Analysis and Strategy Revision.docx
@@ -37,6 +37,7 @@ Status: **PASS** (41 passed, 0 failed)
 - [x] Execution trace exists — logs/execution_trace.jsonl
 - [x] GPU report exists — C:\Users\bhart\Documents\Task2\logs\hardware_report.json
 - [x] Application source complete — server.py, index.html, app.js, styles.css
+- [x] Generated platform manifest is valid — C:\Users\bhart\Documents\Task2\app\data\platform_manifest.json
 - [x] Demo video exists — C:\Users\bhart\Documents\Task2\submission\final\platform_walkthrough.mp4
 - [x] Final PDF exists — C:\Users\bhart\Documents\Task2\submission\final\final_report.pdf
 - [x] Final ZIP exists — C:\Users\bhart\Documents\Task2\submission\insta_strategy_lab_task2_submission.zip

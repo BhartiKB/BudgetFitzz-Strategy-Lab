@@ -1,237 +1,127 @@
-async function loadData() {
-  const response = await fetch('data/dashboard.json', { cache: 'no-store' });
-  if (!response.ok) throw new Error('dashboard data missing');
+const $ = (selector) => document.querySelector(selector);
+const create = (tag, className, value) => {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (value !== undefined) node.textContent = value;
+  return node;
+};
+const appendText = (parent, tag, className, value) => parent.append(create(tag, className, value));
+
+async function loadManifest() {
+  const response = await fetch('data/platform_manifest.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error('The generated platform manifest is unavailable. Run the pipeline to refresh it.');
   return response.json();
 }
 
-const el = (tag, className, text) => {
-  const node = document.createElement(tag);
-  if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
-  return node;
-};
+function renderNavigation(manifest) {
+  const nav = $('#nav');
+  manifest.navigation.forEach((item) => {
+    const link = create('a', 'navigation-link', item.label);
+    link.href = `#${item.id}`;
+    nav.append(link);
+  });
+}
 
-const addText = (parent, tag, className, text) => {
-  const node = el(tag, className, text);
-  parent.append(node);
-  return node;
-};
-
-function renderKpis(data) {
-  const grid = document.querySelector('#kpis');
-  data.overview_kpis.forEach((item) => {
-    const card = el('div', 'kpi');
-    addText(card, 'strong', '', item.value);
-    addText(card, 'span', '', item.label);
-    addText(card, 'small', '', `${item.detail} · n=${item.sample_size}`);
-    addText(card, 'div', 'source-note', `Calculated: ${item.source}`);
+function renderOverview(manifest) {
+  const { overview, run } = manifest;
+  $('#run-chip').textContent = `${run.status.toUpperCase()} · ${run.provider}`;
+  const grid = $('#overview-kpis');
+  overview.kpis.forEach((item) => {
+    const card = create('article', 'kpi-card');
+    appendText(card, 'span', 'kpi-label', item.label);
+    appendText(card, 'strong', 'kpi-value', item.value);
+    appendText(card, 'p', 'kpi-detail', item.detail);
+    appendText(card, 'small', 'source-note', `Calculated: ${item.source} · n=${item.sample_size}`);
     grid.append(card);
   });
+  const lineage = overview.lineage;
+  $('#lineage-callout').textContent = `Observed source: ${lineage.raw_source} · ${lineage.observed_rows} rows · run ${lineage.calculation_run_id}. Original provenance remains unspecified; targets and hypotheses are never presented as results.`;
 }
 
-function renderAudit(data) {
-  const auditRows = [
-    ['Rows', data.audit.rows],
-    ['Columns', data.audit.columns],
-    ['Missing CTAs', data.audit.missing_by_column.cta],
-    ['Wrong-handle rows', data.audit.aristostyling_rows],
-    ['Video plays > reach', data.facts.video_views_exceed_reach_count],
-    ['Duplicate rows', data.audit.duplicate_rows],
-    ['Duplicate IDs', data.audit.duplicate_ids],
-    ['Invalid dates', data.audit.invalid_dates],
-    ['Negative numeric values', data.audit.negative_numeric_values],
-    ['Date span', `${data.audit.date_min} → ${data.audit.date_max} (${data.audit.span_days} days)`],
-  ];
-  const list = document.querySelector('#audit-list');
-  auditRows.forEach(([label, value]) => {
-    const row = el('div');
-    addText(row, 'span', '', label);
-    addText(row, 'b', '', String(value));
-    list.append(row);
-  });
-  document.querySelector('#quality-record-count').textContent = `${data.audit.rows} calculated records`;
-  document.querySelector('#audit-source').textContent = `Source: ${data.data_lineage.raw_source} · SHA-256 ${data.data_lineage.raw_sha256.slice(0, 16)}…`;
-}
-
-function renderMetrics(data) {
-  const observed = document.querySelector('#observed-metric-grid');
-  data.observed_metrics.forEach((item) => {
-    const card = el('article', 'observed-metric');
-    addText(card, 'small', '', item.metric);
-    addText(card, 'strong', '', item.display);
-    addText(card, 'span', '', `n=${item.n}`);
-    addText(card, 'code', '', item.source);
-    observed.append(card);
-  });
-}
-
-function summaryTable(title, rows, labelKey, source) {
-  const panel = el('section', 'summary-panel');
-  addText(panel, 'h3', '', title);
-  addText(panel, 'div', 'source-note', `Calculated source: ${source}`);
-  const wrapper = el('div', 'table-scroll');
-  const table = el('table', 'data-table');
-  const head = el('thead');
-  const headRow = el('tr');
-  ['Group', 'n', 'Median ER', 'Q1–Q3', 'Mean ER', 'Confidence'].forEach((value) => addText(headRow, 'th', '', value));
-  head.append(headRow);
-  table.append(head);
-  const body = el('tbody');
-  rows.forEach((row) => {
-    const tr = el('tr');
-    const values = [
-      row[labelKey],
-      row.n,
-      `${row.median.toFixed(3)}%`,
-      `${row.q1.toFixed(3)}–${row.q3.toFixed(3)}%`,
-      `${row.mean.toFixed(3)}%`,
-      row.sample_note,
-    ];
-    values.forEach((value) => addText(tr, 'td', '', String(value)));
-    body.append(tr);
-  });
-  table.append(body);
-  wrapper.append(table);
-  panel.append(wrapper);
-  return panel;
-}
-
-function renderPerformance(data) {
-  const container = document.querySelector('#performance-tables');
-  container.append(summaryTable('Format performance', data.summaries.format, 'format', 'analysis/tables/format_summary.csv'));
-  container.append(summaryTable('Pillar performance', data.summaries.pillar, 'pillar', 'analysis/tables/pillar_summary.csv'));
-}
-
-function renderStrategyAndPlan(data) {
-  const pillarCounts = data.plan.reduce((counts, item) => {
-    counts[item.content_pillar] = (counts[item.content_pillar] || 0) + 1;
-    return counts;
-  }, {});
-  const mix = document.querySelector('#strategy-mix');
-  Object.entries(pillarCounts).forEach(([name, count]) => {
-    const segment = addText(mix, 'span', '', `${count} ${name}`);
-    segment.style.setProperty('--w', `${count / data.plan.length * 100}%`);
-  });
-
-  const strategyGrid = document.querySelector('#strategy-cards');
-  data.strategy.evidence_linked_changes.forEach((change) => {
-    const card = el('article', 'strategy-card');
-    addText(card, 'span', 'id', change.evidence);
-    addText(card, 'h3', '', change.strategy_change);
-    addText(card, 'p', '', change.finding);
-    addText(card, 'small', '', change.confidence_or_limitation);
-    strategyGrid.append(card);
-  });
-
-  const formatCounts = data.plan.reduce((counts, item) => {
-    counts[item.format] = (counts[item.format] || 0) + 1;
-    return counts;
-  }, {});
-  document.querySelector('#plan-count-heading').textContent = `${formatCounts.post || 0} posts + ${formatCounts.video || 0} videos from ${data.plan.length} validated items`;
-  const planGrid = document.querySelector('#plan-cards');
-  data.plan.forEach((item) => {
-    const card = el('article', `plan-card ${item.format}`);
-    const day = el('div', 'day');
-    addText(day, 'span', '', `DAY ${item.day}`);
-    addText(day, 'span', '', item.format.toUpperCase());
-    card.append(day);
-    addText(card, 'h3', '', item.hook);
-    addText(card, 'p', '', item.content_idea);
-    addText(card, 'span', 'kpi-chip', item.primary_kpi);
-    planGrid.append(card);
-  });
-}
-
-function renderAssets(data) {
-  const creatives = document.querySelector('#creative-gallery');
-  data.plan.filter((item) => item.format === 'post').forEach((item) => {
-    const card = el('article', 'creative-card');
-    const image = el('img');
-    image.src = `../assets/posts/${item.asset_filename}`;
-    image.alt = item.hook;
+function renderContent(manifest) {
+  const { plan, plan_counts: counts, asset_root: assets, video_briefs: briefData } = manifest.content_studio;
+  $('#plan-summary').textContent = `${counts.post} posts + ${counts.video} videos · ${plan.length} validated items · local assets only`;
+  plan.filter((item) => item.format === 'post').forEach((item) => {
+    const card = create('article', 'asset-card');
+    const image = create('img');
+    image.loading = 'lazy'; image.src = `${assets}/posts/${item.asset_filename}`; image.alt = `Day ${item.day}: ${item.hook}`;
     card.append(image);
-    addText(card, 'div', '', `DAY ${item.day} • ${item.topic}`);
-    creatives.append(card);
+    const copy = create('div', 'asset-card__copy');
+    appendText(copy, 'span', 'eyebrow', `DAY ${item.day} · ${item.content_pillar}`);
+    appendText(copy, 'h3', '', item.hook);
+    appendText(copy, 'p', '', item.content_idea);
+    appendText(copy, 'small', 'metric-tag', item.primary_kpi);
+    card.append(copy); $('#post-gallery').append(card);
   });
-
-  const videos = document.querySelector('#video-gallery');
-  data.plan.filter((item) => item.format === 'video').forEach((item) => {
+  const briefs = new Map((briefData.briefs || []).map((brief) => [brief.day, brief]));
+  plan.filter((item) => item.format === 'video').forEach((item) => {
+    const card = create('article', 'video-card');
+    const video = create('video', 'video-card__media');
+    video.controls = true; video.muted = true; video.playsInline = true; video.preload = 'metadata';
     const stem = item.asset_filename.replace(/\.mp4$/, '');
-    const card = el('article', 'video-card');
-    const video = el('video');
-    video.controls = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'metadata';
-    video.poster = `../assets/video_frames/${stem}_preview.png`;
-    const source = el('source');
-    source.src = `../assets/videos/${item.asset_filename}`;
-    source.type = 'video/mp4';
-    video.append(source);
-    card.append(video);
-    const copy = el('div');
-    addText(copy, 'div', 'eyebrow lime', `DAY ${item.day} • VIDEO`);
-    addText(copy, 'h3', '', item.hook);
-    addText(copy, 'p', '', item.full_proposed_caption);
-    addText(copy, 'span', 'badge dark-badge', item.reasoned_target_range);
-    card.append(copy);
-    videos.append(card);
+    video.poster = `${assets}/video_frames/${stem}_preview.png`;
+    const source = create('source'); source.src = `${assets}/videos/${item.asset_filename}`; source.type = 'video/mp4'; video.append(source); card.append(video);
+    const copy = create('div', 'video-card__copy');
+    appendText(copy, 'span', 'eyebrow eyebrow--lime', `DAY ${item.day} · VIDEO`);
+    appendText(copy, 'h3', '', item.hook);
+    appendText(copy, 'p', '', item.full_proposed_caption);
+    appendText(copy, 'small', 'metric-tag metric-tag--dark', item.reasoned_target_range);
+    const brief = briefs.get(item.day);
+    if (brief) {
+      const rationale = create('details', 'storyboard');
+      const summary = create('summary', '', 'Why the video matches the caption'); rationale.append(summary);
+      appendText(rationale, 'p', '', brief.creative_director_decision.why);
+      const beats = create('ol', 'storyboard__beats');
+      brief.beats.forEach((beat) => appendText(beats, 'li', '', `${beat.step}: “${beat.caption_evidence}” — ${beat.takeaway}`));
+      rationale.append(beats); copy.append(rationale);
+    }
+    card.append(copy); $('#video-gallery').append(card);
+  });
+  const tabs = [...document.querySelectorAll('.tab')];
+  tabs.forEach((tab) => tab.addEventListener('click', () => {
+    const showVideos = tab.id === 'video-tab';
+    tabs.forEach((item) => { const active = item === tab; item.classList.toggle('is-active', active); item.setAttribute('aria-selected', String(active)); });
+    $('#post-panel').hidden = showVideos; $('#video-panel').hidden = !showVideos;
+  }));
+}
+
+function renderPerformance(manifest) {
+  const { observed_metrics: metrics, charts, summaries } = manifest.performance;
+  metrics.forEach((item) => {
+    const card = create('article', 'metric-card'); appendText(card, 'span', '', item.metric); appendText(card, 'strong', '', item.display); appendText(card, 'small', '', `n=${item.n} · ${item.source}`); $('#observed-metrics').append(card);
+  });
+  charts.forEach((chart) => {
+    const figure = create('figure', 'chart-card'); const image = create('img'); image.src = chart.src; image.alt = chart.alt; image.loading = 'lazy'; figure.append(image); appendText(figure, 'figcaption', '', chart.caption); $('#chart-gallery').append(figure);
+  });
+  [['Format performance', summaries.format, 'format'], ['Pillar performance', summaries.pillar, 'pillar']].forEach(([title, rows, key]) => {
+    const panel = create('article', 'summary-card'); appendText(panel, 'h3', '', title);
+    const scroll = create('div', 'table-scroll'); const table = create('table'); const head = create('thead'); const headRow = create('tr'); ['Group', 'n', 'Median ER', 'Q1–Q3', 'Mean ER', 'Confidence'].forEach((label) => appendText(headRow, 'th', '', label)); head.append(headRow); table.append(head);
+    const body = create('tbody'); rows.forEach((row) => { const tr = create('tr'); [row[key], row.n, `${row.median.toFixed(3)}%`, `${row.q1.toFixed(3)}–${row.q3.toFixed(3)}%`, `${row.mean.toFixed(3)}%`, row.sample_note].forEach((value) => appendText(tr, 'td', '', String(value))); body.append(tr); }); table.append(body); scroll.append(table); panel.append(scroll); $('#summary-tables').append(panel);
   });
 }
 
-function renderComparison(data) {
-  document.querySelector('#after-note').textContent = data.data_lineage.after_note;
-  const grid = document.querySelector('#comparison-grid');
-  data.before_after.forEach((item) => {
-    const card = el('article', 'comparison-card');
-    addText(card, 'small', '', item.dimension);
-    addText(card, 'span', 'value-kind observed', item.before_kind.toUpperCase());
-    addText(card, 'h3', '', item.before);
-    addText(card, 'div', 'source-note', item.before_source);
-    addText(card, 'div', 'arrow', '↓');
-    addText(card, 'span', 'value-kind planned', item.after_kind.toUpperCase());
-    addText(card, 'b', '', item.after);
-    addText(card, 'div', 'source-note', item.after_source);
-    grid.append(card);
+function renderStrategy(manifest) {
+  const { diagnosis, strategy, before_after: comparison } = manifest.strategy;
+  appendText($('#diagnosis-card'), 'span', 'eyebrow eyebrow--lime', 'FAILURE DIAGNOSIS'); appendText($('#diagnosis-card'), 'h3', '', diagnosis.selected_diagnosis); appendText($('#diagnosis-card'), 'p', '', diagnosis.outlier_caveat);
+  strategy.evidence_linked_changes.forEach((change) => {
+    const card = create('article', 'strategy-card'); appendText(card, 'span', 'evidence-id', change.evidence); appendText(card, 'h3', '', change.strategy_change); appendText(card, 'p', '', change.finding); appendText(card, 'small', '', `Success measure: ${change.success_metric}`); appendText(card, 'small', 'source-note', change.confidence_or_limitation); $('#strategy-grid').append(card);
   });
+  $('#after-note').textContent = manifest.overview.lineage.after_note;
+  comparison.forEach((item) => { const card = create('article', 'comparison-card'); appendText(card, 'span', '', item.dimension); appendText(card, 'small', 'value-kind', item.before_kind.toUpperCase()); appendText(card, 'strong', '', item.before); appendText(card, 'small', 'source-note', item.before_source); appendText(card, 'i', '', '↓'); appendText(card, 'small', 'value-kind', item.after_kind.toUpperCase()); appendText(card, 'b', '', item.after); appendText(card, 'small', 'source-note', item.after_source); $('#comparison-grid').append(card); });
 }
 
-function render(data) {
-  document.querySelector('#run-status').textContent = data.run.status.toUpperCase();
-  document.querySelector('#provider').textContent = data.run.provider;
-  document.querySelector('#validation-status').textContent = data.validation.status;
-  document.querySelector('#lineage-note').textContent = `Source: ${data.data_lineage.raw_source} · ${data.data_lineage.observed_rows} observed rows · calculated by run ${data.data_lineage.calculation_run_id}. Original provenance remains unspecified.`;
-  renderKpis(data);
-  renderAudit(data);
-  renderMetrics(data);
-  renderPerformance(data);
-  document.querySelector('#diagnosis-text').textContent = data.diagnosis.selected_diagnosis;
-  document.querySelector('#diagnosis-caveat').textContent = data.diagnosis.outlier_caveat;
-  renderStrategyAndPlan(data);
-  renderAssets(data);
-  renderComparison(data);
-  const trace = document.querySelector('#trace');
-  data.trace.slice(-11).forEach((entry) => {
-    const row = el('div', 'trace-row');
-    addText(row, 'b', '', entry.agent);
-    addText(row, 'span', '', entry.decision_summary);
-    addText(row, 'span', '', entry.status);
-    trace.append(row);
-  });
-  document.querySelector('#validation-score').textContent = `${data.validation.passed}/${data.validation.passed + data.validation.failed}`;
-  document.querySelector('#validation-heading').textContent = data.validation.status === 'PASS' ? 'Production gate passed.' : 'Repair gate active.';
+function renderWorkflow(manifest) {
+  manifest.workflow.trace.forEach((entry) => { const row = create('article', 'trace-row'); appendText(row, 'strong', '', entry.agent); appendText(row, 'p', '', entry.decision_summary); appendText(row, 'span', `trace-status trace-status--${String(entry.status).toLowerCase()}`, entry.status); $('#trace-list').append(row); });
 }
 
-loadData().then(render).catch((error) => {
-  document.querySelector('#validation-heading').textContent = error.message;
-  console.error(error);
-});
+function renderValidation(manifest) {
+  const validation = manifest.validation; $('#validation-title').textContent = validation.status === 'PASS' ? 'Production gate passed.' : 'Repair gate active.'; $('#validation-score').innerHTML = `<strong>${validation.passed}/${validation.passed + validation.failed}</strong><span>checks passed</span>`;
+}
 
-const sections = [...document.querySelectorAll('main section[id]')];
-const links = [...document.querySelectorAll('#nav a')];
-const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-  if (entry.isIntersecting) {
-    links.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
-  }
-}), { rootMargin: '-20% 0px -65% 0px' });
-sections.forEach((section) => observer.observe(section));
+function activateNavigation() {
+  const links = [...document.querySelectorAll('.navigation-link')];
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) links.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`)); }), { rootMargin: '-20% 0px -65% 0px' });
+  document.querySelectorAll('.view[id]').forEach((section) => observer.observe(section));
+}
+
+loadManifest().then((manifest) => { renderNavigation(manifest); renderOverview(manifest); renderContent(manifest); renderPerformance(manifest); renderStrategy(manifest); renderWorkflow(manifest); renderValidation(manifest); activateNavigation(); $('#app-status').remove(); }).catch((error) => { $('#app-status').textContent = error.message; $('#app-status').classList.add('app-status--error'); console.error(error); });

@@ -332,6 +332,41 @@ def build_app_data(
         "before_after": before_after, "trace": trace,
     }
     write_json(root / "app/data/dashboard.json", payload)
+    video_briefs_path = root / "analysis/video_generation_briefs.json"
+    video_briefs = {"schema_version": "unavailable", "generated_by": [], "briefs": []}
+    if video_briefs_path.exists():
+        video_briefs = json.loads(video_briefs_path.read_text(encoding="utf-8"))
+    manifest = {
+        "schema_version": "1.0",
+        "generated_by": "insta_strategy_lab.reporting.builder.build_app_data",
+        "run": payload["run"],
+        "navigation": [
+            {"id": "overview", "label": "Overview"},
+            {"id": "content", "label": "Content Studio"},
+            {"id": "performance", "label": "Performance"},
+            {"id": "strategy", "label": "Strategy"},
+            {"id": "workflow", "label": "Workflow"},
+            {"id": "validation", "label": "Validation"},
+        ],
+        "overview": {"kpis": overview_kpis, "lineage": payload["data_lineage"], "audit": results["audit"]},
+        "performance": {"observed_metrics": observed_metrics, "summaries": payload["summaries"], "charts": [
+            {"src": "../analysis/charts/format_comparison.png", "alt": "Format comparison calculated from the supplied CSV", "caption": "Median, not just mean."},
+            {"src": "../analysis/charts/pillar_comparison.png", "alt": "Pillar comparison calculated from the supplied CSV", "caption": "Education is directionally more saveable."},
+            {"src": "../analysis/charts/timing_heatmap.png", "alt": "Timing heatmap calculated from the supplied CSV", "caption": "Timing cells remain exploratory."},
+            {"src": "../analysis/charts/video_retention.png", "alt": "Video retention proxy calculated from observed video records", "caption": "Retention proxy across video records."},
+        ]},
+        "strategy": {"diagnosis": diagnosis, "strategy": strategy, "before_after": before_after},
+        "content_studio": {
+            "plan": payload["plan"],
+            "plan_counts": {"post": sum(item.format == "post" for item in plan), "video": sum(item.format == "video" for item in plan)},
+            "video_briefs": video_briefs,
+            "asset_root": "../assets",
+        },
+        "workflow": {"trace": trace[-24:], "trace_source": "logs/execution_trace.jsonl"},
+        "validation": validation,
+        "contract": {"metric_contract": "data/processed/metric_contract.json", "formulas_visible_in_ui": False},
+    }
+    write_json(root / "app/data/platform_manifest.json", manifest)
 
 
 def report_markdown(

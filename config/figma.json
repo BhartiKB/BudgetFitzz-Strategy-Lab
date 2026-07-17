@@ -1,0 +1,18 @@
+{
+  "file_name": "BudgetFitzz — Instagram Strategy Intelligence Platform",
+  "file_key": "OpToKLJOVVl9GVwSwmtDnT",
+  "url": "https://www.figma.com/design/OpToKLJOVVl9GVwSwmtDnT",
+  "design_system": {
+    "font_display": "Manrope",
+    "font_body": "Inter",
+    "token_prefix": "--bf-",
+    "collections": ["BudgetFitzz / Primitive", "BudgetFitzz / Semantic", "BudgetFitzz / Layout"],
+    "component_inventory": ["Button", "Navigation item", "KPI card", "Metric card", "Status chip", "Asset card", "Workflow trace row", "Validation score"]
+  },
+  "synchronization": {
+    "frontend_source": "app/styles.css",
+    "manifest_source": "app/data/platform_manifest.json",
+    "mode": "documented-manual",
+    "external_mutation_status": "pending_user_confirmation"
+  }
+}

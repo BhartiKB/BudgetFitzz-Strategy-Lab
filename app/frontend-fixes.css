@@ -1,0 +1,3 @@
+/* Post-audit containment rules: allow dense tables and compact navigation to scroll within their own regions. */
+.summary-tables,.summary-card{min-width:0}.table-scroll{max-width:100%;overflow:auto}
+@media(max-width:1180px){.sidebar{overflow:hidden}.navigation{min-width:0}}

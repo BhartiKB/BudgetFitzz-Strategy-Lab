@@ -1,6 +1,6 @@
 # Architecture
 
-Run ID: `budgetfitzz-20260717T110713Z`
+Run ID: `budgetfitzz-20260717T115645Z`
 
 The state machine in `orchestration/workflow.py` invokes eleven named agent roles: DataAudit, Metrics, PerformanceAnalyst, FailureDiagnosis, Strategy, ContentPlanner, CreativeDirector, AssetGeneration, QualityAssurance, Packaging, and Orchestrator. Pydantic models validate plan, evidence, spend, and trace boundaries. SQLite stores runs, agent state, checkpoints, spend, and trace summaries; JSONL retains append-only audit entries.
 

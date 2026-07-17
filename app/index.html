@@ -3,55 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BudgetFitzz Strategy Lab</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="responsive.css">
+  <meta name="theme-color" content="#12231a">
+  <title>BudgetFitzz — Strategy Intelligence</title>
+  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="responsive.css?v=10">
+  <link rel="stylesheet" href="frontend-fixes.css?v=10">
 </head>
 <body>
-  <aside class="rail">
-    <a class="brand" href="#overview">budgetfitzz<span>lab</span></a>
-    <nav id="nav">
-      <a href="#overview">Overview</a><a href="#quality">Data quality</a><a href="#metrics">Metrics</a>
-      <a href="#performance">Performance</a><a href="#diagnosis">Diagnosis</a><a href="#strategy">Strategy</a>
-      <a href="#plan">7-day plan</a><a href="#creatives">Creatives</a><a href="#videos">Videos</a>
-      <a href="#comparison">Before / after</a><a href="#agents">Agent trace</a><a href="#validation">Validation</a>
-    </nav>
-    <div class="rail-footer"><span class="pulse"></span> offline • ₹0 paid spend</div>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <aside class="sidebar" aria-label="Primary navigation">
+    <a class="brand" href="#overview" aria-label="BudgetFitzz home">budgetfitzz<span>lab</span></a>
+    <p class="brand-context">Strategy intelligence</p>
+    <nav id="nav" class="navigation" aria-label="Platform views"></nav>
+    <div class="sidebar-status"><span class="pulse" aria-hidden="true"></span><span>Offline workspace</span><strong>₹0 paid spend</strong></div>
   </aside>
-
-  <main>
-    <section id="overview" class="hero">
-      <div class="eyebrow">PERFORMANCE ANALYSIS • STRATEGY REVISION</div>
-      <h1>From repetitive promotion<br>to <em>useful momentum.</em></h1>
-      <p>Evidence-linked analysis, a measured seven-day pilot, and seven finished local assets for BudgetFitzz.</p>
-      <div class="hero-actions"><a class="button primary" href="/final_report.pdf">Open final report</a><a class="button" href="/submission-package.zip">Submission ZIP</a></div>
-      <div class="status-strip"><span>Run status <b id="run-status">READY</b></span><span>Provider <b id="provider">LOCAL</b></span><span>Paid generation <b>₹0</b></span><span>Validation <b id="validation-status">PASS</b></span></div>
+  <main id="main-content" tabindex="-1">
+    <section id="overview" class="view view--overview" aria-labelledby="overview-title">
+      <div class="view-topline"><span class="eyebrow">PERFORMANCE ANALYSIS · STRATEGY REVISION</span><span id="run-chip" class="status-chip">Loading run</span></div>
+      <div class="hero-copy"><p class="hero-kicker">Budget-first menswear</p><h1 id="overview-title">Turn evidence into<br><em>useful momentum.</em></h1><p class="lede">One local platform for the audit, the creative logic, the seven-day pilot, and the checks that keep claims honest.</p></div>
+      <div class="hero-actions"><a class="button button--primary" href="/final_report.pdf">Open final report</a><a class="button button--secondary" href="/submission-package.zip">Download submission</a></div>
+      <div id="overview-kpis" class="kpi-grid" aria-label="Observed baseline metrics"></div>
+      <aside id="lineage-callout" class="lineage-callout" aria-label="Data lineage"></aside>
     </section>
 
-    <section class="section"><div class="section-head"><div><div class="eyebrow">EXECUTIVE OVERVIEW</div><h2>What the baseline actually says</h2></div><span class="badge">Calculated from CSV</span></div><div class="kpi-grid" id="kpis"></div><div class="note" id="lineage-note"></div></section>
+    <section id="content" class="view view--content" aria-labelledby="content-title">
+      <div class="section-heading"><div><span class="eyebrow">CONTENT STUDIO</span><h2 id="content-title">Make the content logic visible.</h2></div><p id="plan-summary" class="section-summary"></p></div>
+      <div class="studio-tabs" role="tablist" aria-label="Content formats"><button class="tab is-active" role="tab" aria-selected="true" aria-controls="post-panel" id="post-tab">Posts</button><button class="tab" role="tab" aria-selected="false" aria-controls="video-panel" id="video-tab">Videos</button></div>
+      <div id="post-panel" class="tab-panel" role="tabpanel" aria-labelledby="post-tab"><div id="post-gallery" class="asset-gallery"></div></div>
+      <div id="video-panel" class="tab-panel" role="tabpanel" aria-labelledby="video-tab" hidden><div id="video-gallery" class="video-gallery"></div></div>
+    </section>
 
-    <section id="quality" class="section"><div class="section-head"><div><div class="eyebrow">DATA QUALITY</div><h2>Trust the result by seeing the limits</h2></div><span class="badge neutral" id="quality-record-count"></span></div><div class="two-col"><div class="panel"><h3>Calculated audit</h3><div id="audit-list" class="stat-list"></div><div class="source-note" id="audit-source"></div></div><div class="panel image-panel"><img src="../analysis/charts/missing_values.png" alt="Missing value profile calculated from the supplied CSV"></div></div></section>
+    <section id="performance" class="view view--performance" aria-labelledby="performance-title">
+      <div class="section-heading"><div><span class="eyebrow eyebrow--lime">PERFORMANCE</span><h2 id="performance-title">Read the baseline without flattening its limits.</h2></div><span class="status-chip status-chip--dark">Observed values</span></div>
+      <div id="observed-metrics" class="metric-grid" aria-label="Observed calculated metrics"></div>
+      <div id="chart-gallery" class="chart-gallery"></div>
+      <div id="summary-tables" class="summary-tables"></div>
+    </section>
 
-    <section id="metrics" class="section dark"><div class="section-head"><div><div class="eyebrow lime">METRICS</div><h2>Observed calculations from the supplied dataset.</h2></div><span class="badge dark-badge">Derived, not typed</span></div><h3 class="subhead">Calculated observations</h3><div id="observed-metric-grid" class="observed-metric-grid"></div><div class="method-note">Static-post video fields stay structurally unavailable. Views are plays, not unique people. Groups n&lt;3 are anecdotal; n=3–4 directional; n≥5 cautious.</div></section>
+    <section id="strategy" class="view view--strategy" aria-labelledby="strategy-title">
+      <div class="section-heading"><div><span class="eyebrow">STRATEGY</span><h2 id="strategy-title">A revision with evidence attached.</h2></div><span class="status-chip">Plan, not results</span></div>
+      <div id="diagnosis-card" class="diagnosis-card"></div>
+      <div id="strategy-grid" class="strategy-grid"></div>
+      <div class="comparison-wrap"><div><span class="eyebrow">BEFORE / PILOT DESIGN</span><h3>Observed values vs proposed pilot.</h3></div><p id="after-note" class="section-summary"></p></div>
+      <div id="comparison-grid" class="comparison-grid"></div>
+    </section>
 
-    <section id="performance" class="section"><div class="section-head"><div><div class="eyebrow">PERFORMANCE</div><h2>Means tell the wrong video story</h2></div><span class="badge">CSV-derived summaries</span></div><div class="chart-grid"><figure><img src="../analysis/charts/format_comparison.png" alt="Format comparison"><figcaption>Median, not just mean.</figcaption></figure><figure><img src="../analysis/charts/pillar_comparison.png" alt="Pillar comparison"><figcaption>Education is directionally more saveable.</figcaption></figure><figure><img src="../analysis/charts/timing_heatmap.png" alt="Timing heatmap"><figcaption>Timing cells remain exploratory.</figcaption></figure><figure><img src="../analysis/charts/video_retention.png" alt="Video retention"><figcaption>Retention proxy across video records.</figcaption></figure></div><div id="performance-tables" class="performance-tables"></div></section>
+    <section id="workflow" class="view view--workflow" aria-labelledby="workflow-title">
+      <div class="section-heading"><div><span class="eyebrow eyebrow--lime">WORKFLOW</span><h2 id="workflow-title">Why this content exists.</h2></div><span class="status-chip status-chip--dark">Agent trace</span></div>
+      <div class="workflow-rail" aria-label="Workflow stages"><span>Raw inputs</span><i aria-hidden="true">→</i><span>Audit</span><i aria-hidden="true">→</i><span>Diagnosis</span><i aria-hidden="true">→</i><span>Plan</span><i aria-hidden="true">→</i><span>Creative direction</span><i aria-hidden="true">→</i><span>Validation</span></div>
+      <div id="trace-list" class="trace-list" aria-live="polite"></div>
+    </section>
 
-    <section id="diagnosis" class="section split-highlight"><div><div class="eyebrow">FAILURE DIAGNOSIS</div><h2>Not “promotion is bad.”<br><em>Imbalance is the failure.</em></h2></div><div class="diagnosis-card"><div class="quote" id="diagnosis-text"></div><div class="caveat" id="diagnosis-caveat"></div></div></section>
-
-    <section id="strategy" class="section"><div class="section-head"><div><div class="eyebrow">REVISED STRATEGY</div><h2>Every change carries an evidence ID</h2></div><span class="badge target">Forward targets</span></div><div class="mix-bar" id="strategy-mix"></div><div id="strategy-cards" class="strategy-grid"></div></section>
-
-    <section id="plan" class="section"><div class="section-head"><div><div class="eyebrow">SEVEN-DAY PILOT</div><h2 id="plan-count-heading"></h2></div><span class="badge">Calculated from plan</span></div><div class="plan-scroller"><div id="plan-cards" class="plan-row"></div></div></section>
-
-    <section id="creatives" class="section"><div class="section-head"><div><div class="eyebrow">STATIC CREATIVES</div><h2>Five finished 4:5 assets</h2></div><span class="badge neutral">1080 × 1350 PNG</span></div><div id="creative-gallery" class="creative-grid"></div></section>
-
-    <section id="videos" class="section dark"><div class="section-head"><div><div class="eyebrow lime">SHORT VIDEOS</div><h2>First-second hooks. Real motion. NVENC.</h2></div><span class="badge dark-badge">1080 × 1920 H.264</span></div><div id="video-gallery" class="video-grid"></div></section>
-
-    <section id="comparison" class="section"><div class="section-head"><div><div class="eyebrow">BEFORE / PILOT DESIGN</div><h2>Observed values vs calculated plan counts</h2></div><span class="badge target">No after results yet</span></div><div class="note" id="after-note"></div><div id="comparison-grid" class="comparison-grid"></div></section>
-
-    <section id="agents" class="section"><div class="section-head"><div><div class="eyebrow">AGENTIC WORKFLOW</div><h2>State, retries, evidence, repair</h2></div><span class="badge">SQLite + JSONL</span></div><div class="flow"><div>Raw inputs</div><span>→</span><div>Audit + metrics</div><span>→</span><div>Diagnosis</div><span>→</span><div>Strategy + plan</div><span>→</span><div>Assets + QA</div><span>→</span><div>Package</div></div><div id="trace" class="trace"></div></section>
-
-    <section id="validation" class="section validation-section"><div><div class="eyebrow">FINAL VALIDATION</div><h2 id="validation-heading">Production gate passed.</h2><p>Dimensions, codecs, plan counts, spend, traceability, paths, PDF, demo, and package integrity are checked automatically.</p></div><div class="validation-score"><strong id="validation-score">—</strong><span>checks passed</span></div></section>
+    <section id="validation" class="view view--validation" aria-labelledby="validation-title">
+      <div><span class="eyebrow eyebrow--lime">FINAL VALIDATION</span><h2 id="validation-title">Production gate loading.</h2><p>Dimensions, codecs, plan counts, spend, provenance, PDF, demo, and package integrity are checked before export.</p></div>
+      <div id="validation-score" class="validation-score" aria-label="Validation check score"></div>
+    </section>
   </main>
-  <script src="app.js"></script>
+  <div id="app-status" class="app-status" role="status" aria-live="polite">Loading generated platform data…</div>
+  <script src="app.js?v=10"></script>
 </body>
 </html>

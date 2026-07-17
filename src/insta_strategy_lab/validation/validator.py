@@ -201,6 +201,21 @@ def validate_project(root: Path, final: bool = False) -> dict[str, Any]:
 
     app_files = [root / "app/server.py", root / "app/index.html", root / "app/app.js", root / "app/styles.css"]
     checks.append(check("Application source complete", all(path.exists() and path.stat().st_size > 0 for path in app_files), ", ".join(p.name for p in app_files)))
+    platform_manifest = root / "app/data/platform_manifest.json"
+    platform_manifest_ok = False
+    if platform_manifest.exists():
+        try:
+            platform = json.loads(platform_manifest.read_text(encoding="utf-8"))
+            plan_counts = platform["content_studio"]["plan_counts"]
+            platform_manifest_ok = (
+                platform.get("generated_by") == "insta_strategy_lab.reporting.builder.build_app_data"
+                and plan_counts == {"post": 5, "video": 2}
+                and len(platform["content_studio"]["video_briefs"]["briefs"]) == 2
+                and platform["contract"]["formulas_visible_in_ui"] is False
+            )
+        except (KeyError, TypeError, json.JSONDecodeError):
+            platform_manifest_ok = False
+    checks.append(check("Generated platform manifest is valid", platform_manifest_ok, str(platform_manifest)))
 
     if final:
         final_dir = root / "submission/final"
