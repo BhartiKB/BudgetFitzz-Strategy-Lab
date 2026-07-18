@@ -1415,6 +1415,66 @@
     },
     "total_retries": 0
   },
+  "architecture": {
+    "summary": "The analytical pipeline processes the historical content dataset and generates metrics, evidence, strategy, content plans, creative assets, traces, and validation results. The packaging stage organizes approved outputs through a platform manifest. The Python backend serves the application and exposes only approved files. Frontend JavaScript reads those outputs and renders the latest project state without manually duplicating analytical values in the interface.",
+    "flow": [
+      {
+        "id": "source-data",
+        "label": "Source Data",
+        "icon": "file",
+        "description": "User-provided historical evaluation dataset. Raw inputs remain immutable and checksums are retained."
+      },
+      {
+        "id": "analysis-agents",
+        "label": "Analysis and Agents",
+        "icon": "agents",
+        "description": "Audit, metrics, diagnosis, strategy, planning, asset generation, validation, and packaging."
+      },
+      {
+        "id": "generated-outputs",
+        "label": "Generated Outputs",
+        "icon": "chart",
+        "description": "Derived JSON and CSV, charts, five post images, two videos, traces, reports, and validation."
+      },
+      {
+        "id": "platform-manifest",
+        "label": "Platform Manifest",
+        "icon": "file",
+        "description": "A structured content index for current metrics, strategy, plan, assets, workflow, validation, and submission files."
+      },
+      {
+        "id": "python-backend",
+        "label": "Python Backend",
+        "icon": "strategy",
+        "description": "ThreadingHTTPServer serves the app and approved outputs through allowlisted routes and a health endpoint."
+      },
+      {
+        "id": "frontend-application",
+        "label": "Frontend Application",
+        "icon": "home",
+        "description": "HTML, CSS, and JavaScript fetch the generated manifest and render the current workspace."
+      }
+    ],
+    "technical_details": {
+      "manifest_path": "app/data/platform_manifest.json",
+      "backend_entry": "app/server.py",
+      "frontend_entry": "app/app.js",
+      "health_endpoint": "/api/status",
+      "health_response": {
+        "status": "ready",
+        "platform": "BudgetFitzz Strategy Lab",
+        "offline": true
+      },
+      "output_categories": [
+        "Metrics and evidence",
+        "Derived CSV and charts",
+        "Strategy and seven-day plan",
+        "Post images and video files",
+        "Execution traces and validation",
+        "Reports and submission files"
+      ]
+    }
+  },
   "validation": {
     "status": "PASS",
     "mode": "final",
@@ -1709,7 +1769,7 @@
         "href": "/submission/final/platform_walkthrough.mp4",
         "type": "MP4",
         "available": true,
-        "bytes": 4339546,
+        "bytes": 56702456,
         "size_note": null
       },
       {

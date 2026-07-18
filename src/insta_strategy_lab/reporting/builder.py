@@ -44,6 +44,48 @@ def md_table(headers: list[str], rows: list[list[Any]]) -> str:
     return "\n".join([head, rule, *body])
 
 
+def backend_frontend_connection_markdown() -> str:
+    """Describe only the backend-to-frontend behaviour implemented in this repository."""
+    return """# Backend-to-frontend connection
+
+## Verified architecture
+
+`User-provided dataset → analytical and agent workflow → generated outputs → platform manifest → Python server → frontend application`
+
+The raw CSV and DOCX remain immutable under `data/raw/`; their checksums are recorded in `docs/source_checksums.sha256`. The repository does not contain a verified Apify or Selenium collection implementation, so no collection method is claimed here.
+
+## 1. Analytical and agent workflow
+
+`scripts/run_pipeline.py` starts the Python workflow. Its agents audit the data, calculate derived metrics, analyse performance, form an evidence-linked diagnosis and strategy, create the seven-day plan, generate assets, validate the result, and package the approved files. The workflow writes JSON, CSV, charts, media, traces, validation reports, and other derived outputs into the project.
+
+## 2. Platform manifest
+
+`src/insta_strategy_lab/reporting/builder.py` builds `app/data/platform_manifest.json`. It is the structured content index for the interface: it carries navigation, observed KPIs, strategy, plan items, asset references, workflow trace entries, validation, submission-file metadata, and the architecture description. This keeps calculated values out of browser source code and avoids manually duplicating dashboard data.
+
+## 3. Python backend
+
+`app/server.py` starts a `ThreadingHTTPServer`. `/` redirects to `/app/index.html`; `/app/` serves the frontend tree; `/analysis/charts/` and `/assets/` expose approved visual outputs; selected report, submission, and validation routes expose final deliverables. The handler rejects traversal attempts and returns 404 for paths outside this allowlist, so source files, `.env`, raw data, and unapproved files are not public.
+
+`/api/status` returns a small readiness JSON response: `{"status": "ready", "platform": "BudgetFitzz Strategy Lab", "offline": true}`. It is used as the Render health check; the browser interface does not depend on it for analytical content.
+
+## 4. Frontend application
+
+`app/index.html` loads the page shell, styles, and `app/app.js`. `loadManifest()` in `app/app.js` fetches `data/platform_manifest.json` with `cache: "no-store"`, checks the required sections, and then renders the Home, Insights, Diagnosis, Strategy, Content Plan, Studio, Agents, Validation, and Submission views. Charts, post images, videos, PDFs, and submission links are loaded through public URLs referenced by the manifest rather than by copying their values into JavaScript.
+
+## 5. Deployment and synchronization
+
+`render.yaml` starts the same `app/server.py` entry point on `0.0.0.0:$PORT` and checks `/api/status`, so the deployed Render service uses the same server and frontend architecture as local use. Re-running the workflow or finalizer rebuilds the authoritative manifest from the current project outputs; refreshing the application then renders that current structured state.
+
+## Public paths shown in the explainer
+
+- Manifest: `app/data/platform_manifest.json`
+- Backend entry point: `app/server.py`
+- Frontend data-loading entry point: `app/app.js`
+- Health endpoint: `/api/status`
+- Output categories: metrics and evidence, derived CSV and charts, strategy and plan, post images and videos, traces and validation, reports and submission files
+"""
+
+
 def build_documentation(
     root: Path, results: dict[str, Any], diagnosis: dict[str, Any], strategy: dict[str, Any],
     plan: list[PlanItem], hardware: dict[str, Any], provider: dict[str, Any], run_id: str,
@@ -59,6 +101,8 @@ def build_documentation(
     readme = f"""# Insta Strategy Lab - BudgetFitzz
 
 Production-quality offline platform for Intern Task 2: Performance Analysis and Strategy Revision.
+
+**Live website:** [budgetfitzz-strategy-lab.onrender.com](https://budgetfitzz-strategy-lab.onrender.com)
 
 ## Verified outcome
 
@@ -108,11 +152,14 @@ Credentials may be stored only in the ignored `.env` file. User-confirmed Huggin
 
 Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Days 2 and 5 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
+The frontend reads the generated `app/data/platform_manifest.json` rather than duplicating analytical values in browser code. `app/server.py` serves only approved application, asset, chart, report, validation, and package routes. See [backend-to-frontend connection](docs/backend_frontend_connection.md) for the verified request and data flow.
+
 ## Important interpretation
 
 Future ranges are targets and hypotheses, not achieved post-publication results. Video views are plays, not unique people. The extreme video outlier is preserved and robust summaries are reported separately.
 """
     (root / "README.md").write_text(readme, encoding="utf-8")
+    (root / "docs/backend_frontend_connection.md").write_text(backend_frontend_connection_markdown(), encoding="utf-8")
 
     (root / "AGENTS.md").write_text("""# Repository operating guide
 
@@ -432,6 +479,32 @@ def build_app_data(
             "bytes": None if self_referential_archive else (path.stat().st_size if path.is_file() else 0),
             "size_note": "Final size verified by package validator" if self_referential_archive else None,
         })
+    architecture = {
+        "summary": "The analytical pipeline processes the historical content dataset and generates metrics, evidence, strategy, content plans, creative assets, traces, and validation results. The packaging stage organizes approved outputs through a platform manifest. The Python backend serves the application and exposes only approved files. Frontend JavaScript reads those outputs and renders the latest project state without manually duplicating analytical values in the interface.",
+        "flow": [
+            {"id": "source-data", "label": "Source Data", "icon": "file", "description": "User-provided historical evaluation dataset. Raw inputs remain immutable and checksums are retained."},
+            {"id": "analysis-agents", "label": "Analysis and Agents", "icon": "agents", "description": "Audit, metrics, diagnosis, strategy, planning, asset generation, validation, and packaging."},
+            {"id": "generated-outputs", "label": "Generated Outputs", "icon": "chart", "description": "Derived JSON and CSV, charts, five post images, two videos, traces, reports, and validation."},
+            {"id": "platform-manifest", "label": "Platform Manifest", "icon": "file", "description": "A structured content index for current metrics, strategy, plan, assets, workflow, validation, and submission files."},
+            {"id": "python-backend", "label": "Python Backend", "icon": "strategy", "description": "ThreadingHTTPServer serves the app and approved outputs through allowlisted routes and a health endpoint."},
+            {"id": "frontend-application", "label": "Frontend Application", "icon": "home", "description": "HTML, CSS, and JavaScript fetch the generated manifest and render the current workspace."},
+        ],
+        "technical_details": {
+            "manifest_path": "app/data/platform_manifest.json",
+            "backend_entry": "app/server.py",
+            "frontend_entry": "app/app.js",
+            "health_endpoint": "/api/status",
+            "health_response": {"status": "ready", "platform": "BudgetFitzz Strategy Lab", "offline": True},
+            "output_categories": [
+                "Metrics and evidence",
+                "Derived CSV and charts",
+                "Strategy and seven-day plan",
+                "Post images and video files",
+                "Execution traces and validation",
+                "Reports and submission files",
+            ],
+        },
+    }
     manifest = {
         "schema_version": "2.0",
         "generated_by": "insta_strategy_lab.reporting.builder.build_app_data",
@@ -468,6 +541,7 @@ def build_app_data(
             "retry_counts": retries.get("retry_counts", {}),
             "total_retries": retries.get("total_retries", 0),
         },
+        "architecture": architecture,
         "validation": validation,
         "operations": {
             "spend": spend,
@@ -524,7 +598,7 @@ def report_markdown(
         folder = "posts" if item.format == "post" else "video_frames"
         name = item.asset_filename if item.format == "post" else f"{Path(item.asset_filename).stem}_preview.png"
         lines += [f"### Day {item.day} {item.format}", "", f"![{item.hook}]({folder}/{name})", ""]
-    lines += ["## Before versus after", "", md_table(["Dimension", "Observed baseline", "Revised test design"], [[x["dimension"], x["before"], x["after"]] for x in before_after]), "", "## Target metrics", "", "All future ranges in the plan are targets or hypotheses. Primary next-cycle measures are engagement-rate change, save/share rates, qualified comment rate, average watch time, retention proxy, profile actions, link-request comments, pillar balance, and publishing consistency.", "", "## Agent architecture and workflow", "", "Eleven named agents operate through Pydantic boundaries and a persistent SQLite state machine. Deterministic analytical/rendering tools are separated from reasoning roles. Retries are bounded; human checkpoints are auto-approved only in the documented demo mode.", "", "## Error handling, memory and observability", "", "The workflow records state, outputs, evidence IDs, retries, concise decisions, errors, timings, spend, and checkpoints in SQLite and JSONL. It stores no hidden chain-of-thought.", "", "## GPU use", "", f"GPU: {hardware['gpu_name']} ({hardware['vram']}); encoder: {hardware['selected_video_encoder']}; meaningful NVENC use: {hardware['gpu_used_meaningfully']}.", "", "## Spend log", "", "Total paid revised-content generation spend: **INR 0**. Local tools and models are logged at INR 0. Development subscriptions are excluded because the cap concerns direct revised-content generation expenses.", "", "## Limitations", "", "Observational, imbalanced, provenance-unspecified data cannot establish causality. The community sample is anecdotal; video means are outlier-sensitive; timing cells are uneven; views are plays; retention is a proxy; and future targets are not achieved results.", "", "## Reproduction", "", "Run `setup.ps1`, `generate_submission.ps1`, and `validate_submission.ps1`, then launch with `run_app.ps1`.", "", "## Final validation", "", f"Status: **{validation['status']}** ({validation['passed']} checks passed; {validation['failed']} failed).", ""]
+    lines += ["## Before versus after", "", md_table(["Dimension", "Observed baseline", "Revised test design"], [[x["dimension"], x["before"], x["after"]] for x in before_after]), "", "## Target metrics", "", "All future ranges in the plan are targets or hypotheses. Primary next-cycle measures are engagement-rate change, save/share rates, qualified comment rate, average watch time, retention proxy, profile actions, link-request comments, pillar balance, and publishing consistency.", "", "## Agent architecture and workflow", "", "Eleven named agents operate through Pydantic boundaries and a persistent SQLite state machine. Deterministic analytical/rendering tools are separated from reasoning roles. Retries are bounded; human checkpoints are auto-approved only in the documented demo mode.", "", "## Backend-to-frontend connection", "", "The workflow generates current project outputs, then `build_app_data` creates `app/data/platform_manifest.json` as the frontend content index. `app/server.py` runs a ThreadingHTTPServer that serves the application and allowlisted public assets, charts, reports, validation, and package routes. `app/app.js` fetches the manifest with `cache: no-store` and renders the workspace from that structured source. `/api/status` provides the Render health response. The raw dataset is user-provided and no unverified data-collection method is claimed.", "", "## Error handling, memory and observability", "", "The workflow records state, outputs, evidence IDs, retries, concise decisions, errors, timings, spend, and checkpoints in SQLite and JSONL. It stores no hidden chain-of-thought.", "", "## GPU use", "", f"GPU: {hardware['gpu_name']} ({hardware['vram']}); encoder: {hardware['selected_video_encoder']}; meaningful NVENC use: {hardware['gpu_used_meaningfully']}.", "", "## Spend log", "", "Total paid revised-content generation spend: **INR 0**. Local tools and models are logged at INR 0. Development subscriptions are excluded because the cap concerns direct revised-content generation expenses.", "", "## Limitations", "", "Observational, imbalanced, provenance-unspecified data cannot establish causality. The community sample is anecdotal; video means are outlier-sensitive; timing cells are uneven; views are plays; retention is a proxy; and future targets are not achieved results.", "", "## Reproduction", "", "Run `setup.ps1`, `generate_submission.ps1`, and `validate_submission.ps1`, then launch with `run_app.ps1`.", "", "## Final validation", "", f"Status: **{validation['status']}** ({validation['passed']} checks passed; {validation['failed']} failed).", ""]
     return "\n".join(lines)
 
 

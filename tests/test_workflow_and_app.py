@@ -89,6 +89,21 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertFalse(manifest["contract"]["formulas_visible_in_ui"])
         self.assertEqual(manifest["overview"]["kpis"], dashboard["overview_kpis"])
 
+    def test_architecture_explainer_is_manifest_driven_and_safe(self):
+        manifest = json.loads((ROOT / "app/data/platform_manifest.json").read_text(encoding="utf-8"))
+        architecture = manifest["architecture"]
+        self.assertEqual([stage["label"] for stage in architecture["flow"]], [
+            "Source Data", "Analysis and Agents", "Generated Outputs", "Platform Manifest",
+            "Python Backend", "Frontend Application",
+        ])
+        details = architecture["technical_details"]
+        self.assertEqual(details["manifest_path"], "app/data/platform_manifest.json")
+        self.assertEqual(details["backend_entry"], "app/server.py")
+        self.assertEqual(details["frontend_entry"], "app/app.js")
+        self.assertEqual(details["health_endpoint"], "/api/status")
+        self.assertNotIn(".env", json.dumps(architecture))
+        self.assertNotIn("C:\\\\Users", json.dumps(architecture))
+
     def test_editorial_workspace_manifest_contract(self):
         manifest = json.loads((ROOT / "app/data/platform_manifest.json").read_text(encoding="utf-8"))
         expected_routes = [
@@ -114,6 +129,18 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertIn("--bf-canvas", tokens)
         self.assertIn("--bf-terracotta", tokens)
         self.assertIn("min-height: 44px", responsive)
+
+    def test_architecture_section_has_accessible_responsive_motion_support(self):
+        script = (ROOT / "app/app.js").read_text(encoding="utf-8")
+        styles = (ROOT / "app/styles.css").read_text(encoding="utf-8")
+        responsive = (ROOT / "app/responsive.css").read_text(encoding="utf-8")
+        self.assertIn("renderArchitectureExplainer", script)
+        self.assertIn("architecture-title", script)
+        self.assertIn("View technical details", script)
+        self.assertIn("architecture-flow", styles)
+        self.assertIn("focus-visible", styles)
+        self.assertIn("prefers-reduced-motion", styles)
+        self.assertIn("architecture-flow", responsive)
 
     def test_browser_code_does_not_embed_copied_kpi_values(self):
         script = (ROOT / "app/app.js").read_text(encoding="utf-8")

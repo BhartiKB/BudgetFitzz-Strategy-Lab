@@ -124,4 +124,8 @@ def assemble_deploy_bundle(root: Path, final_dir: Path, archive: Path) -> Path:
         if not source.is_file():
             raise FileNotFoundError(f"Required deployment artifact is missing: {source}")
         copy_file(source, destination)
+    copy_file(
+        final_dir / "platform_walkthrough.mp4",
+        deploy_dir / "budgetfitzz_platform_walkthrough_with_architecture.mp4",
+    )
     return deploy_dir

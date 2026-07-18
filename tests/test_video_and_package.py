@@ -87,6 +87,25 @@ class VideoPackageTests(unittest.TestCase):
         self.assertTrue(expected.issubset({path.name for path in deploy.iterdir()}))
         self.assertTrue(zipfile.is_zipfile(deploy / "insta_strategy_lab_task2_submission.zip"))
 
+    def test_architecture_walkthrough_is_h264_and_caption_validated_when_present(self):
+        path = ROOT / "submission/final/platform_walkthrough.mp4"
+        metadata = ROOT / "logs/architecture_walkthrough.json"
+        if not (path.exists() and metadata.exists()):
+            self.skipTest("Architecture walkthrough has not been composed yet")
+        probe_matches = list((ROOT / "tools/ffmpeg").glob("**/bin/ffprobe.exe"))
+        completed = subprocess.run([str(probe_matches[0]), "-v", "error", "-show_entries", "stream=codec_name,width,height,avg_frame_rate,pix_fmt:format=duration", "-of", "json", str(path)], capture_output=True, text=True, check=True)
+        payload = json.loads(completed.stdout)
+        video = payload["streams"][0]
+        self.assertEqual(video["codec_name"], "h264")
+        self.assertEqual(video["pix_fmt"], "yuv420p")
+        self.assertEqual((video["width"], video["height"]), (1890, 908))
+        self.assertGreater(float(payload["format"]["duration"]), 330)
+        update = json.loads(metadata.read_text(encoding="utf-8"))
+        self.assertEqual(update["architecture_segment_seconds"], 40)
+        self.assertIn("No audio stream", update["audio"])
+        for relative in update["validation_frames"]:
+            self.assertTrue((ROOT / relative).is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

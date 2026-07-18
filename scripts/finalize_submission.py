@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from insta_strategy_lab.providers import LocalProvider  # noqa: E402
 from insta_strategy_lab.reporting.builder import (  # noqa: E402
-    build_app_data, build_final_reports, load_qualitative_observations,
+    build_app_data, build_documentation, build_final_reports, load_qualitative_observations,
 )
 from insta_strategy_lab.reporting.packaging import (  # noqa: E402
     assemble_deploy_bundle, assemble_submission, create_zip, write_manifest,
@@ -40,6 +40,8 @@ def main() -> None:
         row = conn.execute("SELECT run_id FROM runs ORDER BY started_at DESC LIMIT 1").fetchone()
         run_id = row[0] if row else "finalized-run"
 
+    # Keep repository documentation aligned with the generated frontend manifest.
+    build_documentation(ROOT, results, diagnosis, strategy, plan, hardware, provider, run_id)
     # Refresh the extracted-package layout before the first final-mode gate.
     final_dir = assemble_submission(ROOT)
     validation = validate_project(ROOT, final=True)

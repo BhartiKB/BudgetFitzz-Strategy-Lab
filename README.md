@@ -52,6 +52,8 @@ Credentials may be stored only in the ignored `.env` file. User-confirmed Huggin
 
 Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Days 2 and 5 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
+The frontend reads the generated `app/data/platform_manifest.json` rather than duplicating analytical values in browser code. `app/server.py` serves only approved application, asset, chart, report, validation, and package routes. See [backend-to-frontend connection](docs/backend_frontend_connection.md) for the verified request and data flow.
+
 ## Important interpretation
 
 Future ranges are targets and hypotheses, not achieved post-publication results. Video views are plays, not unique people. The extreme video outlier is preserved and robust summaries are reported separately.
