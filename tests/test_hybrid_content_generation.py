@@ -79,6 +79,26 @@ class HybridContentGenerationTests(unittest.TestCase):
         self.assertEqual(payload["codec"], "h264")
         self.assertEqual((payload["width"], payload["height"]), (1080, 1920))
 
+    def test_approval_archives_previous_active_media(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir(); (root / "analysis").mkdir(); (root / "assets/videos").mkdir(parents=True); (root / "tools/ffmpeg/bin").mkdir(parents=True)
+            (root / "config/content_generation.yaml").write_text((ROOT / "config/content_generation.yaml").read_text(encoding="utf-8"), encoding="utf-8")
+            (root / "tools/ffmpeg/bin/ffmpeg.exe").write_bytes(b""); (root / "tools/ffmpeg/bin/ffprobe.exe").write_bytes(b"")
+            prompt = {"assets": [{"asset_id": "sample_video", "plan_day": 2, "asset_type": "video", "prompt_version": 1, "prompt_hash": "hash"}]}
+            (root / "analysis/content_generation_prompts.json").write_text(json.dumps(prompt), encoding="utf-8")
+            old = root / "assets/videos/sample_video.mp4"; old.write_bytes(b"old-approved-media")
+            candidate = root / "artifacts/processed_candidates/sample_video/v002.mp4"; candidate.parent.mkdir(parents=True); candidate.write_bytes(b"new-candidate-media")
+            (root / "analysis/media_versions.json").write_text(json.dumps({"assets": {"sample_video": {"active_version": "v001", "versions": [{"version": "v001", "status": "APPROVED", "candidate_output": "assets/videos/sample_video.mp4", "approval_history": []}, {"version": "v002", "status": "AWAITING_REVIEW", "candidate_output": "artifacts/processed_candidates/sample_video/v002.mp4", "approval_history": []}]}}}), encoding="utf-8")
+            (root / "analysis/generation_jobs.json").write_text(json.dumps({"jobs": [{"job_id": "job-2", "asset_id": "sample_video", "final_output": "artifacts/processed_candidates/sample_video/v002.mp4", "status": "AWAITING_REVIEW"}]}), encoding="utf-8")
+            result = ImportService(root).approve("job-2")
+            self.assertEqual(result["status"], "APPROVED")
+            self.assertEqual(old.read_bytes(), b"new-candidate-media")
+            self.assertEqual((root / "assets/versions/sample_video/v001.mp4").read_bytes(), b"old-approved-media")
+            versions = json.loads((root / "analysis/media_versions.json").read_text(encoding="utf-8"))
+            self.assertEqual(versions["assets"]["sample_video"]["active_version"], "v002")
+            self.assertEqual(versions["assets"]["sample_video"]["versions"][0]["status"], "SUPERSEDED")
+
     def test_import_security_rejects_wrong_signature_and_missing_permission(self):
         service = ImportService(ROOT)
         with self.assertRaises(ImportValidationError):
@@ -86,8 +106,8 @@ class HybridContentGenerationTests(unittest.TestCase):
 
     def test_existing_asset_versions_are_preserved_as_v001(self):
         versions = json.loads((ROOT / "analysis/media_versions.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(versions["assets"]), 7)
-        self.assertTrue(all(item["active_version"] == "v001" for item in versions["assets"].values()))
+        self.assertSetEqual(set(versions["assets"]), {"day01_capsule_formula", "day02_one_shirt_three_ways", "day03_colour_vote", "day04_budget_priority", "day05_fit_mistakes", "day06_sneaker_scorecard", "day07_wardrobe_audit"})
+        self.assertTrue(all(item["active_version"].startswith("v") for item in versions["assets"].values()))
 
     def test_frontend_exposes_prompt_export_and_import_controls(self):
         script = (ROOT / "app/app.js").read_text(encoding="utf-8")

@@ -193,12 +193,33 @@ class ImportService:
             raise ImportValidationError("Only an awaiting-review imported job can be approved")
         prompt = self._prompt_for(job["asset_id"])
         source = self.root / job["final_output"]
+        if not source.is_file():
+            raise ImportValidationError("The validated candidate is no longer available")
+        versions = self._load("analysis/media_versions.json", {"assets": {}})
+        item = versions["assets"][job["asset_id"]]
+        previous_active = item.get("active_version")
         destination = self.root / "assets" / ("videos" if prompt["asset_type"] == "video" else "posts") / f"{job['asset_id']}{'.mp4' if prompt['asset_type'] == 'video' else '.png'}"
         destination.parent.mkdir(parents=True, exist_ok=True)
+        # Preserve the currently active file before promoting a new version. The
+        # Studio can continue to reference the active path while older versions
+        # remain recoverable and visible in the version history.
+        previous_archive = None
+        if destination.is_file() and previous_active:
+            extension = ".mp4" if prompt["asset_type"] == "video" else ".png"
+            previous_archive = self.root / "assets/versions" / job["asset_id"] / f"{previous_active}{extension}"
+            previous_archive.parent.mkdir(parents=True, exist_ok=True)
+            if not previous_archive.exists():
+                shutil.copy2(destination, previous_archive)
+            for version in item.get("versions", []):
+                if version.get("version") == previous_active:
+                    version["status"] = "SUPERSEDED"
+                    version["preserved_output"] = previous_archive.relative_to(self.root).as_posix()
+                    version.setdefault("approval_history", []).append({"status": "superseded", "at": _now()})
         shutil.copy2(source, destination)
         job["status"] = "APPROVED"; job["approved_at"] = _now(); job["active_output"] = destination.relative_to(self.root).as_posix()
-        versions = self._load("analysis/media_versions.json", {"assets": {}})
-        item = versions["assets"][job["asset_id"]]; item["active_version"] = next(version["version"] for version in item["versions"] if version["candidate_output"] == job["final_output"])
+        approved_version = next(version for version in item["versions"] if version["candidate_output"] == job["final_output"])
+        item["active_version"] = approved_version["version"]
+        approved_version["active_output"] = job["active_output"]
         for version in item["versions"]:
             if version["candidate_output"] == job["final_output"]:
                 version["status"] = "APPROVED"; version["approval_history"].append({"status": "approved", "at": _now()})
