@@ -438,7 +438,23 @@ function importMediaPanel(plan, generation) {
 
 function generationHistoryPanel(generation) {
   const section = el('section', 'generation-history'); append(section, 'span', 'overline', 'ASSET VERSIONING & PROVENANCE'); append(section, 'h2', '', 'Approved media stays active until you approve a candidate.');
-  const versions = generation.versions || {}; const list = el('div', 'generation-history__list');
+  const versions = generation.versions || {}; const pendingJobs = (generation.jobs || []).filter((job) => job.status === 'AWAITING_REVIEW');
+  const notice = el('aside', 'generation-history__notice');
+  if (!pendingJobs.length) {
+    append(notice, 'strong', '', 'No imported candidate is awaiting approval.');
+    append(notice, 'p', '', 'Upload a file above and select “Validate and create candidate”. The approval action will then appear on the matching asset card below.');
+    const disabled = el('button', 'button button--secondary', 'Approve imported candidate'); disabled.type = 'button'; disabled.disabled = true; disabled.title = 'Available after a media candidate passes validation'; notice.append(disabled);
+  } else {
+    append(notice, 'strong', '', `${pendingJobs.length} candidate${pendingJobs.length === 1 ? '' : 's'} awaiting approval.`);
+    append(notice, 'p', '', 'Use the approval action on the matching asset card below to make the candidate active.');
+    if (pendingJobs.length === 1) {
+      const pending = pendingJobs[0]; const approveNow = el('button', 'button button--primary', `Approve ${pending.asset_id} now`); approveNow.type = 'button';
+      approveNow.addEventListener('click', async () => { approveNow.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message || 'Approval failed'); window.location.reload(); } catch (error) { approveNow.textContent = error.message; approveNow.disabled = false; } });
+      notice.append(approveNow);
+    }
+  }
+  section.append(notice);
+  const list = el('div', 'generation-history__list');
   Object.entries(versions).forEach(([asset, record]) => { const card = el('article', 'generation-history__card'); append(card, 'h3', '', asset); append(card, 'p', '', `Active version: ${record.active_version || 'None'} · ${record.versions?.length || 0} recorded version(s)`); const pending = (generation.jobs || []).find((job) => job.asset_id === asset && job.status === 'AWAITING_REVIEW'); if (pending) { const approve = el('button', 'button button--secondary', `Approve ${pending.job_id}`); approve.type = 'button'; approve.addEventListener('click', async () => { approve.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message || 'Approval failed'); window.location.reload(); } catch (error) { approve.textContent = error.message; approve.disabled = false; } }); card.append(approve); } list.append(card); }); section.append(list); return section;
 }
 
