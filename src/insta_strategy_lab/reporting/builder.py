@@ -20,6 +20,8 @@ from reportlab.platypus import (
 
 from insta_strategy_lab.schemas import PlanItem
 from insta_strategy_lab.utils.files import sha256, write_json
+from insta_strategy_lab.generation.prompts import generation_public_data
+from insta_strategy_lab.providers.registry import ProviderRegistry
 
 
 def load_qualitative_observations(root: Path) -> dict[str, Any]:
@@ -153,6 +155,10 @@ Credentials may be stored only in the ignored `.env` file. User-confirmed Huggin
 Eleven named agents operate through a lightweight state machine. Deterministic analytical tools own calculations; agents own decisions and evidence-linked handoffs. Final compositing is local; four static posts and Days 2 and 5 use audited HF promotional-credit sources. Day 7 retains the deterministic fallback. The source CSV/DOCX remain immutable.
 
 The frontend reads the generated `app/data/platform_manifest.json` rather than duplicating analytical values in browser code. `app/server.py` serves only approved application, asset, chart, report, validation, and package routes. See [backend-to-frontend connection](docs/backend_frontend_connection.md) for the verified request and data flow.
+
+## Hybrid content generation
+
+The Studio exposes caption-backed, versioned generation packages for the existing five posts and two videos. Google Flow / Veo is presented as the recommended **manual** provider path: users export the exact visible prompt and references, generate media in their own provider workspace, then import it for local validation, provenance capture, and explicit human approval. API modes remain disabled unless a verified credential, explicit paid-usage approval, and configured budget are all present. Existing Hugging Face and local fallback behaviour is preserved; no provider is shown as connected or tested without a real successful request. See [hybrid workflow](docs/hybrid_content_generation.md), [manual Veo workflow](docs/manual_veo_workflow.md), and [provider limitations](docs/provider_claims_and_limitations.md).
 
 ## Important interpretation
 
@@ -445,6 +451,8 @@ def build_app_data(
     video_briefs = {"schema_version": "unavailable", "generated_by": [], "briefs": []}
     if video_briefs_path.exists():
         video_briefs = json.loads(video_briefs_path.read_text(encoding="utf-8"))
+    generation = generation_public_data(root)
+    generation["provider_status"] = ProviderRegistry(root).public_status()
     hardware_path = root / "logs/hardware_report.json"
     hardware = json.loads(hardware_path.read_text(encoding="utf-8")) if hardware_path.exists() else {}
     spend_path = root / "logs/spend_summary.json"
@@ -533,6 +541,7 @@ def build_app_data(
             "plan_counts": {"post": sum(item.format == "post" for item in plan), "video": sum(item.format == "video" for item in plan)},
             "video_briefs": video_briefs,
             "asset_root": "../assets",
+            "generation": generation,
         },
         "workflow": {
             "trace": trace[-24:],
