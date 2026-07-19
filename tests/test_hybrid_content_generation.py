@@ -99,6 +99,21 @@ class HybridContentGenerationTests(unittest.TestCase):
             self.assertEqual(versions["assets"]["sample_video"]["active_version"], "v002")
             self.assertEqual(versions["assets"]["sample_video"]["versions"][0]["status"], "SUPERSEDED")
 
+    def test_post_approval_archives_previous_active_image(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "config").mkdir(); (root / "analysis").mkdir(); (root / "assets/posts").mkdir(parents=True); (root / "tools/ffmpeg/bin").mkdir(parents=True)
+            (root / "config/content_generation.yaml").write_text((ROOT / "config/content_generation.yaml").read_text(encoding="utf-8"), encoding="utf-8")
+            (root / "tools/ffmpeg/bin/ffmpeg.exe").write_bytes(b""); (root / "tools/ffmpeg/bin/ffprobe.exe").write_bytes(b"")
+            (root / "analysis/content_generation_prompts.json").write_text(json.dumps({"assets": [{"asset_id": "sample_post", "plan_day": 1, "asset_type": "image", "prompt_version": 1, "prompt_hash": "hash"}]}), encoding="utf-8")
+            old = root / "assets/posts/sample_post.png"; old.write_bytes(b"old-approved-post")
+            candidate = root / "artifacts/processed_candidates/sample_post/v002.png"; candidate.parent.mkdir(parents=True); candidate.write_bytes(b"new-post-candidate")
+            (root / "analysis/media_versions.json").write_text(json.dumps({"assets": {"sample_post": {"active_version": "v001", "versions": [{"version": "v001", "status": "APPROVED", "candidate_output": "assets/posts/sample_post.png", "approval_history": []}, {"version": "v002", "status": "AWAITING_REVIEW", "candidate_output": "artifacts/processed_candidates/sample_post/v002.png", "approval_history": []}]}}}), encoding="utf-8")
+            (root / "analysis/generation_jobs.json").write_text(json.dumps({"jobs": [{"job_id": "post-job-2", "asset_id": "sample_post", "final_output": "artifacts/processed_candidates/sample_post/v002.png", "status": "AWAITING_REVIEW"}]}), encoding="utf-8")
+            ImportService(root).approve("post-job-2")
+            self.assertEqual(old.read_bytes(), b"new-post-candidate")
+            self.assertEqual((root / "assets/versions/sample_post/v001.png").read_bytes(), b"old-approved-post")
+
     def test_import_security_rejects_wrong_signature_and_missing_permission(self):
         service = ImportService(ROOT)
         with self.assertRaises(ImportValidationError):
