@@ -11,6 +11,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from insta_strategy_lab.providers import LocalProvider  # noqa: E402
+from insta_strategy_lab.agents.video_brief import build_video_generation_briefs  # noqa: E402
+from insta_strategy_lab.generation.prompts import create_prompt_artifacts  # noqa: E402
 from insta_strategy_lab.reporting.builder import (  # noqa: E402
     build_app_data, build_documentation, build_final_reports, load_qualitative_observations,
 )
@@ -41,6 +43,8 @@ def main() -> None:
         run_id = row[0] if row else "finalized-run"
 
     # Keep repository documentation aligned with the generated frontend manifest.
+    video_briefs = load("analysis/video_generation_briefs.json") if (ROOT / "analysis/video_generation_briefs.json").exists() else build_video_generation_briefs(plan)
+    create_prompt_artifacts(ROOT, plan, video_briefs)
     build_documentation(ROOT, results, diagnosis, strategy, plan, hardware, provider, run_id)
     # Refresh the extracted-package layout before the first final-mode gate.
     final_dir = assemble_submission(ROOT)

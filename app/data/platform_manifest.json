@@ -918,7 +918,730 @@
         }
       ]
     },
-    "asset_root": "../assets"
+    "asset_root": "../assets",
+    "generation": {
+      "prompts": [
+        {
+          "job_id": "day01-image-v001",
+          "asset_id": "day01_capsule_formula",
+          "asset_filename": "day01_capsule_formula.png",
+          "plan_day": 1,
+          "asset_type": "image",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Google Flow image model",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, three-piece wardrobe formula. Scene: Show one overshirt, one solid tee, and one dark trouser as a repeatable outfit system.. Visual direction: Editorial capsule grid with original overshirt, tee, and trouser photographed garment layouts; lime numbered chips. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: 3 pieces. 7 clean fits. No wardrobe haul.. Aspect ratio 4:5.",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "4:5",
+          "width": 1080,
+          "height": 1350,
+          "duration_seconds": null,
+          "frame_rate_intention": null,
+          "reference_files": [
+            "assets/source_media/posts/day01_capsule_formula_hf.jpg"
+          ],
+          "visual_style": "Editorial capsule grid with original overshirt, tee, and trouser illustrations; lime numbered chips.",
+          "caption_phrases": [],
+          "storyboard_beats": [],
+          "caption_to_visual_mapping": [],
+          "cta": "Save this 3-piece formula before your next purchase.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "1407d358374ce554ab3ecbe12195c41299971ddbfd0d8b5a76357ef32c480179",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day02-video-v001",
+          "asset_id": "day02_one_shirt_three_ways",
+          "asset_filename": "day02_one_shirt_three_ways.mp4",
+          "plan_day": 2,
+          "asset_type": "video",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Veo",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a 10-second vertical smartphone fashion video for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, one shirt, three situations. Scene: Show three visible adjustments to one forest textured overshirt: wear it open, button it lightly, then check the collar, cuff, and hem.. Visual direction: One continuous all-photographic HF outfit clip with three timed editorial overlays and no illustrated garments or fictional location changes. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: One overshirt. Three small fit moves in 10 seconds.. Aspect ratio 9:16. Storyboard beats, in order: 01 / OPEN LAYER: LET THE CREAM TEE FRAME THE OUTFIT.; 02 / BUTTON: FASTEN LIGHTLY. DON'T PULL THE FABRIC.; 03 / FINAL CHECK: STOP WHEN THE LAYER SITS CLEANLY..",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "9:16",
+          "width": 1080,
+          "height": 1920,
+          "duration_seconds": 10,
+          "frame_rate_intention": 30,
+          "reference_files": [
+            "assets/source_media/day02_hf_wan.mp4"
+          ],
+          "visual_style": "One continuous all-photographic HF outfit clip with three timed editorial overlays and no illustrated garments or fictional location changes.",
+          "caption_phrases": [
+            "wear it open",
+            "button it lightly",
+            "check the collar, cuff and hem"
+          ],
+          "storyboard_beats": [
+            {
+              "sequence": 1,
+              "duration_sec": 3.333333,
+              "title": "ONE OVERSHIRT.",
+              "subtitle": "KEEP THE BASE LAYER VISIBLE",
+              "step": "01 / OPEN LAYER",
+              "takeaway": "LET THE CREAM TEE FRAME THE OUTFIT.",
+              "caption_evidence": "wear it open",
+              "source_window_sec": [
+                0.9,
+                2.15
+              ],
+              "zoom": 1.08,
+              "crop_y": 45,
+              "focus_graphic": "open_layer"
+            },
+            {
+              "sequence": 2,
+              "duration_sec": 3.333333,
+              "title": "BUTTON FOR STRUCTURE.",
+              "subtitle": "WATCH THE FRONT LINE",
+              "step": "02 / BUTTON",
+              "takeaway": "FASTEN LIGHTLY. DON'T PULL THE FABRIC.",
+              "caption_evidence": "button it lightly",
+              "source_window_sec": [
+                0.0,
+                1.25
+              ],
+              "zoom": 1.18,
+              "crop_y": 80,
+              "focus_graphic": "button_line"
+            },
+            {
+              "sequence": 3,
+              "duration_sec": 3.333333,
+              "title": "CHECK THE FINISH.",
+              "subtitle": "COLLAR / CUFF / HEM",
+              "step": "03 / FINAL CHECK",
+              "takeaway": "STOP WHEN THE LAYER SITS CLEANLY.",
+              "caption_evidence": "check the collar, cuff and hem",
+              "source_window_sec": [
+                2.8,
+                4.05
+              ],
+              "zoom": 1.08,
+              "crop_y": 55,
+              "focus_graphic": "collar_cuff_hem"
+            }
+          ],
+          "caption_to_visual_mapping": [
+            {
+              "caption_phrase": "wear it open",
+              "visual_beat": "01 / OPEN LAYER",
+              "source_time_range": [
+                0.9,
+                2.15
+              ]
+            },
+            {
+              "caption_phrase": "button it lightly",
+              "visual_beat": "02 / BUTTON",
+              "source_time_range": [
+                0.0,
+                1.25
+              ]
+            },
+            {
+              "caption_phrase": "check the collar, cuff and hem",
+              "visual_beat": "03 / FINAL CHECK",
+              "source_time_range": [
+                2.8,
+                4.05
+              ]
+            }
+          ],
+          "cta": "Save the three fit moves and test them tonight.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "956bac8bd312bd0b4700e4b942017c26936972ecaf9fa46bef3a071bdf8a116b",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day03-image-v001",
+          "asset_id": "day03_colour_vote",
+          "asset_filename": "day03_colour_vote.png",
+          "plan_day": 3,
+          "asset_type": "image",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Google Flow image model",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, colour-combo vote. Scene: Three original outfit colourways with a bounded vote and one-line styling rationale.. Visual direction: Three side-by-side illustrated outfits labeled A/B/C with high-contrast vote footer. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: Date night: A, B or C? Pick one.. Aspect ratio 4:5.",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "4:5",
+          "width": 1080,
+          "height": 1350,
+          "duration_seconds": null,
+          "frame_rate_intention": null,
+          "reference_files": [
+            "assets/source_media/posts/day03_colour_vote_hf.jpg"
+          ],
+          "visual_style": "Three side-by-side illustrated outfits labeled A/B/C with high-contrast vote footer.",
+          "caption_phrases": [],
+          "storyboard_beats": [],
+          "caption_to_visual_mapping": [],
+          "cta": "Comment A, B or C plus the occasion.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "ce277c43bd83737b73a243d21885fe6fb3eacfe2329f82055df457f02e56af15",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day04-image-v001",
+          "asset_id": "day04_budget_priority",
+          "asset_filename": "day04_budget_priority.png",
+          "plan_day": 4,
+          "asset_type": "image",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Google Flow image model",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, ₹1,999 college upgrade. Scene: Teach a prioritized basket: trouser first, solid tee second, overshirt third; show budget guardrails without claiming live prices.. Visual direction: Receipt-inspired priority stack with original garment drawings and price-cap labels marked as illustrative targets. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: ₹1,999 to look sharper: buy in this order.. Aspect ratio 4:5.",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "4:5",
+          "width": 1080,
+          "height": 1350,
+          "duration_seconds": null,
+          "frame_rate_intention": null,
+          "reference_files": [
+            "assets/source_media/posts/day04_budget_priority_hf.jpg"
+          ],
+          "visual_style": "Receipt-inspired priority stack with original garment drawings and price-cap labels marked as illustrative targets.",
+          "caption_phrases": [],
+          "storyboard_beats": [],
+          "caption_to_visual_mapping": [],
+          "cta": "Comment LINK for a shortlist built around the ₹1,999 cap.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "dbe15f0e7be10aed68598a6a52a7c14358b84baea9a7f232d4cc7e7ce8cdc2b7",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day05-video-v001",
+          "asset_id": "day05_fit_mistakes",
+          "asset_filename": "day05_fit_mistakes.mp4",
+          "plan_day": 5,
+          "asset_type": "video",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Veo",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a 10-second vertical smartphone fashion video for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, three fit mistakes. Scene: Use the visible balanced outfit to check the shoulder line, tee hem, and straight trouser line without claiming a before-and-after transformation.. Visual direction: One continuous all-photographic HF full-body clip with four timed editorial overlays and no illustrated garments or unsupported corrections. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: A realistic fit check, from shoulder to shoe.. Aspect ratio 9:16. Storyboard beats, in order: START / FULL LOOK: THIS IS A MIRROR CHECKLIST, NOT A TRANSFORMATION.; 01 / SHOULDER: THE SEAM SHOULD SIT NEAR THE SHOULDER.; 02 / TEE HEM: ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING.; 03 / TROUSER: READ THE LINE ALL THE WAY TO THE SHOE..",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "9:16",
+          "width": 1080,
+          "height": 1920,
+          "duration_seconds": 10,
+          "frame_rate_intention": 30,
+          "reference_files": [
+            "assets/source_media/day05_hf_wan.mp4"
+          ],
+          "visual_style": "One continuous all-photographic HF full-body clip with four timed editorial overlays and no illustrated garments or unsupported corrections.",
+          "caption_phrases": [
+            "mirror checklist",
+            "sleeve seam sits near the shoulder",
+            "tee hem finishes close to the waistband",
+            "follow the trouser line down to a clean ankle and shoe"
+          ],
+          "storyboard_beats": [
+            {
+              "sequence": 1,
+              "duration_sec": 2.5,
+              "title": "START WITH THE WHOLE FIT.",
+              "subtitle": "READ THE SILHOUETTE FIRST",
+              "step": "START / FULL LOOK",
+              "takeaway": "THIS IS A MIRROR CHECKLIST, NOT A TRANSFORMATION.",
+              "caption_evidence": "mirror checklist",
+              "source_window_sec": [
+                3.65,
+                4.9
+              ],
+              "zoom": 1.0,
+              "crop_y": 0,
+              "focus_graphic": "silhouette"
+            },
+            {
+              "sequence": 2,
+              "duration_sec": 2.5,
+              "title": "CHECK THE SHOULDER LINE.",
+              "subtitle": "FIND THE SLEEVE SEAM",
+              "step": "01 / SHOULDER",
+              "takeaway": "THE SEAM SHOULD SIT NEAR THE SHOULDER.",
+              "caption_evidence": "sleeve seam sits near the shoulder",
+              "source_window_sec": [
+                0.0,
+                1.25
+              ],
+              "zoom": 1.22,
+              "crop_y": 0,
+              "focus_graphic": "shoulder_line"
+            },
+            {
+              "sequence": 3,
+              "duration_sec": 2.5,
+              "title": "CHECK THE TEE HEM.",
+              "subtitle": "COMPARE IT WITH THE WAISTBAND",
+              "step": "02 / TEE HEM",
+              "takeaway": "ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING.",
+              "caption_evidence": "tee hem finishes close to the waistband",
+              "source_window_sec": [
+                1.25,
+                2.5
+              ],
+              "zoom": 1.22,
+              "crop_y": 190,
+              "focus_graphic": "hem_line"
+            },
+            {
+              "sequence": 4,
+              "duration_sec": 2.5,
+              "title": "FOLLOW THE TROUSER LINE.",
+              "subtitle": "STRAIGHT FALL TO A CLEAN ANKLE",
+              "step": "03 / TROUSER",
+              "takeaway": "READ THE LINE ALL THE WAY TO THE SHOE.",
+              "caption_evidence": "follow the trouser line down to a clean ankle and shoe",
+              "source_window_sec": [
+                2.5,
+                3.75
+              ],
+              "zoom": 1.14,
+              "crop_y": 265,
+              "focus_graphic": "trouser_line"
+            }
+          ],
+          "caption_to_visual_mapping": [
+            {
+              "caption_phrase": "mirror checklist",
+              "visual_beat": "START / FULL LOOK",
+              "source_time_range": [
+                3.65,
+                4.9
+              ]
+            },
+            {
+              "caption_phrase": "sleeve seam sits near the shoulder",
+              "visual_beat": "01 / SHOULDER",
+              "source_time_range": [
+                0.0,
+                1.25
+              ]
+            },
+            {
+              "caption_phrase": "tee hem finishes close to the waistband",
+              "visual_beat": "02 / TEE HEM",
+              "source_time_range": [
+                1.25,
+                2.5
+              ]
+            },
+            {
+              "caption_phrase": "follow the trouser line down to a clean ankle and shoe",
+              "visual_beat": "03 / TROUSER",
+              "source_time_range": [
+                2.5,
+                3.75
+              ]
+            }
+          ],
+          "cta": "Save the three visible fit checks and try them in the mirror.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "d955090cdd5703bb72e0cea2ddb3666de1d4080d95cbc2a344e67d67e744b6eb",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day06-image-v001",
+          "asset_id": "day06_sneaker_scorecard",
+          "asset_filename": "day06_sneaker_scorecard.png",
+          "plan_day": 6,
+          "asset_type": "image",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Google Flow image model",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, sneaker use-case ranking. Scene: Rank neutral court, retro runner, and chunky sneaker by versatility, comfort, and outfit compatibility without using brand logos.. Visual direction: Original sneaker silhouettes on a three-row scorecard; coral highlights for trade-offs. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: One sneaker budget? Rank by use, not hype.. Aspect ratio 4:5.",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "4:5",
+          "width": 1080,
+          "height": 1350,
+          "duration_seconds": null,
+          "frame_rate_intention": null,
+          "reference_files": [
+            "assets/source_media/posts/day06_sneaker_scorecard_hf.jpg"
+          ],
+          "visual_style": "Original sneaker silhouettes on a three-row scorecard; coral highlights for trade-offs.",
+          "caption_phrases": [],
+          "storyboard_beats": [],
+          "caption_to_visual_mapping": [],
+          "cta": "Comment SHOES with your budget and daily use case.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "1ead96ba092926e52aca1889fc30a9471c421790f7ac51b540c21f4818d71b88",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        },
+        {
+          "job_id": "day07-image-v001",
+          "asset_id": "day07_wardrobe_audit",
+          "asset_filename": "day07_wardrobe_audit.png",
+          "plan_day": 7,
+          "asset_type": "image",
+          "recommended_provider": "Google Flow / Veo",
+          "recommended_model": "Google Flow image model",
+          "execution_mode": "MANUAL_PROVIDER",
+          "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, wardrobe audit checklist. Scene: A saveable checklist asking whether a purchase creates three outfits, fits now, and replaces a real gap.. Visual direction: Large checkboxes, lime pass/fail band, open space, and a comment prompt for the hardest rule. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: Before Sunday checkout: pass this 5-point audit.. Aspect ratio 4:5.",
+          "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+          "aspect_ratio": "4:5",
+          "width": 1080,
+          "height": 1350,
+          "duration_seconds": null,
+          "frame_rate_intention": null,
+          "reference_files": [],
+          "visual_style": "Large checkboxes, lime pass/fail band, open space, and a comment prompt for the hardest rule.",
+          "caption_phrases": [],
+          "storyboard_beats": [],
+          "caption_to_visual_mapping": [],
+          "cta": "Save the audit and comment your hardest rule.",
+          "prohibited_elements": [
+            "cartoon",
+            "sketch",
+            "illustration",
+            "CGI look",
+            "distorted anatomy",
+            "extra fingers",
+            "unreadable text",
+            "brand logos",
+            "watermark",
+            "price claims",
+            "before-and-after transformation",
+            "sexualized styling"
+          ],
+          "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+          "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+          "maximum_media_cost_inr": 100,
+          "prompt_version": 1,
+          "prompt_hash": "891531c5ed34db4a9f1b62d85b4d8ea2c52aa9fe55e7d7d56ce6ddc004c6f03b",
+          "generated_by": [
+            "ContentPlannerAgent",
+            "CreativeDirectorAgent"
+          ],
+          "generation_timestamp": "2026-07-19T22:30:31+00:00",
+          "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+        }
+      ],
+      "jobs": [],
+      "versions": {
+        "day01_capsule_formula": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "52e9bd682b9f3dc0d0e6b354afa1c1b184345be7bd643eb119542c24491b92ff",
+              "raw_import": null,
+              "candidate_output": "assets/posts/day01_capsule_formula.png",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day02_one_shirt_three_ways": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "d4e416617e2db3a590e6662f588f0d4818fae6ace3dabf4a212a6bd88d004489",
+              "raw_import": null,
+              "candidate_output": "assets/videos/day02_one_shirt_three_ways.mp4",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day03_colour_vote": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "7a02a0874780f9c5592e8c3f57b6d0de1399849e1ee9fdc55d8d1997fa895d1e",
+              "raw_import": null,
+              "candidate_output": "assets/posts/day03_colour_vote.png",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day04_budget_priority": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "0bf012dbeb3f1618baa1e1dac12c480f25c9f897f6872611e255426a33e9d813",
+              "raw_import": null,
+              "candidate_output": "assets/posts/day04_budget_priority.png",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day05_fit_mistakes": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "8fc8e5d898e999560234ddcd226c1269eae4d9219ac0385db03e0a7ed999552c",
+              "raw_import": null,
+              "candidate_output": "assets/videos/day05_fit_mistakes.mp4",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day06_sneaker_scorecard": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "d33bf955274857af578c1408b17b821ef271f536596212e5c16a1e041482c3b3",
+              "raw_import": null,
+              "candidate_output": "assets/posts/day06_sneaker_scorecard.png",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        },
+        "day07_wardrobe_audit": {
+          "active_version": "v001",
+          "versions": [
+            {
+              "version": "v001",
+              "status": "APPROVED",
+              "source_file_hash": "2c66325c869cc6ccd49deedb24cb85bed82d37035dbbbe89fa1d521d5fd6c16f",
+              "raw_import": null,
+              "candidate_output": "assets/posts/day07_wardrobe_audit.png",
+              "provenance_file": null,
+              "created_at": "2026-07-19T22:13:37+00:00",
+              "approval_history": [
+                {
+                  "status": "approved_existing_asset",
+                  "at": "2026-07-19T22:13:37+00:00"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "provider_status": {
+        "default_mode": "MANUAL_PROVIDER",
+        "require_paid_api_approval": true,
+        "media_budget_inr": 100.0,
+        "providers": [
+          {
+            "id": "veo",
+            "label": "Veo API",
+            "api_state": "DISABLED",
+            "manual_state": "READY",
+            "model": "Veo",
+            "api_tested": false,
+            "capabilities": [
+              "text_to_video",
+              "image_to_video"
+            ]
+          },
+          {
+            "id": "huggingface",
+            "label": "Hugging Face API",
+            "api_state": "READY",
+            "manual_state": "READY",
+            "model": "Wan-AI/Wan2.2-TI2V-5B",
+            "api_tested": false,
+            "capabilities": [
+              "text_to_image",
+              "image_to_image",
+              "text_to_video",
+              "image_to_video"
+            ]
+          },
+          {
+            "id": "local",
+            "label": "Local fallback",
+            "api_state": "READY",
+            "manual_state": "N/A",
+            "model": "Pillow + FFmpeg",
+            "api_tested": true,
+            "capabilities": [
+              "image_composition",
+              "motion_graphics",
+              "video_postprocessing"
+            ]
+          }
+        ],
+        "claim": "Production architecture implemented. Manual provider workflow is available. API mode is configured but not reported as connected or tested unless a successful request is recorded."
+      }
+    }
   },
   "workflow": {
     "trace": [
@@ -1787,7 +2510,7 @@
         "href": "/submission/final/submission_manifest.json",
         "type": "JSON",
         "available": true,
-        "bytes": 51311,
+        "bytes": 52986,
         "size_note": null
       },
       {

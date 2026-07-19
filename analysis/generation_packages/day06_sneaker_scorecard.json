@@ -1,0 +1,50 @@
+{
+  "job_id": "day06-image-v001",
+  "asset_id": "day06_sneaker_scorecard",
+  "asset_filename": "day06_sneaker_scorecard.png",
+  "plan_day": 6,
+  "asset_type": "image",
+  "recommended_provider": "Google Flow / Veo",
+  "recommended_model": "Google Flow image model",
+  "execution_mode": "MANUAL_PROVIDER",
+  "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, sneaker use-case ranking. Scene: Rank neutral court, retro runner, and chunky sneaker by versatility, comfort, and outfit compatibility without using brand logos.. Visual direction: Original sneaker silhouettes on a three-row scorecard; coral highlights for trade-offs. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: One sneaker budget? Rank by use, not hype.. Aspect ratio 4:5.",
+  "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+  "aspect_ratio": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "duration_seconds": null,
+  "frame_rate_intention": null,
+  "reference_files": [
+    "assets/source_media/posts/day06_sneaker_scorecard_hf.jpg"
+  ],
+  "visual_style": "Original sneaker silhouettes on a three-row scorecard; coral highlights for trade-offs.",
+  "caption_phrases": [],
+  "storyboard_beats": [],
+  "caption_to_visual_mapping": [],
+  "cta": "Comment SHOES with your budget and daily use case.",
+  "prohibited_elements": [
+    "cartoon",
+    "sketch",
+    "illustration",
+    "CGI look",
+    "distorted anatomy",
+    "extra fingers",
+    "unreadable text",
+    "brand logos",
+    "watermark",
+    "price claims",
+    "before-and-after transformation",
+    "sexualized styling"
+  ],
+  "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+  "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+  "maximum_media_cost_inr": 100,
+  "prompt_version": 1,
+  "prompt_hash": "1ead96ba092926e52aca1889fc30a9471c421790f7ac51b540c21f4818d71b88",
+  "generated_by": [
+    "ContentPlannerAgent",
+    "CreativeDirectorAgent"
+  ],
+  "generation_timestamp": "2026-07-19T22:30:31+00:00",
+  "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+}

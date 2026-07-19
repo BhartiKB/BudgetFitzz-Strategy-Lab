@@ -1,0 +1,28 @@
+Git baseline recorded before the hybrid content-generation update.
+
+git status --short
+(clean)
+
+git branch --show-current
+codex/backend-frontend-explainer
+
+git rev-parse HEAD
+65280b2e8a74c7458d8e6ec9cf0d885813c29ec7
+
+git log -5 --oneline
+65280b2 feat: explain backend frontend platform flow
+fbdec13 docs: add deployed website link
+4400c9a deploy: prepare secure Render release
+6eabbca docs: add Instagram discovery evidence to final report
+7b7ad00 feat: redesign BudgetFitzz editorial creator atelier
+
+git stash list
+stash@{0}: On codex/free-media-providers: WIP before restoring version 8
+
+git branch --all
+* codex/backend-frontend-explainer
+  codex/free-media-providers
+  codex/version-10-figma-frontend
+  codex/version-11-stitch-social-studio
+  codex/version-8
+  remotes/origin/main

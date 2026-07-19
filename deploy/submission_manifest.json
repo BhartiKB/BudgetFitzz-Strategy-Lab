@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "file_count": 292,
+  "file_count": 324,
   "files": [
     {
       "path": "analysis/analysis_results.json",
@@ -61,6 +61,21 @@
       "path": "analysis/charts/video_retention.png",
       "bytes": 54981,
       "sha256": "313f74427c9fdad71fd7a6a8d3ca35ab158f0492ee455425f34ae58e259ee90b"
+    },
+    {
+      "path": "analysis/content_generation_prompts.json",
+      "bytes": 27174,
+      "sha256": "1a7a78c024483f60e958f14af2dcb39dc224c6d408f4b050728a30bd740b366d"
+    },
+    {
+      "path": "analysis/content_generation_prompts.md",
+      "bytes": 8321,
+      "sha256": "7ccd28bf314fa38c362d093cf3a2b44de7587f0948c60b58e99bed901cfd7611"
+    },
+    {
+      "path": "analysis/media_versions.json",
+      "bytes": 4657,
+      "sha256": "78f6646a42eab6ebc20ebdf64a2e04d957c703dea229573ce88a699a4c6fc27a"
     },
     {
       "path": "analysis/tables/cta_style_summary.csv",
@@ -124,13 +139,13 @@
     },
     {
       "path": "app/__pycache__/server.cpython-312.pyc",
-      "bytes": 7850,
-      "sha256": "71e783ac82d29f84356fec2bb1fee91d5c3fa22a4de1f71f9abd54d8db1a989c"
+      "bytes": 13431,
+      "sha256": "ecbd9c520c6f7f6816189d7b9cb5f2a4087994e3bbbacd3f37a5eee5100010db"
     },
     {
       "path": "app/app.js",
-      "bytes": 34942,
-      "sha256": "414130d0705c17ebeea06f80ead9e811df049befd714bf0d50e9513d08e02ed2"
+      "bytes": 45892,
+      "sha256": "688b3aefe37b74f0d93c4a26b6db88bbf64979edf5058968573b610de94f85cf"
     },
     {
       "path": "app/data/dashboard.json",
@@ -139,8 +154,8 @@
     },
     {
       "path": "app/data/platform_manifest.json",
-      "bytes": 76196,
-      "sha256": "3b159c1938c544b30e9727887ece4fd4f41a51f1ab23ff147d700ccc002ad2a6"
+      "bytes": 112133,
+      "sha256": "d4b0f1cc99d9dcd53a7bd17b9a44cbaa9ff45514f23afaf73e82fb5c38773fe7"
     },
     {
       "path": "app/frontend-fixes.css",
@@ -150,22 +165,22 @@
     {
       "path": "app/index.html",
       "bytes": 2480,
-      "sha256": "853da8861e66304c35981f03d7d01ac171ecedd9828f8ab8611de0e026fe455d"
+      "sha256": "c4605c9ff446988ba197955615624738abe88cb077805c1e7b4880382b4b0792"
     },
     {
       "path": "app/responsive.css",
-      "bytes": 7534,
-      "sha256": "d00d8beb50fb082b67aa50814a8805a3ee81d0f66c2d5d6489ed6870872156f2"
+      "bytes": 7787,
+      "sha256": "85ccc7a0ca9a8c043bdf1dbfe25a2a225f86c19e7fc25981d2deb1f0b89b8320"
     },
     {
       "path": "app/server.py",
-      "bytes": 5373,
-      "sha256": "63aee20e3a5674e0c8f9fd70ae85acb9a271f55dab4dddbeddbaf173764f3455"
+      "bytes": 9196,
+      "sha256": "eb18e918589142918e9070b62996ff7f379ba641750cd22253e21e80def0c1fe"
     },
     {
       "path": "app/styles.css",
-      "bytes": 31167,
-      "sha256": "70ceae543a0cb6ee0fc5e543c2644b4186298a08db24cd421355c2a3db646b1e"
+      "bytes": 34279,
+      "sha256": "c590c7eed297f1db32e2e3cf95d2d438cc4ed64918bade7c6f30e63e4b37d1cb"
     },
     {
       "path": "app/tokens.css",
@@ -275,7 +290,7 @@
     {
       "path": "final_report.pdf",
       "bytes": 7757371,
-      "sha256": "aa41bc1d2e3cca2e434fdd83829b98faa85a81492d826b4f8de7bc697a0a1d0f"
+      "sha256": "2f82e163c56a29ed7cdba9446aca2903abac71aab601697cfdfb1264b6b28f7f"
     },
     {
       "path": "hardware_report.json",
@@ -305,12 +320,12 @@
     {
       "path": "logs/lint_report.json",
       "bytes": 67,
-      "sha256": "07eb29bb2ce6355617d5f09b2dd42f2f12051c59fe9fa171e5cc3589d5f7acac"
+      "sha256": "30f37c150699871e354e9204a999e8a050b65631a2934379f12ab94b449baa79"
     },
     {
       "path": "logs/test_report.txt",
-      "bytes": 5195,
-      "sha256": "a740b829c01c81d2989af3b3f7bc22ceab5b296492a8eedf60aab69a7635da0b"
+      "bytes": 6869,
+      "sha256": "2dd6c6589a5482bb2cf154d342afe74da159b18ce315a245ce20ab695c9e3594"
     },
     {
       "path": "logs/workflow.db",
@@ -374,8 +389,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 3744,
-      "sha256": "17b6e654bdc1e04aaf6d944b7f529c44e5895c55aaef37333ab63d943d3f53d1"
+      "bytes": 4600,
+      "sha256": "f6d0e800f6f24f322e04334adfc1f55d0174a2ad18e7fc454dc7891bb580a46e"
     },
     {
       "path": "references/budgetfitzz_dataset_fixed.csv",
@@ -414,13 +429,13 @@
     },
     {
       "path": "source/app/__pycache__/server.cpython-312.pyc",
-      "bytes": 7850,
-      "sha256": "71e783ac82d29f84356fec2bb1fee91d5c3fa22a4de1f71f9abd54d8db1a989c"
+      "bytes": 13431,
+      "sha256": "ecbd9c520c6f7f6816189d7b9cb5f2a4087994e3bbbacd3f37a5eee5100010db"
     },
     {
       "path": "source/app/app.js",
-      "bytes": 34942,
-      "sha256": "414130d0705c17ebeea06f80ead9e811df049befd714bf0d50e9513d08e02ed2"
+      "bytes": 45892,
+      "sha256": "688b3aefe37b74f0d93c4a26b6db88bbf64979edf5058968573b610de94f85cf"
     },
     {
       "path": "source/app/data/dashboard.json",
@@ -429,8 +444,8 @@
     },
     {
       "path": "source/app/data/platform_manifest.json",
-      "bytes": 76196,
-      "sha256": "3b159c1938c544b30e9727887ece4fd4f41a51f1ab23ff147d700ccc002ad2a6"
+      "bytes": 112133,
+      "sha256": "d4b0f1cc99d9dcd53a7bd17b9a44cbaa9ff45514f23afaf73e82fb5c38773fe7"
     },
     {
       "path": "source/app/frontend-fixes.css",
@@ -440,22 +455,22 @@
     {
       "path": "source/app/index.html",
       "bytes": 2480,
-      "sha256": "853da8861e66304c35981f03d7d01ac171ecedd9828f8ab8611de0e026fe455d"
+      "sha256": "c4605c9ff446988ba197955615624738abe88cb077805c1e7b4880382b4b0792"
     },
     {
       "path": "source/app/responsive.css",
-      "bytes": 7534,
-      "sha256": "d00d8beb50fb082b67aa50814a8805a3ee81d0f66c2d5d6489ed6870872156f2"
+      "bytes": 7787,
+      "sha256": "85ccc7a0ca9a8c043bdf1dbfe25a2a225f86c19e7fc25981d2deb1f0b89b8320"
     },
     {
       "path": "source/app/server.py",
-      "bytes": 5373,
-      "sha256": "63aee20e3a5674e0c8f9fd70ae85acb9a271f55dab4dddbeddbaf173764f3455"
+      "bytes": 9196,
+      "sha256": "eb18e918589142918e9070b62996ff7f379ba641750cd22253e21e80def0c1fe"
     },
     {
       "path": "source/app/styles.css",
-      "bytes": 31167,
-      "sha256": "70ceae543a0cb6ee0fc5e543c2644b4186298a08db24cd421355c2a3db646b1e"
+      "bytes": 34279,
+      "sha256": "c590c7eed297f1db32e2e3cf95d2d438cc4ed64918bade7c6f30e63e4b37d1cb"
     },
     {
       "path": "source/app/tokens.css",
@@ -471,6 +486,11 @@
       "path": "source/config/brand_tokens.yaml",
       "bytes": 845,
       "sha256": "1f41797ac3499ae720d08a0d67a8ff60892379a554ccfc1095c27e97d06fec69"
+    },
+    {
+      "path": "source/config/content_generation.yaml",
+      "bytes": 757,
+      "sha256": "ea8d4da2f32c1c6ade1c0fb6918f40e9f0e400878680b611050cc3c2586d3d4f"
     },
     {
       "path": "source/config/figma.json",
@@ -501,6 +521,16 @@
       "path": "source/docs/business_context.md",
       "bytes": 1698,
       "sha256": "6da88a5eb5505584d9c650eb412cc89746a82a751c5be86c26b86ec8359a7410"
+    },
+    {
+      "path": "source/docs/content_generation_current_state.md",
+      "bytes": 1445,
+      "sha256": "468557676249f817e93b12362d706edb6e375eb8e020572495a658e1e3773cc9"
+    },
+    {
+      "path": "source/docs/content_generation_prompts.md",
+      "bytes": 8321,
+      "sha256": "7ccd28bf314fa38c362d093cf3a2b44de7587f0948c60b58e99bed901cfd7611"
     },
     {
       "path": "source/docs/data_provenance.md",
@@ -673,14 +703,39 @@
       "sha256": "6143f2729c45f4970c682b6e4b431669d181d30b86b98c49d6e0d82d621ef669"
     },
     {
+      "path": "source/docs/hybrid_content_generation.md",
+      "bytes": 1030,
+      "sha256": "6e602fa52aee7f66b2a364c1d6a5e35386f595688c56077ac971aa5d232707d7"
+    },
+    {
       "path": "source/docs/limitations.md",
       "bytes": 753,
       "sha256": "17b7f280243ea1186f5e72e758b7b57e17f71ca9c9c606486389813e7a2ec7d4"
     },
     {
+      "path": "source/docs/manual_veo_workflow.md",
+      "bytes": 706,
+      "sha256": "a933eb92bb29250f92016f7287e4330b844f05144ea42bda3fa478a1a104bc1e"
+    },
+    {
+      "path": "source/docs/media_import_and_validation.md",
+      "bytes": 737,
+      "sha256": "6a4945b2a1116cc85a889f66fc200e93c1fbff7c86da5adc8610c07e78a3096d"
+    },
+    {
       "path": "source/docs/metric_definitions.md",
       "bytes": 1323,
       "sha256": "afd5c75b4e7b9f36b70ece61db095209dcd4431eeda9840bcbbb3bb4dc4f37d7"
+    },
+    {
+      "path": "source/docs/provider_claims_and_limitations.md",
+      "bytes": 640,
+      "sha256": "f0d7c39f79cfcfa5cbaa816a2f956ecd8bef9f34a64b315b87e15b9d3e781385"
+    },
+    {
+      "path": "source/docs/provider_configuration.md",
+      "bytes": 601,
+      "sha256": "524dc0e9d3ae681e4ea9ed6ea9e1057adc1896e11783c3b90946012842101632"
     },
     {
       "path": "source/docs/qualitative_observations.md",
@@ -788,6 +843,11 @@
       "sha256": "6dc4ade1683f6dce164db29c6651b68e88b7260ca21c03ff093ad1f00cf14c9b"
     },
     {
+      "path": "source/scripts/__pycache__/refresh_app_data.cpython-312.pyc",
+      "bytes": 3363,
+      "sha256": "ebec273b24c69dd6446aefb7240e05099777abad5860e117b205a957f785fe73"
+    },
+    {
       "path": "source/scripts/__pycache__/run_pipeline.cpython-312.pyc",
       "bytes": 1422,
       "sha256": "587c4d45e10bcd7b9505168e30631b807bb2e7a0514d1014d48ba4ee6226b4aa"
@@ -814,8 +874,8 @@
     },
     {
       "path": "source/scripts/finalize_submission.py",
-      "bytes": 3377,
-      "sha256": "a1f63392a3f91e7c122c20b43f90d08f7dc4a2bf81ed96eb6e5e0913d999a230"
+      "bytes": 3780,
+      "sha256": "1ced42d8c40c2e58cb9477d5101cb2be6863208bc5e11b7e4663a2a9d83a626f"
     },
     {
       "path": "source/scripts/generate_hf_day05_motion_revision.py",
@@ -859,8 +919,8 @@
     },
     {
       "path": "source/scripts/refresh_app_data.py",
-      "bytes": 1755,
-      "sha256": "34ca2ca1056470f940be54b47e08e51b31c65fdb8ee63b8d780e063b0f3e1e86"
+      "bytes": 2158,
+      "sha256": "da003e8cc3de41bc3e57ef2d61a83f1ab3f86a4d6f83a23eb9e5ad9b539313af"
     },
     {
       "path": "source/scripts/run_pipeline.py",
@@ -983,6 +1043,46 @@
       "sha256": "abe2ddd1158a66b2b87e465311376ad877dff42ebc5d74f3ee44a0b2bd1cd586"
     },
     {
+      "path": "source/src/insta_strategy_lab/generation/__init__.py",
+      "bytes": 278,
+      "sha256": "12730bc7a7eb83df99bd4009ceb421ea7539bd2fbf5727a862d27eea34887d66"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/__pycache__/__init__.cpython-312.pyc",
+      "bytes": 442,
+      "sha256": "dfda4f5984433837666eb87f84658d37779be80fdf0534038d9b9e43abd32e22"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/__pycache__/config.cpython-312.pyc",
+      "bytes": 2140,
+      "sha256": "7d4bd1c7ea662d7fa5bf63aa0e45c819dc39cc0954b8d8416e15e38fcb69d14c"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/__pycache__/import_service.cpython-312.pyc",
+      "bytes": 22287,
+      "sha256": "d232232b3ef8ab6179da1edcf3cdd09d5879833c24d0f044da3cc824dcb4df5b"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/__pycache__/prompts.cpython-312.pyc",
+      "bytes": 11967,
+      "sha256": "51091ddbc82d05e58517213b13846f06d6d9ca5374447f7733a1ca3b0225fec2"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/config.py",
+      "bytes": 1179,
+      "sha256": "c43b141b72611e6a1bf65e9efd9e2186f2f86ea91761b94a2ed31ec3ff3456ee"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/import_service.py",
+      "bytes": 14072,
+      "sha256": "9d34490444fe669d76e8ef77442a0fe1e16da282c71bf9806cef260a7374b66c"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/generation/prompts.py",
+      "bytes": 9161,
+      "sha256": "e25452da961df00a32681aaf9d48158a1d85347aa16fad59d85ad90ac1d957ec"
+    },
+    {
       "path": "source/src/insta_strategy_lab/orchestration/__init__.py",
       "bytes": 56,
       "sha256": "8e1e9417edf06202473d43076f94cc0b4bbafefecf3baf4960f72514f36c45a8"
@@ -1004,38 +1104,73 @@
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__init__.py",
-      "bytes": 420,
-      "sha256": "df96d81ee5fd4656ea663dc7750877f7b9eac19a0a68ce233a321ae59b416140"
+      "bytes": 765,
+      "sha256": "52a73d173f9fc1bd0dd738e037397a7c84673de7c94f31a346c60b854fceda9a"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__pycache__/__init__.cpython-312.pyc",
-      "bytes": 549,
-      "sha256": "760887db205b939fc0caf4ea51782c750cc49343aa69c1afd933c64122983a12"
+      "bytes": 863,
+      "sha256": "f16349c326eb023d6fa70052b8be9a8d4dc9953ee7079b85db8f2957bfde25dd"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/__pycache__/base.cpython-312.pyc",
+      "bytes": 2526,
+      "sha256": "f0dcd4d6731756e49d6e8db07697744817303e547c46415445b990d9a3680b97"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__pycache__/huggingface_image.cpython-312.pyc",
-      "bytes": 14049,
-      "sha256": "88087ca1772991aa94d18c2593abd9303c779dae5677388e7910bda6207ae74d"
+      "bytes": 14080,
+      "sha256": "b74acb38fcdc29d90e118e6a478948ea940fcd0929cef86299ba7b95d41c992c"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/__pycache__/huggingface_provider.cpython-312.pyc",
+      "bytes": 2680,
+      "sha256": "1390f0e97e91cb8186d53f57353abd26e5a01ebf75b26c30f44484dba05f5eca"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__pycache__/huggingface_video.cpython-312.pyc",
-      "bytes": 6554,
-      "sha256": "615f2247a217b43e3ddc4816e36bb80444d1e0dfc1df6d4b91a3dc5ac1511f46"
+      "bytes": 6585,
+      "sha256": "8b64cd55b7bdf8298f1c46892c8ae9ed3664bc49d251ef05d7f148e020d2d89b"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__pycache__/local.cpython-312.pyc",
-      "bytes": 2554,
-      "sha256": "b36a956045d974e30e04271feb8bafca9e97d63bc3d0962085108b9889cd5b17"
+      "bytes": 2585,
+      "sha256": "bb573615f6370d1215cd3e10e280380140fbcc980200eb8405fe38393cccae4b"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/__pycache__/policy.cpython-312.pyc",
-      "bytes": 13516,
-      "sha256": "fb8cc6713abde641893a5f187b36ec7bf8f3f2250c34eb50eb65c90e078e4870"
+      "bytes": 13547,
+      "sha256": "7b1ec2c78deb2d3390d025d526813b6197012ccb2869b2d6b8329a37ff005cc7"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/__pycache__/registry.cpython-312.pyc",
+      "bytes": 3394,
+      "sha256": "ce2fbb23fec083e9e8f30fe2ce26c845b79283b1f65e939972c539d974d05ede"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/__pycache__/router.cpython-312.pyc",
+      "bytes": 2899,
+      "sha256": "b36088c6882463f2024bbe98afb8b0346a226b18ac37c8f6e980ad2135c41c49"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/__pycache__/veo_provider.cpython-312.pyc",
+      "bytes": 3069,
+      "sha256": "fb5ce7a060c0940c6f3175f0a1c3bced03b76e94ecede5d27096aa076270dd8b"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/base.py",
+      "bytes": 1542,
+      "sha256": "893de838204a16d977061ca941edd1940a7f8d22bbe93ba41d9725e6ab38ae3e"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/huggingface_image.py",
       "bytes": 12823,
       "sha256": "0ed4701f05c189ee5c569a36f3e489762a7af5d55dc446c26242c4bc0c3f46ab"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/huggingface_provider.py",
+      "bytes": 1682,
+      "sha256": "28b3d9a86faa5a09c6594fd5293a5c8a3fcbd20882ddc93326f69911b80bd238"
     },
     {
       "path": "source/src/insta_strategy_lab/providers/huggingface_video.py",
@@ -1053,6 +1188,21 @@
       "sha256": "5275ba7ae41ad3692fb4705ba98f05f23312c6fdc81a1cf46ecea0425a6429c7"
     },
     {
+      "path": "source/src/insta_strategy_lab/providers/registry.py",
+      "bytes": 2401,
+      "sha256": "d358f16c429953b8ad6ec10199b7f2f267b20a1f23bab859e0eb75dc8d8749d2"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/router.py",
+      "bytes": 1830,
+      "sha256": "e9538619b19754c5906acf22c832a4efc8d11eeba9ec637b79cf0cb6b96759bb"
+    },
+    {
+      "path": "source/src/insta_strategy_lab/providers/veo_provider.py",
+      "bytes": 2081,
+      "sha256": "f930dad2494d3a383697e766aec418a3ccb9cf434cdd835e6dfe18a79743d6bf"
+    },
+    {
       "path": "source/src/insta_strategy_lab/reporting/__init__.py",
       "bytes": 155,
       "sha256": "3f555d2a7d7265b8b418114cfa2ac039abc91b98b70aa693f691663e9a10b98f"
@@ -1064,23 +1214,23 @@
     },
     {
       "path": "source/src/insta_strategy_lab/reporting/__pycache__/builder.cpython-312.pyc",
-      "bytes": 78836,
-      "sha256": "8dfe9af1cbe11ba6351cfb9f6422c355cc8c54b17e1d8aafcb036226127ca8ed"
+      "bytes": 80030,
+      "sha256": "1fa93d95fbeb59a68b25d955ac2709a472b9f56d6dd28916221083b4a900fe3c"
     },
     {
       "path": "source/src/insta_strategy_lab/reporting/__pycache__/packaging.cpython-312.pyc",
-      "bytes": 8778,
-      "sha256": "71d6e40011f8b5ab8b05e0c5e951e4ea1215b73412fbc4aef7cf6819767b7707"
+      "bytes": 8989,
+      "sha256": "349830d091bd34c34ed1aa50501ac6e01339f4c5fd1f0133d705bde20f6132df"
     },
     {
       "path": "source/src/insta_strategy_lab/reporting/builder.py",
-      "bytes": 62645,
-      "sha256": "5ae0410028c49cb105dd9f4ffdda1b21986284dc123c39752f113392a0b5c626"
+      "bytes": 63796,
+      "sha256": "262148bbfde270dfda74003169f9087aadfa3602c5b1add7949d9aa7981998b9"
     },
     {
       "path": "source/src/insta_strategy_lab/reporting/packaging.py",
-      "bytes": 6494,
-      "sha256": "002a02442d57d3fa66a4ea48ba33336765870c85d8049f7d31857d917109d868"
+      "bytes": 6828,
+      "sha256": "c9a3ad639e5051274607de1484bc4ae289c2c4629a53d71a1497dca6f2d1fd7c"
     },
     {
       "path": "source/src/insta_strategy_lab/schemas/__init__.py",
@@ -1208,6 +1358,11 @@
       "sha256": "ae28cf784b38f1b00a8b3fbe8d67b337ce5ef2b5872e7f670f32eb7a68151ba7"
     },
     {
+      "path": "source/tests/__pycache__/test_hybrid_content_generation.cpython-312.pyc",
+      "bytes": 13260,
+      "sha256": "975293dbcb9d2076150ff139e960c7aff2b37eb9e376a9852c53e90494c24804"
+    },
+    {
       "path": "source/tests/__pycache__/test_metrics.cpython-312.pyc",
       "bytes": 2935,
       "sha256": "8d4bfce86388a041ae03e2f06c813a30681fa2467ab6bfaef72a7fcd9cc74b6b"
@@ -1241,6 +1396,11 @@
       "path": "source/tests/test_generation_policy.py",
       "bytes": 5864,
       "sha256": "f7ba3858d2bc15a3c45b59873dde9fb5b2632963f9168b15e2e9c7c1d8710bda"
+    },
+    {
+      "path": "source/tests/test_hybrid_content_generation.py",
+      "bytes": 7184,
+      "sha256": "336e2244a1abc737d006630de1cd8b81ea8a7a4fd8dcfe00631d60b8de70de6d"
     },
     {
       "path": "source/tests/test_metrics.py",

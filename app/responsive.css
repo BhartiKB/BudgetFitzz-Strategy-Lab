@@ -43,6 +43,8 @@
   .architecture-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .architecture-stage__connector { display: none; }
   .architecture-details__grid { grid-template-columns: 1fr; }
+  .provider-status__grid { grid-template-columns: 1fr; }
+  .generation-history__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .preview-body { grid-template-columns: 1fr; }
   .preview-body > .plan-media { max-height: 620px; }
 }
@@ -96,6 +98,8 @@
   .architecture-flow { grid-template-columns: 1fr; }
   .architecture-stage { min-height: auto; }
   .architecture-stage__connector { display: none; }
+  .media-import__form { grid-template-columns: 1fr; }
+  .generation-history__list { grid-template-columns: 1fr; }
   .studio-gallery .content-card { max-width: 390px; margin-inline: auto; }
   .preview-dialog { width: 100%; max-height: 92vh; margin: auto 0 0; border: 0; border-radius: 18px 18px 0 0; }
   .dialog-head { padding: 16px; }

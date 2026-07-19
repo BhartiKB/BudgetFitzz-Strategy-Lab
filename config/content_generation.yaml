@@ -1,0 +1,28 @@
+{
+  "generation": {
+    "default_mode": "MANUAL_PROVIDER",
+    "require_paid_api_approval": true,
+    "media_budget_inr": 100,
+    "maximum_upload_mb": 80
+  },
+  "providers": {
+    "veo": {
+      "enabled": false,
+      "api_mode_enabled": false,
+      "manual_mode_enabled": true,
+      "model": "Veo",
+      "capabilities": ["text_to_video", "image_to_video"]
+    },
+    "huggingface": {
+      "enabled": true,
+      "api_mode_enabled": true,
+      "manual_mode_enabled": true,
+      "model": "Wan-AI/Wan2.2-TI2V-5B",
+      "capabilities": ["text_to_image", "image_to_image", "text_to_video", "image_to_video"]
+    },
+    "local": {
+      "enabled": true,
+      "capabilities": ["image_composition", "motion_graphics", "video_postprocessing"]
+    }
+  }
+}

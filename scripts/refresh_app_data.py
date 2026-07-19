@@ -15,6 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from insta_strategy_lab.reporting.builder import build_app_data, build_documentation  # noqa: E402
+from insta_strategy_lab.agents.video_brief import build_video_generation_briefs  # noqa: E402
+from insta_strategy_lab.generation.prompts import create_prompt_artifacts  # noqa: E402
 from insta_strategy_lab.schemas import PlanItem  # noqa: E402
 
 
@@ -34,6 +36,8 @@ def main() -> None:
     with sqlite3.connect(ROOT / "logs/workflow.db") as connection:
         row = connection.execute("SELECT run_id FROM runs ORDER BY started_at DESC LIMIT 1").fetchone()
     run_id = row[0] if row else "manifest-refresh"
+    video_briefs = load("analysis/video_generation_briefs.json") if (ROOT / "analysis/video_generation_briefs.json").exists() else build_video_generation_briefs(plan)
+    create_prompt_artifacts(ROOT, plan, video_briefs)
     build_documentation(ROOT, results, diagnosis, strategy, plan, hardware, provider, run_id)
     build_app_data(ROOT, run_id, results, diagnosis, strategy, plan, provider, validation, before_after)
     print(json.dumps({"status": "PASS", "manifest": "app/data/platform_manifest.json"}))

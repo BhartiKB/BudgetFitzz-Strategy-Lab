@@ -11,6 +11,15 @@ test_fal_is_blocked_even_at_zero_estimated_cost (test_generation_policy.Generati
 test_local_zero_cost_generation_is_allowed (test_generation_policy.GenerationPolicyTests.test_local_zero_cost_generation_is_allowed) ... ok
 test_partial_hf_image_batch_is_reported_without_claiming_completion (test_generation_policy.GenerationPolicyTests.test_partial_hf_image_batch_is_reported_without_claiming_completion) ... ok
 test_unknown_cost_and_paid_calls_are_blocked (test_generation_policy.GenerationPolicyTests.test_unknown_cost_and_paid_calls_are_blocked) ... ok
+test_existing_asset_versions_are_preserved_as_v001 (test_hybrid_content_generation.HybridContentGenerationTests.test_existing_asset_versions_are_preserved_as_v001) ... ok
+test_frontend_exposes_prompt_export_and_import_controls (test_hybrid_content_generation.HybridContentGenerationTests.test_frontend_exposes_prompt_export_and_import_controls) ... ok
+test_image_import_uses_quarantine_versions_and_duplicate_guard (test_hybrid_content_generation.HybridContentGenerationTests.test_image_import_uses_quarantine_versions_and_duplicate_guard) ... ok
+test_import_endpoint_rejects_malformed_or_unsafe_upload (test_hybrid_content_generation.HybridContentGenerationTests.test_import_endpoint_rejects_malformed_or_unsafe_upload) ... ok
+test_import_security_rejects_wrong_signature_and_missing_permission (test_hybrid_content_generation.HybridContentGenerationTests.test_import_security_rejects_wrong_signature_and_missing_permission) ... ok
+test_prompt_artifacts_are_exactly_exportable (test_hybrid_content_generation.HybridContentGenerationTests.test_prompt_artifacts_are_exactly_exportable) ... ok
+test_provider_registry_is_truthful_and_manual_demo_is_enabled (test_hybrid_content_generation.HybridContentGenerationTests.test_provider_registry_is_truthful_and_manual_demo_is_enabled) ... ok
+test_router_respects_explicit_manual_mode_and_veo_needs_approval (test_hybrid_content_generation.HybridContentGenerationTests.test_router_respects_explicit_manual_mode_and_veo_needs_approval) ... ok
+test_video_validation_preserves_existing_video_contract (test_hybrid_content_generation.HybridContentGenerationTests.test_video_validation_preserves_existing_video_contract) ... ok
 test_contract_formulas_and_zero_guard (test_metrics.MetricTests.test_contract_formulas_and_zero_guard) ... ok
 test_exact_format_contract (test_plan_schema.PlanTests.test_exact_format_contract) ... ok
 test_agent_storyboards_are_caption_backed (test_video_and_package.VideoPackageTests.test_agent_storyboards_are_caption_backed) ... ok
@@ -35,6 +44,6 @@ test_render_blueprint_uses_free_python_web_service (test_workflow_and_app.Workfl
 test_retry_and_checkpoint_configuration (test_workflow_and_app.WorkflowAppTests.test_retry_and_checkpoint_configuration) ... ok
 
 ----------------------------------------------------------------------
-Ran 35 tests in 1.390s
+Ran 44 tests in 4.823s
 
 OK

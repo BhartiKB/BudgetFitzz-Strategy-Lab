@@ -1,0 +1,153 @@
+{
+  "job_id": "day05-video-v001",
+  "asset_id": "day05_fit_mistakes",
+  "asset_filename": "day05_fit_mistakes.mp4",
+  "plan_day": 5,
+  "asset_type": "video",
+  "recommended_provider": "Google Flow / Veo",
+  "recommended_model": "Veo",
+  "execution_mode": "MANUAL_PROVIDER",
+  "prompt": "Create a 10-second vertical smartphone fashion video for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, three fit mistakes. Scene: Use the visible balanced outfit to check the shoulder line, tee hem, and straight trouser line without claiming a before-and-after transformation.. Visual direction: One continuous all-photographic HF full-body clip with four timed editorial overlays and no illustrated garments or unsupported corrections. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: A realistic fit check, from shoulder to shoe.. Aspect ratio 9:16. Storyboard beats, in order: START / FULL LOOK: THIS IS A MIRROR CHECKLIST, NOT A TRANSFORMATION.; 01 / SHOULDER: THE SEAM SHOULD SIT NEAR THE SHOULDER.; 02 / TEE HEM: ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING.; 03 / TROUSER: READ THE LINE ALL THE WAY TO THE SHOE..",
+  "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+  "aspect_ratio": "9:16",
+  "width": 1080,
+  "height": 1920,
+  "duration_seconds": 10,
+  "frame_rate_intention": 30,
+  "reference_files": [
+    "assets/source_media/day05_hf_wan.mp4"
+  ],
+  "visual_style": "One continuous all-photographic HF full-body clip with four timed editorial overlays and no illustrated garments or unsupported corrections.",
+  "caption_phrases": [
+    "mirror checklist",
+    "sleeve seam sits near the shoulder",
+    "tee hem finishes close to the waistband",
+    "follow the trouser line down to a clean ankle and shoe"
+  ],
+  "storyboard_beats": [
+    {
+      "sequence": 1,
+      "duration_sec": 2.5,
+      "title": "START WITH THE WHOLE FIT.",
+      "subtitle": "READ THE SILHOUETTE FIRST",
+      "step": "START / FULL LOOK",
+      "takeaway": "THIS IS A MIRROR CHECKLIST, NOT A TRANSFORMATION.",
+      "caption_evidence": "mirror checklist",
+      "source_window_sec": [
+        3.65,
+        4.9
+      ],
+      "zoom": 1.0,
+      "crop_y": 0,
+      "focus_graphic": "silhouette"
+    },
+    {
+      "sequence": 2,
+      "duration_sec": 2.5,
+      "title": "CHECK THE SHOULDER LINE.",
+      "subtitle": "FIND THE SLEEVE SEAM",
+      "step": "01 / SHOULDER",
+      "takeaway": "THE SEAM SHOULD SIT NEAR THE SHOULDER.",
+      "caption_evidence": "sleeve seam sits near the shoulder",
+      "source_window_sec": [
+        0.0,
+        1.25
+      ],
+      "zoom": 1.22,
+      "crop_y": 0,
+      "focus_graphic": "shoulder_line"
+    },
+    {
+      "sequence": 3,
+      "duration_sec": 2.5,
+      "title": "CHECK THE TEE HEM.",
+      "subtitle": "COMPARE IT WITH THE WAISTBAND",
+      "step": "02 / TEE HEM",
+      "takeaway": "ENOUGH LENGTH TO MOVE. NO EXCESS BUNCHING.",
+      "caption_evidence": "tee hem finishes close to the waistband",
+      "source_window_sec": [
+        1.25,
+        2.5
+      ],
+      "zoom": 1.22,
+      "crop_y": 190,
+      "focus_graphic": "hem_line"
+    },
+    {
+      "sequence": 4,
+      "duration_sec": 2.5,
+      "title": "FOLLOW THE TROUSER LINE.",
+      "subtitle": "STRAIGHT FALL TO A CLEAN ANKLE",
+      "step": "03 / TROUSER",
+      "takeaway": "READ THE LINE ALL THE WAY TO THE SHOE.",
+      "caption_evidence": "follow the trouser line down to a clean ankle and shoe",
+      "source_window_sec": [
+        2.5,
+        3.75
+      ],
+      "zoom": 1.14,
+      "crop_y": 265,
+      "focus_graphic": "trouser_line"
+    }
+  ],
+  "caption_to_visual_mapping": [
+    {
+      "caption_phrase": "mirror checklist",
+      "visual_beat": "START / FULL LOOK",
+      "source_time_range": [
+        3.65,
+        4.9
+      ]
+    },
+    {
+      "caption_phrase": "sleeve seam sits near the shoulder",
+      "visual_beat": "01 / SHOULDER",
+      "source_time_range": [
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "caption_phrase": "tee hem finishes close to the waistband",
+      "visual_beat": "02 / TEE HEM",
+      "source_time_range": [
+        1.25,
+        2.5
+      ]
+    },
+    {
+      "caption_phrase": "follow the trouser line down to a clean ankle and shoe",
+      "visual_beat": "03 / TROUSER",
+      "source_time_range": [
+        2.5,
+        3.75
+      ]
+    }
+  ],
+  "cta": "Save the three visible fit checks and try them in the mirror.",
+  "prohibited_elements": [
+    "cartoon",
+    "sketch",
+    "illustration",
+    "CGI look",
+    "distorted anatomy",
+    "extra fingers",
+    "unreadable text",
+    "brand logos",
+    "watermark",
+    "price claims",
+    "before-and-after transformation",
+    "sexualized styling"
+  ],
+  "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+  "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+  "maximum_media_cost_inr": 100,
+  "prompt_version": 1,
+  "prompt_hash": "d955090cdd5703bb72e0cea2ddb3666de1d4080d95cbc2a344e67d67e744b6eb",
+  "generated_by": [
+    "ContentPlannerAgent",
+    "CreativeDirectorAgent"
+  ],
+  "generation_timestamp": "2026-07-19T22:30:31+00:00",
+  "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+}

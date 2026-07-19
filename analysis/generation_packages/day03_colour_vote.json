@@ -1,0 +1,50 @@
+{
+  "job_id": "day03-image-v001",
+  "asset_id": "day03_colour_vote",
+  "asset_filename": "day03_colour_vote.png",
+  "plan_day": 3,
+  "asset_type": "image",
+  "recommended_provider": "Google Flow / Veo",
+  "recommended_model": "Google Flow image model",
+  "execution_mode": "MANUAL_PROVIDER",
+  "prompt": "Create a vertical editorial fashion photograph for BudgetFitzz. Subject: practical Indian menswear, realistic adult male model, colour-combo vote. Scene: Three original outfit colourways with a bounded vote and one-line styling rationale.. Visual direction: Three side-by-side illustrated outfits labeled A/B/C with high-contrast vote footer. Use natural garment texture, believable hands and anatomy, clean contemporary Indian home or city setting, soft daylight, restrained editorial composition, no brand logos, and leave safe negative space for the exact caption and CTA. The creative must support this approved hook: Date night: A, B or C? Pick one.. Aspect ratio 4:5.",
+  "negative_prompt": "cartoon, sketch, illustration, CGI look, distorted anatomy, extra fingers, unreadable text, brand logos, watermark, price claims, before-and-after transformation, sexualized styling",
+  "aspect_ratio": "4:5",
+  "width": 1080,
+  "height": 1350,
+  "duration_seconds": null,
+  "frame_rate_intention": null,
+  "reference_files": [
+    "assets/source_media/posts/day03_colour_vote_hf.jpg"
+  ],
+  "visual_style": "Three side-by-side illustrated outfits labeled A/B/C with high-contrast vote footer.",
+  "caption_phrases": [],
+  "storyboard_beats": [],
+  "caption_to_visual_mapping": [],
+  "cta": "Comment A, B or C plus the occasion.",
+  "prohibited_elements": [
+    "cartoon",
+    "sketch",
+    "illustration",
+    "CGI look",
+    "distorted anatomy",
+    "extra fingers",
+    "unreadable text",
+    "brand logos",
+    "watermark",
+    "price claims",
+    "before-and-after transformation",
+    "sexualized styling"
+  ],
+  "safety_instructions": "Use an adult model; no logos, no false price claims, no personal data, and no deceptive before-and-after framing.",
+  "provider_specific_notes": "Manual web workflow is the current demonstration. No provider login, CAPTCHA, web submission, or website download is automated.",
+  "maximum_media_cost_inr": 100,
+  "prompt_version": 1,
+  "prompt_hash": "ce277c43bd83737b73a243d21885fe6fb3eacfe2329f82055df457f02e56af15",
+  "generated_by": [
+    "ContentPlannerAgent",
+    "CreativeDirectorAgent"
+  ],
+  "generation_timestamp": "2026-07-19T22:30:31+00:00",
+  "decision_summary": "Final generation brief derived from the approved plan, caption and validated video beats; it contains no hidden chain-of-thought."
+}

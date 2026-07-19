@@ -54,6 +54,10 @@ Eleven named agents operate through a lightweight state machine. Deterministic a
 
 The frontend reads the generated `app/data/platform_manifest.json` rather than duplicating analytical values in browser code. `app/server.py` serves only approved application, asset, chart, report, validation, and package routes. See [backend-to-frontend connection](docs/backend_frontend_connection.md) for the verified request and data flow.
 
+## Hybrid content generation
+
+The Studio exposes caption-backed, versioned generation packages for the existing five posts and two videos. Google Flow / Veo is presented as the recommended **manual** provider path: users export the exact visible prompt and references, generate media in their own provider workspace, then import it for local validation, provenance capture, and explicit human approval. API modes remain disabled unless a verified credential, explicit paid-usage approval, and configured budget are all present. Existing Hugging Face and local fallback behaviour is preserved; no provider is shown as connected or tested without a real successful request. See [hybrid workflow](docs/hybrid_content_generation.md), [manual Veo workflow](docs/manual_veo_workflow.md), and [provider limitations](docs/provider_claims_and_limitations.md).
+
 ## Important interpretation
 
 Future ranges are targets and hypotheses, not achieved post-publication results. Video views are plays, not unique people. The extreme video outlier is preserved and robust summaries are reported separately.

@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "assets": {
+    "day01_capsule_formula": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "52e9bd682b9f3dc0d0e6b354afa1c1b184345be7bd643eb119542c24491b92ff",
+          "raw_import": null,
+          "candidate_output": "assets/posts/day01_capsule_formula.png",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day02_one_shirt_three_ways": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "d4e416617e2db3a590e6662f588f0d4818fae6ace3dabf4a212a6bd88d004489",
+          "raw_import": null,
+          "candidate_output": "assets/videos/day02_one_shirt_three_ways.mp4",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day03_colour_vote": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "7a02a0874780f9c5592e8c3f57b6d0de1399849e1ee9fdc55d8d1997fa895d1e",
+          "raw_import": null,
+          "candidate_output": "assets/posts/day03_colour_vote.png",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day04_budget_priority": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "0bf012dbeb3f1618baa1e1dac12c480f25c9f897f6872611e255426a33e9d813",
+          "raw_import": null,
+          "candidate_output": "assets/posts/day04_budget_priority.png",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day05_fit_mistakes": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "8fc8e5d898e999560234ddcd226c1269eae4d9219ac0385db03e0a7ed999552c",
+          "raw_import": null,
+          "candidate_output": "assets/videos/day05_fit_mistakes.mp4",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day06_sneaker_scorecard": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "d33bf955274857af578c1408b17b821ef271f536596212e5c16a1e041482c3b3",
+          "raw_import": null,
+          "candidate_output": "assets/posts/day06_sneaker_scorecard.png",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    },
+    "day07_wardrobe_audit": {
+      "active_version": "v001",
+      "versions": [
+        {
+          "version": "v001",
+          "status": "APPROVED",
+          "source_file_hash": "2c66325c869cc6ccd49deedb24cb85bed82d37035dbbbe89fa1d521d5fd6c16f",
+          "raw_import": null,
+          "candidate_output": "assets/posts/day07_wardrobe_audit.png",
+          "provenance_file": null,
+          "created_at": "2026-07-19T22:13:37+00:00",
+          "approval_history": [
+            {
+              "status": "approved_existing_asset",
+              "at": "2026-07-19T22:13:37+00:00"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
