@@ -1,0 +1,53 @@
+# Final Git state recorded after the hybrid content-generation implementation
+
+```powershell
+git status
+```
+
+```text
+On branch codex/hybrid-content-generation
+nothing to commit, working tree clean
+```
+
+```powershell
+git branch --show-current
+```
+
+```text
+codex/hybrid-content-generation
+```
+
+```powershell
+git rev-parse HEAD
+```
+
+```text
+d0c9a67e7278e59d8e6de50a17ee9bcc905136fd
+```
+
+```powershell
+git log --oneline --decorate -10
+```
+
+```text
+d0c9a67 (HEAD -> codex/hybrid-content-generation) docs: package hybrid generation artifacts
+ba15ec9 feat: add hybrid content generation workflow
+65280b2 (codex/backend-frontend-explainer) feat: explain backend frontend platform flow
+fbdec13 (origin/main, codex/version-11-stitch-social-studio) docs: add deployed website link
+4400c9a deploy: prepare secure Render release
+6eabbca docs: add Instagram discovery evidence to final report
+7b7ad00 feat: redesign BudgetFitzz editorial creator atelier
+115442f (codex/version-10-figma-frontend) feat: ship manifest-driven strategy frontend
+526277a (codex/version-8) feat: align videos with agent storyboards
+c905214 fix: align both videos with visible footage
+```
+
+```powershell
+git stash list
+```
+
+```text
+stash@{0}: On codex/free-media-providers: WIP before restoring version 8
+```
+
+This audit was taken before committing this audit-log file itself; no branch or stash was modified.
