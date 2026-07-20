@@ -70,6 +70,8 @@ class HybridContentGenerationTests(unittest.TestCase):
             version = versions["assets"]["sample"]["versions"][0]
             self.assertTrue((root / version["raw_import"]).is_file())
             self.assertTrue((root / version["candidate_output"]).is_file())
+            with Image.open(root / version["candidate_output"]) as candidate:
+                self.assertIn("Imported manual-provider image", candidate.info.get("Description", ""))
             with self.assertRaises(ImportValidationError):
                 service.import_media(fields, "manual.png", image_path.read_bytes())
 

@@ -524,6 +524,7 @@ def build_app_data(
             {"id": "strategy", "label": "Strategy"},
             {"id": "content-plan", "label": "Content Plan", "icon": "calendar"},
             {"id": "studio", "label": "Studio", "icon": "studio"},
+            {"id": "production", "label": "Production", "icon": "architecture"},
             {"id": "agents", "label": "Agents", "icon": "agents"},
             {"id": "validation", "label": "Validation", "icon": "check"},
             {"id": "submission", "label": "Submission", "icon": "send"},

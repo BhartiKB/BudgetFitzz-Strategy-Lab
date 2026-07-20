@@ -110,7 +110,7 @@ function renderChrome(manifest) {
     $('#sheet-nav').append(makeLink(item));
   });
 
-  const primaryMobile = ['home', 'insights', 'content-plan', 'studio'];
+  const primaryMobile = ['home', 'insights', 'content-plan', 'production'];
   manifest.navigation.filter((item) => primaryMobile.includes(item.id)).forEach((item) => $('#mobile-nav').append(makeLink(item, true)));
   const more = el('button', 'mobile-nav__link');
   more.type = 'button';
@@ -183,7 +183,7 @@ function renderHome() {
   append(copy, 'p', 'hero-deck', manifest.strategy.diagnosis.selected_diagnosis);
   const actions = el('div', 'button-row');
   const primary = el('a', 'button button--primary'); primary.href = '#strategy'; primary.innerHTML = `Review revised strategy ${icon('arrow')}`;
-  const secondary = el('a', 'button button--secondary', 'Open seven-day plan'); secondary.href = '#content-plan';
+  const secondary = el('a', 'button button--secondary', 'Enter production studio'); secondary.href = '#production';
   actions.append(primary, secondary); copy.append(actions);
   const note = el('aside', 'hero-note');
   append(note, 'span', 'overline', 'EDITORIAL POSITION');
@@ -409,6 +409,41 @@ function renderStudio() {
   view.append(gallery); return view;
 }
 
+function productionPipeline() {
+  const steps = [
+    ['01', 'Evidence', 'ContentPlannerAgent turns the approved strategy into a planned asset.'],
+    ['02', 'Direction', 'CreativeDirectorAgent links visual beats to the approved caption.'],
+    ['03', 'Generate', 'Use a manual provider, a configured fallback, or local processing.'],
+    ['04', 'Validate', 'Imported media is quarantined, inspected, post-processed and versioned.'],
+    ['05', 'Approve', 'A human makes the candidate active; prior assets stay preserved.'],
+  ];
+  const section = el('section', 'production-pipeline'); append(section, 'span', 'overline', 'PRODUCTION PATH'); append(section, 'h2', '', 'One continuous path from evidence to approved media.');
+  const list = el('ol', 'production-pipeline__track'); steps.forEach(([number, title, detail]) => { const item = el('li'); append(item, 'span', 'production-pipeline__number', number); append(item, 'h3', '', title); append(item, 'p', '', detail); list.append(item); }); section.append(list); return section;
+}
+
+function providerOrbit(generation) {
+  const section = el('section', 'provider-orbit'); append(section, 'span', 'overline', 'CAPABILITY SELECTOR'); append(section, 'h2', '', 'Choose the route. Keep the claim honest.');
+  const core = el('div', 'provider-orbit__core'); append(core, 'strong', '', generation.provider_status?.default_mode || 'MANUAL_PROVIDER'); append(core, 'span', '', 'Default demo mode'); section.append(core);
+  const orbit = el('div', 'provider-orbit__items'); (generation.provider_status?.providers || []).forEach((provider, index) => { const item = el('article', `provider-orbit__item provider-orbit__item--${index + 1}`); append(item, 'span', 'provider-orbit__state', provider.api_state); append(item, 'strong', '', provider.label); append(item, 'small', '', provider.manual_state === 'READY' ? 'Manual workflow ready' : 'Local processing path'); orbit.append(item); }); section.append(orbit); return section;
+}
+
+function renderProduction() {
+  const { plan, generation = {} } = state.manifest.content_studio;
+  const item = selectedPlanItem(); const prompt = (generation.prompts || []).find((entry) => entry.asset_id === assetId(item));
+  const view = el('div', 'route route--production');
+  const hero = el('section', 'production-hero'); const intro = el('div', 'production-hero__intro'); append(intro, 'span', 'overline', 'PRODUCTION / HYBRID CREATOR CONSOLE'); append(intro, 'h1', '', 'Make the next version feel considered.'); append(intro, 'p', '', 'The production workspace keeps the approved brief, exact prompt, provider status, import evidence, human approval and preserved media in one visible chain.');
+  const heroActions = el('div', 'button-row'); const scrollImport = el('a', 'button button--primary', 'Import generated media'); scrollImport.href = '#production-import'; const planLink = el('a', 'button button--secondary', 'Review content plan'); planLink.href = '#content-plan'; heroActions.append(scrollImport, planLink); intro.append(heroActions);
+  const signal = el('aside', 'production-hero__signal'); append(signal, 'span', 'overline', 'CURRENT SAFEGUARD'); append(signal, 'strong', '', 'Nothing replaces an approved asset automatically.'); append(signal, 'p', '', 'A candidate is validated first. Approval promotes it, while the previous post or video is kept as a preserved version.'); hero.append(intro, signal); view.append(hero);
+  view.append(productionPipeline());
+  const workspace = el('section', 'production-workspace'); const control = el('div', 'production-workspace__control'); append(control, 'span', 'overline', 'ASSET BRIEF'); append(control, 'h2', '', `Day ${item.day}: ${item.hook}`);
+  const selector = el('label', 'production-select'); append(selector, 'span', '', 'Planned asset'); const select = el('select'); plan.forEach((candidate) => { const option = el('option', '', `Day ${candidate.day} · ${candidate.format} · ${candidate.hook}`); option.value = String(candidate.day); option.selected = candidate.day === item.day; select.append(option); }); select.addEventListener('change', () => { state.selectedDay = Number(select.value); renderRoute(false); }); selector.append(select); control.append(selector);
+  const factGrid = el('dl', 'production-facts'); [['Provider', prompt?.recommended_provider || 'Manual provider'], ['Model', prompt?.recommended_model || 'Configured fallback'], ['Format', `${prompt?.width || '—'}×${prompt?.height || '—'} · ${prompt?.aspect_ratio || '—'}`], ['Duration', prompt?.duration_seconds ? `${prompt.duration_seconds}s` : 'Static post']].forEach(([term, value]) => { const row = el('div'); append(row, 'dt', '', term); append(row, 'dd', '', value); factGrid.append(row); }); control.append(factGrid);
+  const preview = el('div', 'production-workspace__preview'); preview.append(planMedia(item)); const caption = el('div', 'production-caption'); append(caption, 'span', 'overline', 'APPROVED CAPTION'); append(caption, 'p', '', item.full_proposed_caption); preview.append(caption);
+  workspace.append(control, preview); view.append(workspace, providerOrbit(generation)); if (prompt) view.append(generationPromptPanel(item));
+  const importWrap = el('div', 'production-import'); importWrap.id = 'production-import'; importWrap.append(importMediaPanel(plan, generation)); view.append(importWrap, generationHistoryPanel(generation));
+  return view;
+}
+
 function providerStatusPanel(generation) {
   const section = el('section', 'provider-status'); append(section, 'span', 'overline', 'HYBRID GENERATION STATUS'); append(section, 'h2', '', 'Choose how the next version is made.'); append(section, 'p', '', generation.provider_status?.claim || 'Provider state is unavailable.');
   const grid = el('div', 'provider-status__grid'); (generation.provider_status?.providers || []).forEach((provider) => { const card = el('article', 'provider-status__card'); append(card, 'h3', '', provider.label); append(card, 'p', '', `API: ${provider.api_state} · Manual: ${provider.manual_state}`); append(card, 'small', '', provider.api_tested ? 'Local path tested' : 'API mode not tested'); grid.append(card); }); section.append(grid); return section;
@@ -576,6 +611,7 @@ const routeRenderers = {
   strategy: renderStrategy,
   'content-plan': renderContentPlan,
   studio: renderStudio,
+  production: renderProduction,
   agents: renderAgents,
   validation: renderValidation,
   submission: renderSubmission,

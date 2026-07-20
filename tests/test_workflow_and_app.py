@@ -108,7 +108,7 @@ class WorkflowAppTests(unittest.TestCase):
         manifest = json.loads((ROOT / "app/data/platform_manifest.json").read_text(encoding="utf-8"))
         expected_routes = [
             "home", "insights", "diagnosis", "strategy", "content-plan",
-            "studio", "agents", "validation", "submission",
+            "studio", "production", "agents", "validation", "submission",
         ]
         self.assertEqual(manifest["schema_version"], "2.0")
         self.assertEqual([item["id"] for item in manifest["navigation"]], expected_routes)
@@ -126,6 +126,7 @@ class WorkflowAppTests(unittest.TestCase):
         self.assertIn("loading-state", markup)
         self.assertIn("error-state", script)
         self.assertIn("empty-state", script)
+        self.assertIn("renderProduction", script)
         self.assertIn("--bf-canvas", tokens)
         self.assertIn("--bf-terracotta", tokens)
         self.assertIn("min-height: 44px", responsive)

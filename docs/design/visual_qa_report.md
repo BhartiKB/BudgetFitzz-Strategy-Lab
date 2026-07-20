@@ -1,10 +1,10 @@
-# Version 11 visual QA report
+# Version 12 visual QA report
 
 QA target: `http://127.0.0.1:8501/app/index.html`
 
 ## Route sweep
 
-All nine routes were opened in the live local browser at 1280 px. Each produced one visible route heading, the correct active navigation item, zero broken images, no page-level horizontal overflow, and no console warnings/errors.
+The original nine routes were opened in the live local browser at 1280 px. Each produced one visible route heading, the correct active navigation item, zero broken images, no page-level horizontal overflow, and no console warnings/errors. The manifest-driven Production route was added and checked separately below.
 
 | Route | Expected primary content | Result |
 | --- | --- | --- |
@@ -14,6 +14,7 @@ All nine routes were opened in the live local browser at 1280 px. Each produced 
 | Strategy | Evidence-linked changes and observed/proposed comparison | Pass |
 | Content Plan | Seven days, exactly five posts/two videos, detail selector | Pass |
 | Studio | Seven local assets, filters, caption/CTA preview dialog | Pass |
+| Production | Evidence-to-approval workspace with imports and preserved media | Pass |
 | Agents | Concise decision trace, timing, tool, retry and evidence | Pass |
 | Validation | Grouped production checks and score | Pass |
 | Submission | Five live file records and operational status | Pass |
@@ -36,7 +37,7 @@ At 390 px the page visual viewport was 375.2 px after the browser scrollbar. Doc
 - Mobile Videos filter selects the first matching video rather than leaving a post open.
 - Day 5 video shows the realistic photographic preview and matching fit-check caption.
 - Studio Day 5 opens a labelled modal with one video and one agent-rationale disclosure.
-- Mobile More opens a labelled route sheet containing all nine routes.
+- Mobile More opens a labelled route sheet containing all original routes; Production now appears as a primary mobile route.
 - Submission reports five available files with valid local hrefs.
 
 ## Accessibility
@@ -50,3 +51,17 @@ At 390 px the page visual viewport was 375.2 px after the browser scrollbar. Doc
 ## Captures
 
 Implementation screenshots are stored in `docs/design/screenshots/`. Stitch reference screens are stored separately in `docs/design/stitch/` so generated design intent and implemented output remain distinguishable.
+
+## Production UI QA (2026-07-20)
+
+- `#production` rendered at the desktop viewport with Production navigation,
+  dark editorial hero, five-stage workflow, selected asset brief, exact
+  caption, provider state, prompt, import controls, and version history.
+- At 390 × 844, the hero, actions, safeguard panel, and primary mobile
+  navigation remained within the viewport without clipping.
+- Selecting day 2 in the planned-asset selector rendered the day-2 generated
+  brief, confirming manifest-bound content rather than a static example.
+- No console warnings or errors were recorded. The refreshed manifest reported
+  36/36 preflight checks passing and INR 0 paid generation spend.
+- The supplied interaction themes were adapted from the textual design brief;
+  `Raj_task.mp4` was not available in the repository for frame-by-frame review.

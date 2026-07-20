@@ -12,7 +12,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, PngImagePlugin
 
 from insta_strategy_lab.generation.config import load_generation_config
 from insta_strategy_lab.generation.prompts import generation_public_data
@@ -110,12 +110,23 @@ class ImportService:
             raise ImportValidationError("Video uses an unsupported pixel format")
         return {"mime_type": "video/mp4", "width": video["width"], "height": video["height"], "duration_seconds": duration, "codec": video["codec_name"], "pix_fmt": video.get("pix_fmt"), "frame_rate": video.get("avg_frame_rate")}
 
-    def _postprocess_image(self, source: Path, destination: Path) -> None:
+    def _postprocess_image(self, source: Path, destination: Path, description: str) -> None:
         with Image.open(source) as opened:
             image = ImageOps.exif_transpose(opened).convert("RGB")
         image = ImageOps.fit(image, (1080, 1350), Image.Resampling.LANCZOS, centering=(0.5, 0.42))
         destination.parent.mkdir(parents=True, exist_ok=True)
-        image.save(destination, "PNG", optimize=True)
+        metadata = PngImagePlugin.PngInfo()
+        metadata.add_text("Description", description[:1_000])
+        metadata.add_text("Workflow", "BudgetFitzz manual-provider import")
+        image.save(destination, "PNG", pnginfo=metadata, optimize=True)
+
+    @staticmethod
+    def _image_description(prompt: dict[str, Any]) -> str:
+        visual = str(prompt.get("visual_style") or prompt.get("prompt") or "editorial social creative")
+        return (
+            f"Imported manual-provider image for BudgetFitzz day {prompt['plan_day']} "
+            f"({prompt['asset_id']}). Visual direction: {visual}"
+        )
 
     def _postprocess_video(self, source: Path, destination: Path) -> None:
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -166,7 +177,7 @@ class ImportService:
             raw.parent.mkdir(parents=True, exist_ok=True)
             os.replace(quarantine, raw)
             candidate = self.root / "artifacts/processed_candidates" / asset_id / f"{version}{extension}"
-            if expected_type == "image": self._postprocess_image(raw, candidate)
+            if expected_type == "image": self._postprocess_image(raw, candidate, self._image_description(prompt))
             else: self._postprocess_video(raw, candidate)
             final_validation = self._validate_image(candidate) if expected_type == "image" else self._validate_video(candidate)
             provenance = {

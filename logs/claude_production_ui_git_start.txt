@@ -1,0 +1,26 @@
+# Production UI update Git baseline
+
+Recorded before starting the UI work. Existing user-imported media and derived
+generation records were already present and remain intentionally uncommitted.
+
+```text
+Branch: codex/hybrid-content-generation
+HEAD: fa58e12ac1bf2c4cdaf7d2b60d693ef420408df2
+```
+
+```text
+M analysis/content_generation_prompts.json
+M analysis/generation_packages/*.json
+M analysis/media_versions.json
+M app/data/platform_manifest.json
+M assets/posts/day01_capsule_formula.png
+M assets/videos/day02_one_shirt_three_ways.mp4
+?? analysis/generation_jobs.json
+?? analysis/media_provenance/
+?? artifacts/
+?? assets/versions/
+```
+
+The production UI branch was created from this commit as
+`claude/production-ui-generation`. Existing branches and `stash@{0}` were not
+modified.
