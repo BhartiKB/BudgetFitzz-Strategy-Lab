@@ -29,7 +29,7 @@ def ffmpeg_paths(root: Path) -> tuple[Path, Path]:
 def probe_video(ffprobe: Path, path: Path) -> dict[str, Any]:
     command = [
         str(ffprobe), "-v", "error", "-show_entries",
-        "format=duration,size:stream=codec_name,width,height,avg_frame_rate,pix_fmt",
+        "format=duration,size:stream=codec_type,codec_name,width,height,avg_frame_rate,pix_fmt,channels,sample_rate",
         "-of", "json", str(path),
     ]
     completed = subprocess.run(command, capture_output=True, text=True, check=True)

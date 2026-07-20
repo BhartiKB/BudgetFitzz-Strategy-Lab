@@ -174,7 +174,7 @@ function planMedia(item, compact = false) {
   if (item.format === 'video') {
     const video = el('video');
     video.controls = !compact;
-    video.muted = true;
+    video.muted = false;
     video.playsInline = true;
     video.preload = 'metadata';
     video.poster = `${root}/video_frames/${item.asset_filename.replace(/\.mp4$/, '')}_preview.png`;

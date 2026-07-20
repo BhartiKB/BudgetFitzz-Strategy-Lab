@@ -81,6 +81,20 @@ class HybridContentGenerationTests(unittest.TestCase):
         self.assertEqual(payload["codec"], "h264")
         self.assertEqual((payload["width"], payload["height"]), (1080, 1920))
 
+    def test_import_postprocessing_keeps_audio_from_original_upload(self):
+        source_matches = list((ROOT / "artifacts/raw_imports/day02_one_shirt_three_ways/v002").glob("*.mp4"))
+        if not source_matches:
+            self.skipTest("The private imported audio fixture is not present")
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "audio-preserved.mp4"
+            service = ImportService(ROOT)
+            service._postprocess_video(source_matches[0], output)
+            payload = service._validate_video(output)
+            self.assertTrue(payload["has_audio"])
+            self.assertEqual(payload["audio_codec"], "aac")
+            active = service._validate_video(ROOT / "assets/videos/day02_one_shirt_three_ways.mp4")
+            self.assertTrue(active["has_audio"])
+
     def test_approval_archives_previous_active_media(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -133,6 +147,7 @@ class HybridContentGenerationTests(unittest.TestCase):
         self.assertIn("Export JSON", script)
         self.assertIn("Import Generated Media", script)
         self.assertIn("/api/generation/import", script)
+        self.assertIn("video.muted = false", script)
 
     def test_import_endpoint_rejects_malformed_or_unsafe_upload(self):
         with socket.socket() as sock:

@@ -100,15 +100,28 @@ class ImportService:
             payload = probe_video(self.ffprobe, path)
         except Exception as exc:
             raise ImportValidationError(f"ffprobe rejected video: {exc}") from exc
-        video = next((stream for stream in payload.get("streams", []) if stream.get("codec_name")), None)
+        video = next((stream for stream in payload.get("streams", []) if stream.get("codec_type") == "video" and stream.get("codec_name")), None)
         if not video or not video.get("width") or not video.get("height"):
             raise ImportValidationError("Video has no readable visual stream")
+        audio = next((stream for stream in payload.get("streams", []) if stream.get("codec_type") == "audio" and stream.get("codec_name")), None)
         duration = float(payload["format"].get("duration", 0))
         if duration <= 0 or duration > 120:
             raise ImportValidationError("Video duration must be greater than zero and no longer than 120 seconds")
         if video.get("pix_fmt") not in {"yuv420p", "yuvj420p", "yuv420p10le"}:
             raise ImportValidationError("Video uses an unsupported pixel format")
-        return {"mime_type": "video/mp4", "width": video["width"], "height": video["height"], "duration_seconds": duration, "codec": video["codec_name"], "pix_fmt": video.get("pix_fmt"), "frame_rate": video.get("avg_frame_rate")}
+        return {
+            "mime_type": "video/mp4",
+            "width": video["width"],
+            "height": video["height"],
+            "duration_seconds": duration,
+            "codec": video["codec_name"],
+            "pix_fmt": video.get("pix_fmt"),
+            "frame_rate": video.get("avg_frame_rate"),
+            "has_audio": audio is not None,
+            "audio_codec": audio.get("codec_name") if audio else None,
+            "audio_channels": audio.get("channels") if audio else None,
+            "audio_sample_rate": audio.get("sample_rate") if audio else None,
+        }
 
     def _postprocess_image(self, source: Path, destination: Path, description: str) -> None:
         with Image.open(source) as opened:
@@ -130,7 +143,12 @@ class ImportService:
 
     def _postprocess_video(self, source: Path, destination: Path) -> None:
         destination.parent.mkdir(parents=True, exist_ok=True)
-        command = [str(self.ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-i", str(source), "-vf", "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0x17211B,format=yuv420p", "-an", "-r", "30", "-c:v", "h264_nvenc", "-preset", "p4", "-cq", "20", "-movflags", "+faststart", str(destination)]
+        command = [
+            str(self.ffmpeg), "-y", "-hide_banner", "-loglevel", "error", "-i", str(source),
+            "-vf", "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=0x17211B,format=yuv420p",
+            "-map", "0:v:0", "-map", "0:a:0?", "-r", "30", "-c:v", "h264_nvenc", "-preset", "p4", "-cq", "20",
+            "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(destination),
+        ]
         completed = subprocess.run(command, capture_output=True, text=True)
         if completed.returncode:
             fallback = command.copy(); fallback[fallback.index("h264_nvenc")] = "libx264"; fallback[fallback.index("p4")] = "medium"; fallback[fallback.index("-cq")] = "-crf"
