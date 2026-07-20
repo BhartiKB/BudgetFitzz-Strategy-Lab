@@ -105,13 +105,22 @@ function renderChrome(manifest) {
     return link;
   };
 
-  manifest.navigation.forEach((item) => {
+  // Keep the new production route discoverable while an older generated
+  // manifest is still being refreshed on a deployment target. The route is a
+  // UI capability; all analytical values remain manifest-driven.
+  const navigation = [...manifest.navigation];
+  if (!navigation.some((item) => item.id === 'production')) {
+    const studioIndex = navigation.findIndex((item) => item.id === 'studio');
+    navigation.splice(studioIndex >= 0 ? studioIndex + 1 : navigation.length, 0, { id: 'production', label: 'Production', icon: 'architecture' });
+  }
+
+  navigation.forEach((item) => {
     $('#desktop-nav').append(makeLink(item));
     $('#sheet-nav').append(makeLink(item));
   });
 
   const primaryMobile = ['home', 'insights', 'content-plan', 'production'];
-  manifest.navigation.filter((item) => primaryMobile.includes(item.id)).forEach((item) => $('#mobile-nav').append(makeLink(item, true)));
+  navigation.filter((item) => primaryMobile.includes(item.id)).forEach((item) => $('#mobile-nav').append(makeLink(item, true)));
   const more = el('button', 'mobile-nav__link');
   more.type = 'button';
   more.innerHTML = `${icon('more')}<span>More</span>`;
