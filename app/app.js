@@ -43,6 +43,27 @@ function append(parent, tag, className, text) {
   return node;
 }
 
+// Read API responses defensively so an empty or malformed server response is
+// reported with a useful status instead of the opaque JSON parse exception.
+async function readApiResponse(response, fallbackMessage) {
+  const body = await response.text();
+  let payload = {};
+  if (body.trim()) {
+    try {
+      payload = JSON.parse(body);
+    } catch (_error) {
+      throw new Error(`${fallbackMessage} (server returned invalid JSON, HTTP ${response.status})`);
+    }
+  }
+  if (!response.ok) {
+    throw new Error(payload.message || payload.error || `${fallbackMessage} (HTTP ${response.status})`);
+  }
+  if (!payload || typeof payload !== 'object') {
+    throw new Error(`${fallbackMessage} (server returned an empty response, HTTP ${response.status})`);
+  }
+  return payload;
+}
+
 function formatBytes(bytes) {
   if (!bytes) return 'Not generated';
   const units = ['B', 'KB', 'MB', 'GB'];
@@ -476,7 +497,7 @@ function importMediaPanel(plan, generation) {
   const notes = el('label', 'media-import__field media-import__field--wide'); append(notes, 'span', '', 'Notes (optional)'); const notesInput = el('textarea'); notesInput.name = 'notes'; notes.append(notesInput); form.append(notes);
   const permission = el('label', 'media-import__consent'); const box = el('input'); box.type = 'checkbox'; box.name = 'permission_confirmed'; box.required = true; permission.append(box); append(permission, 'span', '', 'I have permission to use this media and want it validated as a new version.'); form.append(permission);
   const submit = el('button', 'button', 'Validate and create candidate'); submit.type = 'submit'; const result = el('p', 'media-import__result'); result.setAttribute('aria-live', 'polite'); form.append(submit, result);
-  form.addEventListener('submit', async (event) => { event.preventDefault(); const selected = (generation.prompts || []).find((entry) => entry.asset_id === form.elements.asset_id.value); const data = new FormData(form); data.set('prompt_version', String(selected?.prompt_version || 1)); data.set('generation_date', form.elements.generation_date.value ? new Date(form.elements.generation_date.value).toISOString() : new Date().toISOString()); data.set('permission_confirmed', form.elements.permission_confirmed.checked ? 'true' : 'false'); submit.disabled = true; result.textContent = 'Validating imported media…'; try { const response = await fetch('/api/generation/import', { method: 'POST', body: data }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message || 'Import failed'); result.textContent = `Candidate ${payload.result.version} created. It is awaiting human approval.`; } catch (error) { result.textContent = error.message; } finally { submit.disabled = false; } });
+  form.addEventListener('submit', async (event) => { event.preventDefault(); const selected = (generation.prompts || []).find((entry) => entry.asset_id === form.elements.asset_id.value); const data = new FormData(form); data.set('prompt_version', String(selected?.prompt_version || 1)); data.set('generation_date', form.elements.generation_date.value ? new Date(form.elements.generation_date.value).toISOString() : new Date().toISOString()); data.set('permission_confirmed', form.elements.permission_confirmed.checked ? 'true' : 'false'); submit.disabled = true; result.textContent = 'Validating imported media…'; try { const response = await fetch('/api/generation/import', { method: 'POST', body: data }); const payload = await readApiResponse(response, 'Import failed'); const version = payload.result?.version || 'candidate'; result.textContent = `Candidate ${version} created. It is awaiting human approval.`; } catch (error) { result.textContent = error.message || 'Import failed. Please try again.'; } finally { submit.disabled = false; } });
   section.append(form); return section;
 }
 
@@ -493,13 +514,13 @@ function generationHistoryPanel(generation) {
     append(notice, 'p', '', 'Use the approval action on the matching asset card below to make the candidate active.');
     if (pendingJobs.length === 1) {
       const pending = pendingJobs[0]; const approveNow = el('button', 'button button--primary', `Approve ${pending.asset_id} now`); approveNow.type = 'button';
-      approveNow.addEventListener('click', async () => { approveNow.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message || 'Approval failed'); window.location.reload(); } catch (error) { approveNow.textContent = error.message; approveNow.disabled = false; } });
+      approveNow.addEventListener('click', async () => { approveNow.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); await readApiResponse(response, 'Approval failed'); window.location.reload(); } catch (error) { approveNow.textContent = error.message || 'Approval failed'; approveNow.disabled = false; } });
       notice.append(approveNow);
     }
   }
   section.append(notice);
   const list = el('div', 'generation-history__list');
-  Object.entries(versions).forEach(([asset, record]) => { const card = el('article', 'generation-history__card'); append(card, 'h3', '', asset); append(card, 'p', '', `Active version: ${record.active_version || 'None'} · ${record.versions?.length || 0} recorded version(s)`); const versionList = el('ul', 'generation-history__versions'); (record.versions || []).forEach((version) => { const row = el('li'); const label = version.version === record.active_version ? `${version.version} · active` : `${version.version} · ${version.status.toLowerCase()}`; append(row, 'span', '', label); const preserved = version.preserved_output || version.active_output; if (preserved) { const link = el('a', 'text-link', 'Open preserved media'); link.href = `/${preserved}`; link.target = '_self'; row.append(link); } versionList.append(row); }); card.append(versionList); const pending = (generation.jobs || []).find((job) => job.asset_id === asset && job.status === 'AWAITING_REVIEW'); if (pending) { const approve = el('button', 'button button--secondary', `Approve ${pending.job_id}`); approve.type = 'button'; approve.addEventListener('click', async () => { approve.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); const payload = await response.json(); if (!response.ok) throw new Error(payload.message || 'Approval failed'); window.location.reload(); } catch (error) { approve.textContent = error.message; approve.disabled = false; } }); card.append(approve); } list.append(card); }); section.append(list); return section;
+  Object.entries(versions).forEach(([asset, record]) => { const card = el('article', 'generation-history__card'); append(card, 'h3', '', asset); append(card, 'p', '', `Active version: ${record.active_version || 'None'} · ${record.versions?.length || 0} recorded version(s)`); const versionList = el('ul', 'generation-history__versions'); (record.versions || []).forEach((version) => { const row = el('li'); const label = version.version === record.active_version ? `${version.version} · active` : `${version.version} · ${version.status.toLowerCase()}`; append(row, 'span', '', label); const preserved = version.preserved_output || version.active_output; if (preserved) { const link = el('a', 'text-link', 'Open preserved media'); link.href = `/${preserved}`; link.target = '_self'; row.append(link); } versionList.append(row); }); card.append(versionList); const pending = (generation.jobs || []).find((job) => job.asset_id === asset && job.status === 'AWAITING_REVIEW'); if (pending) { const approve = el('button', 'button button--secondary', `Approve ${pending.job_id}`); approve.type = 'button'; approve.addEventListener('click', async () => { approve.disabled = true; try { const response = await fetch('/api/generation/approve', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({job_id: pending.job_id}) }); await readApiResponse(response, 'Approval failed'); window.location.reload(); } catch (error) { approve.textContent = error.message || 'Approval failed'; approve.disabled = false; } }); card.append(approve); } list.append(card); }); section.append(list); return section;
 }
 
 function finalTraceEntries(trace) {

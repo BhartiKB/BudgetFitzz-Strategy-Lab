@@ -148,6 +148,9 @@ class HybridContentGenerationTests(unittest.TestCase):
             with self.assertRaises(urllib.error.HTTPError) as response:
                 urllib.request.urlopen(request, timeout=2)
             self.assertEqual(response.exception.code, 400)
+            payload = json.loads(response.exception.read().decode("utf-8"))
+            self.assertEqual(payload["status"], "error")
+            self.assertIn("multipart", payload["message"])
         finally:
             process.terminate(); process.wait(timeout=5)
             if process.stdout: process.stdout.close()

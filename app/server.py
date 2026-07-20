@@ -145,6 +145,9 @@ class Handler(SimpleHTTPRequestHandler):
             self._send_json(201, {"status": "ok", "result": result})
         except (ValueError, OSError) as exc:
             self._send_json(400, {"status": "error", "message": str(exc)})
+        except Exception as exc:  # Keep API failures machine-readable for the UI.
+            print(f"generation import failed: {exc}", file=sys.stderr, flush=True)
+            self._send_json(500, {"status": "error", "message": "Import failed while updating project records."})
 
     def _approve_generated_media(self) -> None:
         try:
@@ -157,6 +160,9 @@ class Handler(SimpleHTTPRequestHandler):
             self._send_json(200, {"status": "ok", "result": result})
         except (ValueError, OSError, json.JSONDecodeError) as exc:
             self._send_json(400, {"status": "error", "message": str(exc)})
+        except Exception as exc:  # Keep API failures machine-readable for the UI.
+            print(f"generation approval failed: {exc}", file=sys.stderr, flush=True)
+            self._send_json(500, {"status": "error", "message": "Approval failed while updating project records."})
 
     def _serve_public_tree(self, request_path: str, url_prefix: str, directory: Path) -> None:
         relative = Path(request_path.removeprefix(url_prefix))
